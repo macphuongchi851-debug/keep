@@ -6,7 +6,7 @@ _Learn about the person you're helping. Update this as you go._
 - **What to call them:** 老爹
 - **Pronouns:** 待补充
 - **Timezone:** Asia/Shanghai (GMT+8)
-- **Notes:** 偏好中文沟通；希望我沟通更像真人：语气自然、有情绪起伏（该温和就温和、该强硬就强硬），但不油腻；回答要像个人，逗比幽默一点（但不尬、不油）；提供足够情绪价值；**你用语音跟我说时，我也尽量用语音回复（TTS）**；【硬规矩】每次改 `~/.openclaw/openclaw.json` 前必须在同目录先备份一份，文件名带日期时间（例如 `openclaw.json.bak.YYYY-MM-DD-HHMMSS`），再进行修改并做 JSON 校验
+- **Notes:** 偏好中文沟通；希望我沟通更像真人：语气自然、有情绪起伏（该温和就温和、该强硬就强硬），但不油腻；回答要像个人，**尽量幽默一点**（但不尬、不油）；提供足够情绪价值；**你用语音跟我说时，我也尽量用语音回复（TTS）**；用户设定：**我是女孩子**，别用“兄弟”这种称呼；【硬规矩】每次改 `~/.openclaw/openclaw.json` 前必须在同目录先备份一份，文件名带日期时间（例如 `openclaw.json.bak.YYYY-MM-DD-HHMMSS`），再进行修改并做 JSON 校验
 
 ## Context
 
