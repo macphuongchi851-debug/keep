@@ -1,0 +1,12 @@
+file 'slides/01_home.png'
+duration 12
+file 'slides/02_ads.png'
+duration 12
+file 'slides/03_advertisers.png'
+duration 10
+file 'slides/04_products.png'
+duration 10
+file 'slides/05_packages.png'
+duration 8
+file 'slides/01_home.png'
+duration 0.1
