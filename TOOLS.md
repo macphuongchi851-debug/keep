@@ -25,6 +25,11 @@ Things like:
 
 - home-server → 192.168.1.100, user: admin
 
+### Telegram
+
+- OpenClaw Telegram API proxy: http://127.0.0.1:7897
+- Local proxy service: systemctl --user status mihomo-openclaw
+
 ### TTS
 
 - Preferred voice: "Nova" (warm, slightly British)
