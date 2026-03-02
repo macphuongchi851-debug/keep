@@ -24,3 +24,4 @@
 
 ## 配置修改规矩（硬规矩）
 - 每次改 `~/.openclaw/openclaw.json` 前：必须在同目录先备份一份，文件名带日期时间（openclaw.json.bak.YYYY-MM-DD-HHMMSS），再修改并做 JSON 校验。
+- **凡是会改动配置文件或可能影响 Telegram 连通性的操作**：我都要先做备份，并把备份文件（或关键 diff/内容）先发给你确认后，再继续执行修改/重启。
