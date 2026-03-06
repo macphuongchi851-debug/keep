@@ -1,0 +1,117 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>健身打卡版</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei',sans-serif;max-width:960px;margin:18px auto;padding:0 14px;background:#f7f8fb;color:#222;line-height:1.6}
+header{background:linear-gradient(135deg,#eef5ff,#f8fbff);border:1px solid #dbe7ff;padding:16px;border-radius:18px;margin-bottom:16px}
+h1{margin:0 0 8px}.muted{color:#556}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button{border:1px solid #d7dce8;background:#fff;border-radius:10px;padding:10px 14px;font-size:14px;cursor:pointer}button:hover{background:#f5f7fb}.section{background:#fff;border:1px solid #e6e8ef;border-radius:16px;padding:14px;margin:14px 0;box-shadow:0 4px 18px rgba(0,0,0,.03)}details summary{cursor:pointer;font-size:20px;font-weight:700;list-style:none}details summary::-webkit-details-marker{display:none}.task{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed #eee}.task:last-child{border-bottom:none}input[type=checkbox]{margin-top:4px;transform:scale(1.2)}.done{color:#8b8b8b;text-decoration:line-through}.meta{font-size:13px;color:#666}.progress{margin-top:10px;font-size:14px;color:#285ea8}.footer{font-size:13px;color:#666;margin:24px 0 40px}
+textarea,input[type=text]{width:100%;padding:10px;border:1px solid #d9deea;border-radius:10px;font-size:14px;background:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:680px){.grid2{grid-template-columns:1fr}}
+</style></head><body>
+<header><h1>健身打卡版</h1><div class="muted">这版是能真打卡的：勾选状态会自动保存在当前设备浏览器里。适合手机开着用。</div><div class="toolbar"><button onclick="resetAll()">清空全部打卡</button><button onclick="expandAll()">展开全部</button><button onclick="collapseAll()">收起全部</button></div></header>
+<div class="section"><h2>本周复盘</h2><div class="grid2"><div><label>本周体重</label><input type="text" data-note="weight" placeholder="例如 77.5kg"></div><div><label>本周腰围</label><input type="text" data-note="waist" placeholder="例如 88cm"></div><div><label>本周完成训练</label><input type="text" data-note="train_done" placeholder="例如 5/5"></div><div><label>本周完成有氧</label><input type="text" data-note="cardio_done" placeholder="例如 2次"></div></div><div style="margin-top:12px"><label>本周总结 / 下周计划</label><textarea rows="4" data-note="weekly_note" placeholder="例如：卧推进步了，下周深蹲加2.5kg"></textarea></div></div>
+<details class="section" data-day="1" open><summary>周一｜上肢力量</summary><div class="meta">做完就打勾，状态会自动保存。</div>
+<div class="progress" id="progress-1"></div>
+<label class="task"><input type="checkbox" data-key="d1-t1" onchange="updateProgress(1)"><span id="label-d1-t1">热身：肩绕环 + 俯卧撑 + 空杠卧推</span></label>
+<label class="task"><input type="checkbox" data-key="d1-t2" onchange="updateProgress(1)"><span id="label-d1-t2">杠铃卧推 4×5–6</span></label>
+<label class="task"><input type="checkbox" data-key="d1-t3" onchange="updateProgress(1)"><span id="label-d1-t3">杠铃俯身划船 4×6–8</span></label>
+<label class="task"><input type="checkbox" data-key="d1-t4" onchange="updateProgress(1)"><span id="label-d1-t4">站姿杠铃推举 3×6–8</span></label>
+<label class="task"><input type="checkbox" data-key="d1-t5" onchange="updateProgress(1)"><span id="label-d1-t5">单臂哑铃划船 3×8–10/侧</span></label>
+<label class="task"><input type="checkbox" data-key="d1-t6" onchange="updateProgress(1)"><span id="label-d1-t6">引体向上 3组（或离心引体）</span></label>
+<label class="task"><input type="checkbox" data-key="d1-t7" onchange="updateProgress(1)"><span id="label-d1-t7">平板支撑 3×40–60秒</span></label>
+<label class="task"><input type="checkbox" data-key="d1-t8" onchange="updateProgress(1)"><span id="label-d1-t8">可选有氧 15–20 分钟</span></label>
+</details>
+<details class="section" data-day="2" ><summary>周二｜下肢力量 + 核心</summary><div class="meta">做完就打勾，状态会自动保存。</div>
+<div class="progress" id="progress-2"></div>
+<label class="task"><input type="checkbox" data-key="d2-t1" onchange="updateProgress(2)"><span id="label-d2-t1">热身：徒手深蹲 + 髋部动态拉伸 + 空杠深蹲</span></label>
+<label class="task"><input type="checkbox" data-key="d2-t2" onchange="updateProgress(2)"><span id="label-d2-t2">杠铃深蹲 4×5–6</span></label>
+<label class="task"><input type="checkbox" data-key="d2-t3" onchange="updateProgress(2)"><span id="label-d2-t3">罗马尼亚硬拉 4×6–8</span></label>
+<label class="task"><input type="checkbox" data-key="d2-t4" onchange="updateProgress(2)"><span id="label-d2-t4">保加利亚分腿蹲 3×8/腿</span></label>
+<label class="task"><input type="checkbox" data-key="d2-t5" onchange="updateProgress(2)"><span id="label-d2-t5">站姿提踵 3×12–15</span></label>
+<label class="task"><input type="checkbox" data-key="d2-t6" onchange="updateProgress(2)"><span id="label-d2-t6">悬垂/仰卧举腿 3×10–15</span></label>
+<label class="task"><input type="checkbox" data-key="d2-t7" onchange="updateProgress(2)"><span id="label-d2-t7">侧桥 3×30–45秒/侧</span></label>
+</details>
+<details class="section" data-day="3" ><summary>周三｜体能恢复 / 有氧 / 旗帜基础</summary><div class="meta">做完就打勾，状态会自动保存。</div>
+<div class="progress" id="progress-3"></div>
+<label class="task"><input type="checkbox" data-key="d3-t1" onchange="updateProgress(3)"><span id="label-d3-t1">热身：快步走 + 胸椎/髋动态活动</span></label>
+<label class="task"><input type="checkbox" data-key="d3-t2" onchange="updateProgress(3)"><span id="label-d3-t2">稳态有氧 30–40 分钟 或 循环体能 4–5 轮</span></label>
+<label class="task"><input type="checkbox" data-key="d3-t3" onchange="updateProgress(3)"><span id="label-d3-t3">侧桥 3组</span></label>
+<label class="task"><input type="checkbox" data-key="d3-t4" onchange="updateProgress(3)"><span id="label-d3-t4">单侧提重静止 3组</span></label>
+<label class="task"><input type="checkbox" data-key="d3-t5" onchange="updateProgress(3)"><span id="label-d3-t5">悬垂举腿 3组</span></label>
+<label class="task"><input type="checkbox" data-key="d3-t6" onchange="updateProgress(3)"><span id="label-d3-t6">肩胛下沉控制 3组</span></label>
+</details>
+<details class="section" data-day="4" ><summary>周四｜上肢增肌 + 体态</summary><div class="meta">做完就打勾，状态会自动保存。</div>
+<div class="progress" id="progress-4"></div>
+<label class="task"><input type="checkbox" data-key="d4-t1" onchange="updateProgress(4)"><span id="label-d4-t1">热身：肩绕环 + 俯卧撑 + 轻重量推拉</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t2" onchange="updateProgress(4)"><span id="label-d4-t2">上斜哑铃卧推 4×8–10</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t3" onchange="updateProgress(4)"><span id="label-d4-t3">引体向上 4组（或离心）</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t4" onchange="updateProgress(4)"><span id="label-d4-t4">哑铃肩推 3×8–10</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t5" onchange="updateProgress(4)"><span id="label-d4-t5">侧平举 3×12–15</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t6" onchange="updateProgress(4)"><span id="label-d4-t6">俯身后束飞鸟 3×12–15</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t7" onchange="updateProgress(4)"><span id="label-d4-t7">哑铃弯举 3×10–12</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t8" onchange="updateProgress(4)"><span id="label-d4-t8">过顶臂屈伸 3×10–12</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t9" onchange="updateProgress(4)"><span id="label-d4-t9">悬垂屈膝举腿 3×10–12</span></label>
+<label class="task"><input type="checkbox" data-key="d4-t10" onchange="updateProgress(4)"><span id="label-d4-t10">可选有氧 15–20 分钟</span></label>
+</details>
+<details class="section" data-day="5" ><summary>周五｜下肢增肌 + 后链 + 核心</summary><div class="meta">做完就打勾，状态会自动保存。</div>
+<div class="progress" id="progress-5"></div>
+<label class="task"><input type="checkbox" data-key="d5-t1" onchange="updateProgress(5)"><span id="label-d5-t1">热身：高抬腿 + 徒手深蹲 + 轻重量RDL</span></label>
+<label class="task"><input type="checkbox" data-key="d5-t2" onchange="updateProgress(5)"><span id="label-d5-t2">前蹲/高脚杯深蹲 4×8–10</span></label>
+<label class="task"><input type="checkbox" data-key="d5-t3" onchange="updateProgress(5)"><span id="label-d5-t3">罗马尼亚硬拉 3×8–10</span></label>
+<label class="task"><input type="checkbox" data-key="d5-t4" onchange="updateProgress(5)"><span id="label-d5-t4">杠铃臀推/臀桥 3×10–12</span></label>
+<label class="task"><input type="checkbox" data-key="d5-t5" onchange="updateProgress(5)"><span id="label-d5-t5">弓步蹲/箭步蹲 3×10/腿</span></label>
+<label class="task"><input type="checkbox" data-key="d5-t6" onchange="updateProgress(5)"><span id="label-d5-t6">农夫行走 4轮×30–45秒</span></label>
+<label class="task"><input type="checkbox" data-key="d5-t7" onchange="updateProgress(5)"><span id="label-d5-t7">侧桥 / 悬垂举腿 3组</span></label>
+</details>
+<details class="section" data-day="6" ><summary>周六｜可选有氧 / 恢复</summary><div class="meta">做完就打勾，状态会自动保存。</div>
+<div class="progress" id="progress-6"></div>
+<label class="task"><input type="checkbox" data-key="d6-t1" onchange="updateProgress(6)"><span id="label-d6-t1">稳态有氧 30–40 分钟（可选）</span></label>
+<label class="task"><input type="checkbox" data-key="d6-t2" onchange="updateProgress(6)"><span id="label-d6-t2">恢复流：走路 20–30 分钟</span></label>
+<label class="task"><input type="checkbox" data-key="d6-t3" onchange="updateProgress(6)"><span id="label-d6-t3">胸椎活动 3 分钟</span></label>
+<label class="task"><input type="checkbox" data-key="d6-t4" onchange="updateProgress(6)"><span id="label-d6-t4">髋部拉伸 3 分钟</span></label>
+<label class="task"><input type="checkbox" data-key="d6-t5" onchange="updateProgress(6)"><span id="label-d6-t5">肩胛控制 3组</span></label>
+<label class="task"><input type="checkbox" data-key="d6-t6" onchange="updateProgress(6)"><span id="label-d6-t6">轻核心 2–3组</span></label>
+</details>
+<details class="section" data-day="7" ><summary>周日｜休息 / 复盘</summary><div class="meta">做完就打勾，状态会自动保存。</div>
+<div class="progress" id="progress-7"></div>
+<label class="task"><input type="checkbox" data-key="d7-t1" onchange="updateProgress(7)"><span id="label-d7-t1">轻松走路</span></label>
+<label class="task"><input type="checkbox" data-key="d7-t2" onchange="updateProgress(7)"><span id="label-d7-t2">简单拉伸</span></label>
+<label class="task"><input type="checkbox" data-key="d7-t3" onchange="updateProgress(7)"><span id="label-d7-t3">早点睡</span></label>
+<label class="task"><input type="checkbox" data-key="d7-t4" onchange="updateProgress(7)"><span id="label-d7-t4">记录体重/腰围/训练表现</span></label>
+<label class="task"><input type="checkbox" data-key="d7-t5" onchange="updateProgress(7)"><span id="label-d7-t5">决定下周：加重 / 维持 / 轻调</span></label>
+</details>
+<div class="footer">说明：这份 HTML 打卡版会把你的勾选状态存在浏览器本地（localStorage）。换设备不会同步；想重来就点“清空全部打卡”。</div>
+<script>
+const prefix='fitness-check-v1:';
+function bindSaved(){
+  document.querySelectorAll('input[type=checkbox][data-key]').forEach(cb=>{
+    const k=prefix+cb.dataset.key; const v=localStorage.getItem(k);
+    if(v==='1'){cb.checked=true; document.getElementById('label-'+cb.dataset.key)?.classList.add('done');}
+  });
+  document.querySelectorAll('[data-note]').forEach(el=>{
+    const k=prefix+'note:'+el.dataset.note; const v=localStorage.getItem(k);
+    if(v!==null) el.value=v;
+    el.addEventListener('input',()=>localStorage.setItem(k, el.value));
+  });
+  document.querySelectorAll('input[type=checkbox][data-key]').forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      const k=prefix+cb.dataset.key;
+      localStorage.setItem(k, cb.checked?'1':'0');
+      document.getElementById('label-'+cb.dataset.key)?.classList.toggle('done', cb.checked);
+    });
+  });
+  const n=document.querySelectorAll('details[data-day]').length;
+  for(let i=1;i<=n;i++) updateProgress(i);
+}
+function updateProgress(day){
+  const box=document.querySelector(`details[data-day="${day}"]`); if(!box) return;
+  const cbs=box.querySelectorAll('input[type=checkbox][data-key]');
+  const total=cbs.length; const done=[...cbs].filter(x=>x.checked).length;
+  const p=document.getElementById('progress-'+day); if(p) p.textContent=`完成度：${done} / ${total}`;
+}
+function resetAll(){ if(!confirm('确定清空全部打卡和复盘内容？')) return;
+  Object.keys(localStorage).forEach(k=>{ if(k.startsWith(prefix)) localStorage.removeItem(k); });
+  location.reload();
+}
+function expandAll(){ document.querySelectorAll('details[data-day]').forEach(x=>x.open=true); }
+function collapseAll(){ document.querySelectorAll('details[data-day]').forEach(x=>x.open=false); }
+bindSaved();
+</script></body></html>
