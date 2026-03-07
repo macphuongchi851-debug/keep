@@ -1,0 +1,48 @@
+# Local runtime / temp
+.venv/
+logs/
+*.log
+
+# OpenClaw local internals inside workspace
+.openclaw/
+
+# Personal memory / ops notes
+memory/
+MEMORY.md
+BOOTSTRAP.md
+
+# Backups / migration bundles / sensitive config copies
+backups/
+migration/
+*.bak
+*.bak.*
+openclaw*.json
+
+# Large generated archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# Media / raw assets / throwaway files
+*.mp4
+*.mov
+*.webm
+*.mkv
+raw/
+final/
+out-video/
+fix/
+
+# Temp preview / downloaded audit assets
+tmp_*.jpg
+tmp_*.png
+tmp_*.jpeg
+wger_*.png
+wger_*.jpg
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
