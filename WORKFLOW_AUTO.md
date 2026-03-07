@@ -42,9 +42,12 @@ cd /home/keep/.openclaw/workspace
 
 ## 注意事项
 
-- 依赖：`git` `rsync` `tar` `gpg` `split` `ssh`
+- 依赖：`git` `rsync` `tar` `gpg` `split` `ssh` `openclaw`
 - 默认 SSH key：`~/.ssh/github_openclaw_backup_ed25519`
 - 默认加密密码文件：`~/.ssh/openclaw_backup_passphrase_last.txt`
+- 当前默认固定密码：`Q3pKfeY2LEr3Vai2AP5UPrKu7DbhZqS6`
+- 备份成功后会通过 Telegram 通知：`telegram:8327241925`
+- 定时任务当前为：**每天 00:00**
 - 整包备份仓库会使用 **force push**，只保留最新一版，避免仓库无限变胖。
 - 如果更换 GitHub 仓库地址，可用环境变量覆盖：
 

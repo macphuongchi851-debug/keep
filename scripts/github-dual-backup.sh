@@ -9,6 +9,9 @@ OPENCLAW_DIR_DEFAULT="$HOME/.openclaw"
 WORKSPACE_DIR_DEFAULT="$OPENCLAW_DIR_DEFAULT/workspace"
 LOCK_DIR_DEFAULT="$OPENCLAW_DIR_DEFAULT/locks/github-dual-backup.lock"
 SPLIT_SIZE_DEFAULT="95m"
+NOTIFY_TO_DEFAULT="telegram:8327241925"
+NOTIFY_CHANNEL_DEFAULT="telegram"
+NOTIFY_ON_SUCCESS_DEFAULT="1"
 GIT_USER_NAME_DEFAULT="OpenClaw Backup"
 GIT_USER_EMAIL_DEFAULT="openclaw-backup@local"
 
@@ -20,6 +23,9 @@ OPENCLAW_DIR="${OPENCLAW_DIR:-$OPENCLAW_DIR_DEFAULT}"
 WORKSPACE_DIR="${WORKSPACE_DIR:-$WORKSPACE_DIR_DEFAULT}"
 LOCK_DIR="${LOCK_DIR:-$LOCK_DIR_DEFAULT}"
 SPLIT_SIZE="${SPLIT_SIZE:-$SPLIT_SIZE_DEFAULT}"
+NOTIFY_TO="${NOTIFY_TO:-$NOTIFY_TO_DEFAULT}"
+NOTIFY_CHANNEL="${NOTIFY_CHANNEL:-$NOTIFY_CHANNEL_DEFAULT}"
+NOTIFY_ON_SUCCESS="${NOTIFY_ON_SUCCESS:-$NOTIFY_ON_SUCCESS_DEFAULT}"
 GIT_USER_NAME="${GIT_USER_NAME:-$GIT_USER_NAME_DEFAULT}"
 GIT_USER_EMAIL="${GIT_USER_EMAIL:-$GIT_USER_EMAIL_DEFAULT}"
 
@@ -53,6 +59,9 @@ Environment overrides:
   WORKSPACE_DIR     Source workspace directory.
   LOCK_DIR          Lock directory to prevent concurrent runs.
   SPLIT_SIZE        Split size for encrypted backup parts (default: 95m).
+  NOTIFY_TO         Delivery target for success notifications.
+  NOTIFY_CHANNEL    Delivery channel for success notifications.
+  NOTIFY_ON_SUCCESS Set 1 to notify after success, 0 to disable.
 EOF
 }
 
@@ -158,6 +167,20 @@ verify_remote_head() {
   remote_head="$(GIT_SSH_COMMAND="ssh -i $SSH_KEY -o IdentitiesOnly=yes" git ls-remote "$repo_url" refs/heads/main | awk '{print $1}')"
   [[ -n "$remote_head" ]] || die "Remote head missing for $repo_url"
   [[ "$local_head" == "$remote_head" ]] || die "Remote head mismatch for $repo_url"
+}
+
+notify_success() {
+  [[ "$NOTIFY_ON_SUCCESS" == "1" ]] || return 0
+  [[ "$DRY_RUN" == "0" ]] || return 0
+  [[ -n "$NOTIFY_TO" ]] || return 0
+  require_cmd openclaw
+
+  local msg="$1"
+  openclaw message send \
+    --channel "$NOTIFY_CHANNEL" \
+    --target "$NOTIFY_TO" \
+    --message "$msg" \
+    --silent >/dev/null
 }
 
 backup_workspace() {
@@ -322,6 +345,7 @@ main() {
   fi
 
   log "Done"
+  notify_success "老爹，GitHub 双备份已完成（$TS）。\n- workspace → mc2\n- 加密 .openclaw → mc1（仅保留最新一版）\n- 加密密码：固定为你设定的那串" || true
 }
 
 main "$@"
