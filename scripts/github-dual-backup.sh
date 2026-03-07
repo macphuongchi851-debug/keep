@@ -7,6 +7,7 @@ SSH_KEY_DEFAULT="$HOME/.ssh/github_openclaw_backup_ed25519"
 PASSPHRASE_FILE_DEFAULT="$HOME/.ssh/openclaw_backup_passphrase_last.txt"
 OPENCLAW_DIR_DEFAULT="$HOME/.openclaw"
 WORKSPACE_DIR_DEFAULT="$OPENCLAW_DIR_DEFAULT/workspace"
+LOCK_DIR_DEFAULT="$OPENCLAW_DIR_DEFAULT/locks/github-dual-backup.lock"
 SPLIT_SIZE_DEFAULT="95m"
 GIT_USER_NAME_DEFAULT="OpenClaw Backup"
 GIT_USER_EMAIL_DEFAULT="openclaw-backup@local"
@@ -17,6 +18,7 @@ SSH_KEY="${SSH_KEY:-$SSH_KEY_DEFAULT}"
 PASSPHRASE_FILE="${PASSPHRASE_FILE:-$PASSPHRASE_FILE_DEFAULT}"
 OPENCLAW_DIR="${OPENCLAW_DIR:-$OPENCLAW_DIR_DEFAULT}"
 WORKSPACE_DIR="${WORKSPACE_DIR:-$WORKSPACE_DIR_DEFAULT}"
+LOCK_DIR="${LOCK_DIR:-$LOCK_DIR_DEFAULT}"
 SPLIT_SIZE="${SPLIT_SIZE:-$SPLIT_SIZE_DEFAULT}"
 GIT_USER_NAME="${GIT_USER_NAME:-$GIT_USER_NAME_DEFAULT}"
 GIT_USER_EMAIL="${GIT_USER_EMAIL:-$GIT_USER_EMAIL_DEFAULT}"
@@ -49,6 +51,7 @@ Environment overrides:
   PASSPHRASE_FILE   File containing backup encryption passphrase.
   OPENCLAW_DIR      Source .openclaw directory.
   WORKSPACE_DIR     Source workspace directory.
+  LOCK_DIR          Lock directory to prevent concurrent runs.
   SPLIT_SIZE        Split size for encrypted backup parts (default: 95m).
 EOF
 }
@@ -63,6 +66,7 @@ die() {
 }
 
 cleanup() {
+  rm -rf "$LOCK_DIR" 2>/dev/null || true
   if [[ "$KEEP_TEMP" == "1" ]]; then
     log "Keeping temp directory: $TMP_ROOT"
   else
@@ -108,6 +112,11 @@ check_prereqs() {
   [[ -d "$OPENCLAW_DIR" ]] || die "Missing OPENCLAW_DIR: $OPENCLAW_DIR"
   [[ -d "$WORKSPACE_DIR" ]] || die "Missing WORKSPACE_DIR: $WORKSPACE_DIR"
   [[ -f "$SSH_KEY" ]] || die "Missing SSH key: $SSH_KEY"
+  [[ -s "$PASSPHRASE_FILE" ]] || die "Missing or empty passphrase file: $PASSPHRASE_FILE"
+  mkdir -p "$(dirname "$LOCK_DIR")"
+  if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    die "Another backup run is already in progress (lock exists: $LOCK_DIR)"
+  fi
   chmod 600 "$SSH_KEY" || true
 
   local auth_out
@@ -124,14 +133,7 @@ check_prereqs() {
 }
 
 ensure_passphrase_file() {
-  if [[ ! -s "$PASSPHRASE_FILE" ]]; then
-    log "Passphrase file missing; generating one at $PASSPHRASE_FILE"
-    mkdir -p "$(dirname "$PASSPHRASE_FILE")"
-    umask 077
-    tr -dc 'A-Za-z0-9' </dev/urandom | head -c 32 > "$PASSPHRASE_FILE"
-    chmod 600 "$PASSPHRASE_FILE"
-    log "Generated a new passphrase file. Save a copy elsewhere before relying on future restores."
-  fi
+  [[ -s "$PASSPHRASE_FILE" ]] || die "Missing or empty passphrase file: $PASSPHRASE_FILE"
 }
 
 init_repo_or_clone() {
