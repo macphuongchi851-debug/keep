@@ -226,8 +226,132 @@ body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255
   .grid{grid-template-columns:1fr !important}
 }
 
+
+/* --- Apple UI v5 (app-shell refinement) --- */
+body{
+  background:
+    radial-gradient(circle at top, rgba(10,132,255,.12), transparent 34%),
+    var(--bg) !important;
+}
+body.sheetOpen{overflow:hidden}
+.wrap{max-width:1180px;padding-top:14px}
+.topbar{align-items:center;padding:18px;border-radius:28px;background:linear-gradient(135deg,#081120 0%,#0f1d35 46%,#0a84ff 100%);box-shadow:0 18px 40px rgba(10,132,255,.16)}
+body.dark .topbar{background:linear-gradient(135deg,#020617 0%,#0b1629 44%,#0a84ff 100%)}
+.titleblock{min-width:0}
+.titleblock h1{font-size:31px}
+.subtitle{font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.topActions{flex-shrink:0}
+.weekbtn,.iconbtn{height:44px}
+.weekbtn{min-width:84px}
+
+.overview{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:12px;margin:12px 0 18px}
+.overviewMain,.overviewStats{border:1px solid rgba(0,0,0,.10);background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:22px}
+body.dark .overviewMain,body.dark .overviewStats{background:rgba(28,28,30,.72);border-color:rgba(255,255,255,.12)}
+.overviewMain{padding:18px 18px 16px;box-shadow:var(--shadowCard)}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.overviewTitle{font-size:28px;font-weight:900;letter-spacing:-.03em;line-height:1.08}
+.overviewSub{margin-top:8px;font-size:14px;color:var(--muted);max-width:44ch}
+.quickActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.glassbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(0,0,0,.10);background:rgba(10,132,255,.10);color:var(--blue);font-weight:900;box-shadow:none}
+body.dark .glassbtn{border-color:rgba(255,255,255,.12);background:rgba(10,132,255,.16);color:#8ec5ff}
+.overviewStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:10px}
+.statCard{padding:14px 12px;border-radius:18px;background:rgba(120,120,128,.10);border:1px solid rgba(0,0,0,.06);min-width:0}
+body.dark .statCard{background:rgba(120,120,128,.18);border-color:rgba(255,255,255,.10)}
+.statLabel{font-size:12px;font-weight:800;color:var(--muted)}
+.statValue{margin-top:8px;font-size:24px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.statMeta{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
+
+.bulk{padding:16px 16px 14px !important}
+.bulkgrid{grid-template-columns:1fr 1fr auto;gap:10px}
+.bulkgrid .wide{display:flex;gap:8px;flex-wrap:wrap}
+.dayhead{align-items:flex-start;gap:14px}
+.dayhead h2{font-size:22px}
+.daymeta{padding:12px 14px;border-radius:16px;border:1px solid rgba(0,0,0,.10);background:rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+body.dark .daymeta{background:rgba(28,28,30,.72);border-color:rgba(255,255,255,.12)}
+.grid{grid-template-columns:repeat(auto-fit,minmax(320px,1fr)) !important}
+.card{padding:16px 16px 14px !important}
+.card h3{font-size:19px}
+.video a{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:rgba(10,132,255,.10);border:1px solid rgba(10,132,255,.14);color:var(--blue);font-weight:800;text-decoration:none}
+body.dark .video a{background:rgba(10,132,255,.16);border-color:rgba(10,132,255,.24)}
+.note{background:rgba(255,149,0,.10) !important;border:1px solid rgba(255,149,0,.18) !important;color:#9a5710 !important}
+body.dark .note{color:#ffd8aa !important}
+.exbulk .title{color:var(--muted) !important}
+.setrow{grid-template-columns:auto 92px 104px 98px 1fr 82px;gap:10px;padding:12px 11px !important}
+.setlabel{min-width:0;align-items:flex-start}
+.setlabel span{display:inline-flex;align-items:center;min-height:24px}
+.setrow.next-up{border-color:rgba(10,132,255,.45) !important;box-shadow:0 0 0 4px rgba(10,132,255,.12)}
+body.dark .setrow.next-up{box-shadow:0 0 0 4px rgba(10,132,255,.20)}
+.timerbtn{border-radius:12px !important;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);background:linear-gradient(135deg,#0a84ff,#5ac8fa) !important}
+.timer{font-variant-numeric:tabular-nums}
+.ghost{background:rgba(120,120,128,.14);border:1px solid rgba(0,0,0,.10);color:var(--text)}
+body.dark .ghost{background:rgba(120,120,128,.24);border-color:rgba(255,255,255,.12)}
+.stickypanel{padding:12px 14px !important}
+.stickypanel .ghost{background:rgba(10,132,255,.10);border-color:rgba(10,132,255,.14);color:var(--blue)}
+body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(10,132,255,.24);color:#8ec5ff}
+.sheetHeader{padding-bottom:4px}
+.sheetTitle{font-size:17px}
+.settingStack{padding:12px 12px 10px}
+.settingRow{padding:13px 14px}
+.sheetHint{padding:0 4px}
+
+@media (max-width:760px){
+  .wrap{padding-top:12px}
+  .topbar{align-items:flex-start;padding:16px 16px 14px;border-radius:24px}
+  .titleblock h1{font-size:27px}
+  .overview{grid-template-columns:1fr}
+  .overviewMain{padding:16px}
+  .overviewTitle{font-size:24px}
+  .overviewSub{font-size:13px}
+  .quickActions{display:grid;grid-template-columns:1fr 1fr}
+  .overviewStats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .statCard{padding:12px 10px;border-radius:16px}
+  .statValue{font-size:20px}
+  .dayhead{flex-direction:column}
+  .daymeta{width:100%}
+  .bulkgrid{grid-template-columns:1fr}
+  .bulkgrid .wide{grid-column:auto}
+}
+
+@media (max-width:480px){
+  .topActions{gap:8px}
+  .weekbtn,.iconbtn{height:40px}
+  .weekbtn{min-width:72px;padding:0 12px}
+  .quickActions{grid-template-columns:1fr}
+  .overviewStats{grid-template-columns:1fr}
+}
+
 </style></head><body><div class="wrap">
 <div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
+
+
+<div class="overview" id="overviewPanel">
+  <div class="overviewMain">
+    <div class="eyebrow">Today Focus</div>
+    <div class="overviewTitle" id="heroTodayTitle">今天按计划开练</div>
+    <div class="overviewSub" id="heroTodaySub">我会默认帮你定位到当天训练；想偷懒也行，但先点进去看一眼。</div>
+    <div class="quickActions">
+      <button class="glassbtn" type="button" onclick="jumpToToday()">去今天</button>
+      <button class="glassbtn" type="button" onclick="jumpNext()">继续下一组</button>
+    </div>
+  </div>
+  <div class="overviewStats">
+    <div class="statCard">
+      <div class="statLabel">今日完成</div>
+      <div class="statValue" id="heroTodayPct">0%</div>
+      <div class="statMeta" id="heroTodayMeta">0 / 0 组</div>
+    </div>
+    <div class="statCard">
+      <div class="statLabel">本周完成</div>
+      <div class="statValue" id="heroWeekPct">0%</div>
+      <div class="statMeta" id="heroWeekMeta">0 / 0 组</div>
+    </div>
+    <div class="statCard">
+      <div class="statLabel">当前周</div>
+      <div class="statValue" id="heroWeekName">第1周</div>
+      <div class="statMeta" id="heroWeekState">原方案</div>
+    </div>
+  </div>
+</div>
 
 <div class="sheetMask" id="sheetMask" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet"><div class="sheetInner" role="dialog" aria-label="设置">
@@ -1503,6 +1627,69 @@ function updateSticky(){
   }
 }
 
+
+function computeDayStatsById(dayId){
+  if(!dayId) return {total:0,done:0,pct:0,cards:0};
+  const sec=document.getElementById(dayId);
+  if(!sec) return {total:0,done:0,pct:0,cards:0};
+  const boxes=[...sec.querySelectorAll('input[type=checkbox][data-key$=":done"]')];
+  const total=boxes.length;
+  const done=boxes.filter(b=>b.checked).length;
+  const pct=total?Math.round(done*100/total):0;
+  const cards=sec.querySelectorAll('.card').length;
+  return {total,done,pct,cards};
+}
+
+function updateOverview(){
+  const todayId=_todaySectionId();
+  const week=computeWeekStats();
+  const today=computeDayStatsById(todayId);
+  const weekLabel=((document.getElementById('weekBtn')||{}).textContent||'第1周').trim();
+  const heroTitle=document.getElementById('heroTodayTitle');
+  const heroSub=document.getElementById('heroTodaySub');
+  const todayPct=document.getElementById('heroTodayPct');
+  const todayMeta=document.getElementById('heroTodayMeta');
+  const weekPct=document.getElementById('heroWeekPct');
+  const weekMeta=document.getElementById('heroWeekMeta');
+  const weekName=document.getElementById('heroWeekName');
+  const weekState=document.getElementById('heroWeekState');
+  if(heroTitle){
+    heroTitle.textContent = todayId ? ('今天练 ' + todayId.split('｜')[0]) : '今天休息也行';
+  }
+  if(heroSub){
+    if(todayId){
+      const left=Math.max(0, today.total-today.done);
+      heroSub.textContent = '已经帮你定位到“' + todayId + '”。今天共有 ' + today.cards + ' 个动作，还有 ' + left + ' 组没做。';
+    }else{
+      heroSub.textContent = '今天是周末，默认会从周一开始；上面那排日期点一下，想练哪天就练哪天。';
+    }
+  }
+  if(todayPct) todayPct.textContent = today.pct + '%';
+  if(todayMeta) todayMeta.textContent = today.done + ' / ' + today.total + ' 组';
+  if(weekPct) weekPct.textContent = week.pct + '%';
+  if(weekMeta) weekMeta.textContent = week.done + ' / ' + week.total + ' 组';
+  if(weekName) weekName.textContent = weekLabel || '第1周';
+  if(weekState) weekState.textContent = /第2周/.test(weekLabel) ? '自动进阶建议' : '原方案 / 本周记录';
+}
+
+function markNextUp(){
+  document.querySelectorAll('.setrow.next-up').forEach(row=>row.classList.remove('next-up'));
+  const todayId=_todaySectionId();
+  const scope=(todayId && document.getElementById(todayId)) || document;
+  if(!scope) return;
+  const next=[...scope.querySelectorAll('input[type=checkbox][data-key$=":done"]')].find(box=>!box.checked);
+  const row=next ? next.closest('.setrow') : null;
+  if(row) row.classList.add('next-up');
+}
+
+const _baseUpdateStickyV5 = updateSticky;
+updateSticky = function(){
+  _baseUpdateStickyV5();
+  updateOverview();
+  markNextUp();
+};
+
+
 function jumpNext(){
   // scroll to next unchecked set (today first)
   const todayId=_todaySectionId();
@@ -1535,6 +1722,7 @@ function openSheet(){
   const s=document.getElementById('sheet');
   if(m) m.style.display='block';
   if(s) s.style.transform='translateY(0)';
+  document.body.classList.add('sheetOpen');
   syncSwitches();
 }
 function closeSheet(){
@@ -1542,6 +1730,7 @@ function closeSheet(){
   const s=document.getElementById('sheet');
   if(m) m.style.display='none';
   if(s) s.style.transform='translateY(110%)';
+  document.body.classList.remove('sheetOpen');
 }
 function syncSwitches(){
   // soundMuted: true => off
