@@ -194,9 +194,9 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <div class="eyebrow"><span class="dot"></span>持续打卡 · 更有成就感</div>
-      <h1>今天也把训练，<br>稳稳拿下。</h1>
-      <p>这里不是一张冷冰冰的计划表，而是你每天打开就能直接练、直接记、直接看到进度的训练入口。计时、自动保存、倒计时提醒、数据备份都已经串好了。</p>
+      <div class="eyebrow"><span class="dot"></span>打开就练 · 直接推进</div>
+      <h1>今天开练。<br>别让状态掉。</h1>
+      <p>打开就练。练完就记。进度自己往前走。</p>
 
       <div class="heroGrid">
         <div class="panel">
@@ -204,17 +204,17 @@
             <div class="stat">
               <div class="statLabel">训练方式</div>
               <div class="statValue">2 套</div>
-              <div class="statSub">健身房版 / 家用版，按场景直接进。</div>
+              <div class="statSub">两套模式，直接开练。</div>
             </div>
             <div class="stat">
               <div class="statLabel">训练周期</div>
               <div class="statValue">4 周</div>
-              <div class="statSub">支持逐周推进，不再只停在第 1 周。</div>
+              <div class="statSub">不是一天热血，是持续推进。</div>
             </div>
             <div class="stat">
               <div class="statLabel">记录方式</div>
               <div class="statValue">逐组</div>
-              <div class="statSub">勾选、重量、次数、休息都能直接记。</div>
+              <div class="statSub">每一组，都能留下痕迹。</div>
             </div>
           </div>
         </div>
@@ -222,8 +222,8 @@
           <div class="heroNote">
             <div class="heroNoteIcon">🏁</div>
             <div>
-              <strong>练完一页，会很有“今天没白过”的感觉。</strong>
-              <span>第一次从你的专属入口打开后，后面就会自动备份。正常情况下，你只管点链接、训练、打卡，剩下的交给页面自己记。</span>
+              <strong>练完一页，今天就算拿下。</strong>
+              <span>打开、训练、打卡。剩下的，它自己记。</span>
             </div>
           </div>
         </div>
@@ -233,8 +233,8 @@
     <div class="quickGrid">
       <section class="quickCard recent">
         <div class="cardEyebrow">最近状态</div>
-        <div class="cardTitle" id="recentHeadline">今天还没开始，随时能开练。</div>
-        <div class="cardText" id="recentText">下面两套模式都会自动读取你本机已有的训练记录。</div>
+        <div class="cardTitle" id="recentHeadline">还没开练，现在正好。</div>
+        <div class="cardText" id="recentText">选一个入口，直接接着往下推。</div>
         <div class="recentList">
           <a class="recentRow" data-sync-link href="./workout.html">
             <div class="recentMain">
@@ -255,8 +255,8 @@
 
       <section class="quickCard today">
         <div class="cardEyebrow">今日建议</div>
-        <div class="suggestDay" id="todayTitle">今天适合把计划继续往前推。</div>
-        <div class="suggestDesc" id="todayDesc">如果你有条件去健身房，就直接进健身房版；如果今天想省事一点，就开家用版也能无缝接上。</div>
+        <div class="suggestDay" id="todayTitle">今天练什么，下面直接进。</div>
+        <div class="suggestDesc" id="todayDesc">有条件就去健身房。想省事，就在家继续。</div>
         <div class="actionRow">
           <a class="miniBtn primary" id="gymTodayLink" data-sync-link href="./workout.html">去健身房版</a>
           <a class="miniBtn secondary" id="homeTodayLink" data-sync-link href="./workout_home.html">在家练今天</a>
@@ -272,7 +272,7 @@
           <span class="entryArrow">→</span>
         </div>
         <div class="entryTitle">健身房版</div>
-        <div class="entryDesc">适合去健身房时直接开练。带建议重量、逐组打卡、倒计时、周进阶逻辑，打开就是正经训练模式。</div>
+        <div class="entryDesc">去健身房，就开这个。重量、打卡、计时，一套走完。</div>
         <div class="chips">
           <span class="chip">建议重量</span>
           <span class="chip">逐组计时</span>
@@ -286,7 +286,7 @@
           <span class="entryArrow">→</span>
         </div>
         <div class="entryTitle">家用版</div>
-        <div class="entryDesc">适合在家、器械有限的时候直接练。动作更贴近日常可落地，逻辑保持一致，训练体验不会降级。</div>
+        <div class="entryDesc">在家也别断。器械少一点，强度和节奏照样接上。</div>
         <div class="chips">
           <span class="chip">家用器械</span>
           <span class="chip">同样可备份</span>
@@ -295,7 +295,7 @@
       </a>
     </div>
 
-    <div class="footerNote">小提醒：平时数据会继续保存在当前设备；只要你已经用过一次专属入口，后面普通链接也能继续自动备份和恢复。</div>
+    <div class="footerNote">用过一次专属入口，后面就放心直接点。</div>
   </div>
 <script>
 (function(){
@@ -366,7 +366,7 @@
 
     if(headline && text){
       if((gym.done + home.done) === 0){
-        headline.textContent = '今天还没开始，随时能开练。';
+        headline.textContent = '还没开练，现在正好。';
         text.textContent = '你现在是干净开局，打开任意一套模式就能直接进入训练。';
       }else{
         headline.textContent = '最近进度：' + best.label + '更靠前。';
