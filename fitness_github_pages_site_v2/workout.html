@@ -204,6 +204,7 @@ body.dark .settingsList{background:rgba(28,28,30,.60);border-color:rgba(255,255,
 body.dark .settingRow{border-top-color:rgba(255,255,255,.10)}
 .settingRow:first-child{border-top:none}
 .settingLabel{font-weight:900}
+.settingStack{padding:12px 12px 10px}
 .settingSub{font-size:12px;color:var(--muted);margin-top:2px}
 
 .settingsList button.settingRow{width:100%;text-align:left;background:transparent;border:none;color:var(--text);font:inherit}
@@ -218,7 +219,7 @@ body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255
 .switch.on{background:rgba(52,199,89,.95);border-color:rgba(52,199,89,.95)}
 .switch.on::after{left:22px}
 
-.sheetHint{margin-top:10px;color:var(--muted);font-size:12px;font-weight:700}
+.sheetHint{margin-top:8px;color:var(--muted);font-size:12px;font-weight:700}
 .syncBadge{display:inline-flex;align-items:center;gap:8px;min-width:86px;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.92);font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:all .22s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
 .syncDot{width:7px;height:7px;border-radius:50%;background:#ff9f0a;box-shadow:0 0 0 4px rgba(255,159,10,.14);transition:all .22s ease}
 .syncBadge.ok{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.10);color:rgba(255,255,255,.72)}
@@ -456,6 +457,7 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
     <div class="settingStack">
       <div class="settingLabel">数据备份</div>
       <div class="settingSub" id="cloudStatusText">首次打开专属入口后自动开启</div>
+      <div class="settingSub" id="cloudHint">保持自动备份；需要时也可以手动恢复。</div>
     </div>
     <button class="settingRow action" onclick="pushCloudNow(false)"><span style="font-weight:900">立即备份</span><span class="chev">›</span></button>
     <button class="settingRow action" onclick="pullCloudNow(false)"><span style="font-weight:900">恢复备份</span><span class="chev">›</span></button>
@@ -466,7 +468,6 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
   </div>
 
   <div class="settingsList cloudCard" style="display:none"></div>
-  <div class="sheetHint" id="cloudHint">提示：首次打开你的专属入口后，后面就会自动备份并支持恢复。</div>
 </div></div>
 <details class="bulk"><summary>训练前批量设置</summary><div class="sub">如果你想整体加重或减一点，不用一组组改：这里可以一键覆盖整页；每个动作卡片里也能单独批量设置。</div><div class="bulkgrid"><input id="globalWeight" placeholder="默认重量（如 60kg）"><input id="globalRest" type="number" min="0" placeholder="默认休息秒数"><div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" onclick="applyGlobal(false)">仅填空白组</button><button class="ghost" onclick="applyGlobal(true)">覆盖全部组</button></div></div></details>
 <div class="toc">
@@ -1825,12 +1826,12 @@ function refreshSyncStatus(){
       setCloudHint(lastText + detailText);
     }else{
       setSyncBadge('pending','准备中');
-      setCloudHint(meta.at ? (lastText + detailText) : '已保存云端配置。你可以点“测试连接”或“立即备份”。');
+      setCloudHint(meta.at ? (lastText + detailText) : '保持自动备份；需要时也可以手动恢复。');
     }
   }else{
     if(statusEl) statusEl.textContent = '当前只保存在本机';
     setSyncBadge('off','本机');
-    setCloudHint('当前只保存在这台设备；开启自动备份后会自动同步。');
+    setCloudHint('当前只保存在这台设备。');
   }
 }
 async function testCloudConnection(){
