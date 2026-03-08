@@ -356,7 +356,7 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
 }
 
 </style></head><body><div class="wrap">
-<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><div class="syncBadge off" id="syncBadge"><span class="syncDot"></span><span id="syncBadgeText">仅本机</span></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
+<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><div class="syncBadge off" id="syncBadge"><span class="syncDot"></span><span id="syncBadgeText">本机</span></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
 
 
 <div class="overview" id="overviewPanel">
@@ -445,11 +445,11 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
   </div>
   <div class="settingsList">
     <div class="settingStack">
-      <div class="settingLabel">云端同步</div>
-      <div class="settingSub" id="cloudStatusText">等待专属链接激活</div>
+      <div class="settingLabel">数据备份</div>
+      <div class="settingSub" id="cloudStatusText">首次打开专属入口后自动开启</div>
     </div>
-    <button class="settingRow action" onclick="pushCloudNow(false)"><span style="font-weight:900">立即同步到云端</span><span class="chev">›</span></button>
-    <button class="settingRow action" onclick="pullCloudNow(false)"><span style="font-weight:900">从云端拉回当前数据</span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="pushCloudNow(false)"><span style="font-weight:900">立即备份</span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="pullCloudNow(false)"><span style="font-weight:900">恢复备份</span><span class="chev">›</span></button>
   </div>
   <div class="settingsList">
     <button class="settingRow action" onclick="scrollToTop(); closeSheet()"><span style="font-weight:900">回顶部</span><span class="chev">›</span></button>
@@ -457,7 +457,7 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
   </div>
 
   <div class="settingsList cloudCard" style="display:none"></div>
-  <div class="sheetHint" id="cloudHint">提示：用我给你的专属链接打开一次后，后面就会自动连云端。</div>
+  <div class="sheetHint" id="cloudHint">提示：首次打开你的专属入口后，后面就会自动备份并支持恢复。</div>
 </div></div>
 <details class="bulk"><summary>训练前批量设置</summary><div class="sub">如果你想整体加重或减一点，不用一组组改：这里可以一键覆盖整页；每个动作卡片里也能单独批量设置。</div><div class="bulkgrid"><input id="globalWeight" placeholder="默认重量（如 60kg）"><input id="globalRest" type="number" min="0" placeholder="默认休息秒数"><div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" onclick="applyGlobal(false)">仅填空白组</button><button class="ghost" onclick="applyGlobal(true)">覆盖全部组</button></div></div></details>
 <div class="toc">
@@ -1697,9 +1697,9 @@ function setCloudHint(text){
   if(el) el.textContent=text;
 }
 function formatSyncTime(ts){
-  if(!ts) return '未同步';
+  if(!ts) return '未备份';
   const d=new Date(ts);
-  if(Number.isNaN(d.getTime())) return '未同步';
+  if(Number.isNaN(d.getTime())) return '未备份';
   const now=new Date();
   const pad=n=>String(n).padStart(2,'0');
   const sameYear=now.getFullYear()===d.getFullYear();
@@ -1766,7 +1766,7 @@ function buildServerPayload(){
 }
 async function supabaseRequest(method, path, body, extraHeaders={}){
   const cfg=getCloudConfig();
-  if(!cfg.url || !cfg.anonKey || !cfg.syncCode) throw new Error('请先填 Supabase URL、anon key 和同步码');
+  if(!cfg.url || !cfg.anonKey || !cfg.syncCode) throw new Error('先用专属入口打开一次，再使用备份功能');
   const headers={
     'apikey':cfg.anonKey,
     'Authorization':'Bearer ' + cfg.anonKey,
@@ -1802,24 +1802,24 @@ function refreshSyncStatus(){
   const cfg=getCloudConfig();
   const meta=getStoredSyncMeta();
   const statusEl=document.getElementById('cloudStatusText');
-  const lastText = meta.at ? ('上次同步：' + formatSyncTime(meta.at)) : '上次同步：未同步';
+  const lastText = meta.at ? ('上次备份：' + formatSyncTime(meta.at)) : '上次备份：未备份';
   const detailText = meta.detail ? (' · ' + meta.detail) : '';
   if(cfg.url && cfg.anonKey && cfg.syncCode){
-    if(statusEl) statusEl.textContent = meta.status || '已配置 Supabase';
+    if(statusEl) statusEl.textContent = meta.status || '自动备份已开启';
     if(meta.result === 'ok'){
-      setSyncBadge('ok','云端已连');
+      setSyncBadge('ok','已备份');
       setCloudHint(lastText + detailText);
     }else if(meta.result === 'error'){
-      setSyncBadge('pending','云端异常');
+      setSyncBadge('pending','异常');
       setCloudHint(lastText + detailText);
     }else{
-      setSyncBadge('pending','云端待连');
-      setCloudHint(meta.at ? (lastText + detailText) : '已保存云端配置。你可以点“测试连接”或“立即同步到云端”。');
+      setSyncBadge('pending','准备中');
+      setCloudHint(meta.at ? (lastText + detailText) : '已保存云端配置。你可以点“测试连接”或“立即备份”。');
     }
   }else{
-    if(statusEl) statusEl.textContent = '未配置 Supabase';
-    setSyncBadge('off','仅本机');
-    setCloudHint('未配置时仍然只保存在当前浏览器本地。配置完成后会自动同步。');
+    if(statusEl) statusEl.textContent = '当前只保存在本机';
+    setSyncBadge('off','本机');
+    setCloudHint('当前只保存在这台设备；开启自动备份后会自动同步。');
   }
 }
 async function testCloudConnection(){
@@ -2662,7 +2662,7 @@ jumpToToday();
     if(!cfg.url || !cfg.anonKey) return null;
     const cacheKey = cfg.url + '|' + cfg.anonKey;
     if(!_cloudClient || _cloudClientKey !== cacheKey){
-      if(!window.supabase || !window.supabase.createClient) throw new Error('Supabase SDK 加载失败');
+      if(!window.supabase || !window.supabase.createClient) throw new Error('备份服务加载失败');
       _cloudClient = window.supabase.createClient(cfg.url, cfg.anonKey, {
         auth:{persistSession:false, autoRefreshToken:false},
         global:{headers:{'x-client-info':'fitness-workout-pages'}}
@@ -2716,18 +2716,18 @@ jumpToToday();
   async function pushCloudNow(silent){
     if(_cloudApplying) return false;
     if(!cloudConfigured()){
-      setCloudStatus('未配置 Supabase');
-      if(!silent) alert('先配置 Supabase URL、anon key 和同步口令。');
+      setCloudStatus('当前只保存在本机');
+      if(!silent) alert('先用你的专属入口打开一次，再使用备份功能。');
       return false;
     }
     try{
-      setCloudStatus('云端同步中…');
+      setCloudStatus('数据备份中…');
       const client = getCloudClient();
       const hash = await ownerHash();
       const payload = snapshotPayload();
       const encoded = JSON.stringify(payload);
       if(silent && encoded === _lastPayloadHash){
-        setCloudStatus('云端已是最新');
+        setCloudStatus('已经是最新');
         if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
         return true;
       }
@@ -2738,26 +2738,26 @@ jumpToToday();
       });
       if(error) throw error;
       _lastPayloadHash = encoded;
-      setCloudStatus('已同步到云端');
-      mirrorCloudMeta('已同步到云端', '同步成功，服务器端已更新。', {result:'ok', at:payload.savedAt});
+      setCloudStatus('已备份');
+      mirrorCloudMeta('已备份', '备份成功。', {result:'ok', at:payload.savedAt});
       return true;
     }catch(err){
       console.error(err);
-      setCloudStatus('云同步失败');
+      setCloudStatus('自动备份失败');
       const last=cloudMeta();
-      mirrorCloudMeta('云同步失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
-      if(!silent) alert('云同步失败：' + (err && err.message ? err.message : err));
+      mirrorCloudMeta('自动备份失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
+      if(!silent) alert('自动备份失败：' + (err && err.message ? err.message : err));
       return false;
     }
   }
   async function pullCloudNow(silent){
     if(!cloudConfigured()){
-      setCloudStatus('未配置 Supabase');
-      if(!silent) alert('先配置 Supabase URL、anon key 和同步口令。');
+      setCloudStatus('当前只保存在本机');
+      if(!silent) alert('先用你的专属入口打开一次，再使用备份功能。');
       return false;
     }
     try{
-      setCloudStatus('云端读取中…');
+      setCloudStatus('正在恢复…');
       const client = getCloudClient();
       const hash = await ownerHash();
       const { data, error } = await client.rpc('load_workout_state', {
@@ -2766,24 +2766,24 @@ jumpToToday();
       });
       if(error) throw error;
       if(!data){
-        setCloudStatus('云端还没有数据');
+        setCloudStatus('还没有备份');
         const last=cloudMeta();
-        mirrorCloudMeta('云端还没有数据', '还没同步过这份页面。', {result:'', at:last.at || ''});
-        if(!silent) alert('云端还没有数据，我会继续保留你本地现在这份。');
+        mirrorCloudMeta('还没有备份', '这份页面还没有备份记录。', {result:'', at:last.at || ''});
+        if(!silent) alert('还没有可恢复的备份，我会继续保留你当前这份。');
         return false;
       }
       applyPayload(data);
       _lastPayloadHash = JSON.stringify(snapshotPayload());
-      setCloudStatus('已从云端恢复');
-      mirrorCloudMeta('已从云端恢复', '拉取成功，当前页面已更新。', {result:'ok', at:data.savedAt || new Date().toISOString()});
-      if(!silent) alert('已经从云端拉回到当前页面。');
+      setCloudStatus('恢复成功');
+      mirrorCloudMeta('恢复成功', '已恢复到当前页面。', {result:'ok', at:data.savedAt || new Date().toISOString()});
+      if(!silent) alert('已经恢复到当前页面。');
       return true;
     }catch(err){
       console.error(err);
-      setCloudStatus('云端读取失败');
+      setCloudStatus('恢复失败');
       const last=cloudMeta();
-      mirrorCloudMeta('云端拉取失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
-      if(!silent) alert('云端读取失败：' + (err && err.message ? err.message : err));
+      mirrorCloudMeta('恢复失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
+      if(!silent) alert('恢复失败：' + (err && err.message ? err.message : err));
       return false;
     }
   }
@@ -2804,11 +2804,11 @@ jumpToToday();
   };
   window.setupCloudSync = async function(){
     const current = getCloudConfig();
-    const url = prompt('Supabase Project URL', current.url || '');
+    const url = prompt('备份服务地址', current.url || '');
     if(url === null) return;
-    const anonKey = prompt('Supabase anon key', current.anonKey || '');
+    const anonKey = prompt('访问密钥', current.anonKey || '');
     if(anonKey === null) return;
-    const syncCode = prompt('同步口令（建议 16 位以上，只你自己知道；别设简单密码）', current.syncCode || '');
+    const syncCode = prompt('你的专属口令（建议 16 位以上，只你自己知道）', current.syncCode || '');
     if(syncCode === null) return;
 
     localStorage.setItem(CLOUD_URL_KEY, String(url).trim());
@@ -2816,7 +2816,7 @@ jumpToToday();
     localStorage.setItem(CLOUD_CODE_KEY, String(syncCode).trim());
     _cloudClient = null;
     _cloudClientKey = '';
-    setCloudStatus('配置已保存，正在连接…');
+    setCloudStatus('正在连接自动备份…');
 
     const pulled = await pullCloudNow(true);
     _cloudBooted = true;
@@ -2825,7 +2825,7 @@ jumpToToday();
     }else{
       setCloudStatus('已连接云同步');
       if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
-      alert('Supabase 云同步已接好。之后别的设备填同样的 URL / anon key / 同步口令，就能拉到同一份数据。');
+      alert('自动备份已经接好。之后用同一个专属入口，就能在别的设备恢复同一份数据。');
     }
   };
 
@@ -2838,7 +2838,7 @@ jumpToToday();
 
   (async function initCloud(){
     if(cloudConfigured()){
-      setCloudStatus('已配置，准备连接…');
+      setCloudStatus('自动备份准备中…');
       const pulled = await pullCloudNow(true);
       _cloudBooted = true;
       if(!pulled) await pushCloudNow(true);
@@ -2847,7 +2847,7 @@ jumpToToday();
         if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
       }
     }else{
-      setCloudStatus('未配置 Supabase');
+      setCloudStatus('当前只保存在本机');
       if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
       _cloudBooted = true;
     }
