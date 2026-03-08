@@ -1484,6 +1484,40 @@ function applyImagesPref(){
 }
 
 
+
+function injectExerciseImages(){
+  const rules = [
+    {match:['标准俯卧撑 / Push-up','宽距俯卧撑 / Wide Push-up'], src:'./assets/img/俯卧撑_01.jpg', alt:'俯卧撑演示'},
+    {match:['平板支撑 / Plank'], src:'./assets/img/平板支撑_01.jpg', alt:'平板支撑演示'},
+    {match:['徒手深蹲 / Bodyweight Squat'], src:'./assets/img/徒手深蹲_01.jpg', alt:'徒手深蹲演示'},
+    {match:['反向箭步蹲 / Reverse Lunge'], src:'./assets/img/弓步蹲_箭步蹲_01.jpg', alt:'反向箭步蹲演示'},
+    {match:['保加利亚分腿蹲（徒手）'], src:'./assets/img/保加利亚分腿蹲_01.jpg', alt:'保加利亚分腿蹲演示'},
+    {match:['臀桥 / Glute Bridge'], src:'./assets/img/杠铃臀推_臀桥_01.jpg', alt:'臀桥演示'},
+    {match:['提踵 / Calf Raise'], src:'./assets/img/站姿提踵_01.jpg', alt:'提踵演示'},
+    {match:['登山跑 / Mountain Climber','登山跑'], src:'./assets/img/登山跑_01.jpg', alt:'登山跑演示'},
+    {match:['侧桥 / Side Plank'], src:'./assets/img/侧桥_01.jpg', alt:'侧桥演示'},
+    {match:['肩胛俯卧撑 / Scap Push-up'], src:'./assets/img/肩胛俯卧撑_01.jpg', alt:'肩胛俯卧撑演示'},
+    {match:['仰卧举腿 / Leg Raise'], src:'./assets/img/仰卧举腿_01.jpg', alt:'仰卧举腿演示'}
+  ];
+  document.querySelectorAll('.card').forEach(card=>{
+    if(card.querySelector('.imgbox')) return;
+    const title = (card.querySelector('h3')?.textContent || '').trim();
+    const hit = rules.find(rule => rule.match.includes(title));
+    if(!hit) return;
+    const helper = card.querySelector('.helper');
+    const box = document.createElement('div');
+    box.className = 'imgbox';
+    box.innerHTML = '<img loading="lazy" decoding="async" src="'+hit.src+'" alt="'+hit.alt+'">';
+    if(helper && helper.parentNode===card){
+      helper.insertAdjacentElement('afterend', box);
+    }else{
+      const firstDetails = card.querySelector('details.exbulk');
+      if(firstDetails) firstDetails.insertAdjacentElement('beforebegin', box);
+      else card.appendChild(box);
+    }
+  });
+}
+
 function injectImgToggles(){
   // Put a small toggle just above each image
   document.querySelectorAll('.imgbox').forEach(box=>{
@@ -1692,6 +1726,7 @@ try{
 restore();
 applyDarkPref();
 applyTodayOnly();
+injectExerciseImages();
 applyImagesPref();
 injectImgToggles();
 updateSoundBtn();
