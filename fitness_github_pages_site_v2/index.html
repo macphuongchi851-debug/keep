@@ -129,6 +129,13 @@
     .suggestDay{margin-top:10px;font-size:28px;font-weight:900;letter-spacing:-.05em;line-height:1.1}
     .suggestDesc{margin-top:8px;font-size:14px;line-height:1.65;color:rgba(226,232,240,.78)}
     .actionRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .choiceRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .choiceBtn{appearance:none;border:none;cursor:pointer;user-select:none;
+      padding:10px 12px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:-.01em;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);color:var(--text)}
+    .choiceBtn.active{background:linear-gradient(135deg, rgba(10,132,255,.92), rgba(91,192,255,.86));border-color:rgba(255,255,255,.10);color:#fff;box-shadow:0 16px 34px rgba(10,132,255,.18)}
+    .choiceBtn.ghost{background:rgba(255,255,255,.06)}
+    .choiceHint{margin-top:8px;font-size:12px;line-height:1.55;color:rgba(226,232,240,.72)}
     .miniBtn{
       display:inline-flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;
       padding:12px 12px;border-radius:18px;font-size:14px;font-weight:900;letter-spacing:-.01em;
@@ -258,9 +265,15 @@
         <div class="suggestDay" id="todayTitle">今天练什么，下面直接进。</div>
         <div class="suggestDesc" id="todayDesc">想直接开练就上纯徒手版；需要器械辅助，再进家庭版。</div>
         <div class="actionRow">
-          <a class="miniBtn primary" id="gymTodayLink" data-sync-link href="./workout.html">去纯徒手版</a>
-          <a class="miniBtn secondary" id="homeTodayLink" data-sync-link href="./workout_home.html">在家练今天</a>
+          <a class="miniBtn" id="gymTodayLink" data-sync-link href="./workout.html">去纯徒手版</a>
+          <a class="miniBtn" id="homeTodayLink" data-sync-link href="./workout_home.html">去家用版</a>
         </div>
+        <div class="choiceRow" aria-label="智能判断">
+          <button class="choiceBtn" id="atHomeBtn" type="button">我在家</button>
+          <button class="choiceBtn" id="hasGearBtn" type="button">我有器械</button>
+          <button class="choiceBtn ghost" id="resetChoiceBtn" type="button">重置</button>
+        </div>
+        <div class="choiceHint" id="choiceHint">（点一下就行，会记住）</div>
       </section>
     </div>
 
@@ -378,6 +391,17 @@
   function updateTodaySuggestion(){
     const titleEl = document.getElementById('todayTitle');
     const descEl = document.getElementById('todayDesc');
+
+    const PREF_HOME='fitness:index:atHome';
+    const PREF_GEAR='fitness:index:hasGear';
+    const getBool=(k)=>{ try{ return localStorage.getItem(k)==='1'; }catch(e){ return false; } };
+    const setBool=(k,v)=>{ try{ localStorage.setItem(k, v?'1':'0'); }catch(e){} };
+    const delKey=(k)=>{ try{ localStorage.removeItem(k); }catch(e){} };
+
+    const atHome = getBool(PREF_HOME);
+    const hasGear = getBool(PREF_GEAR);
+    const recommend = (atHome && hasGear) ? 'home' : 'gym';
+
     const day = new Date().getDay();
     const map = {
       1:['周一建议：上肢力量', '更适合把这一周狠狠干开。推、拉、稳定性都更容易进入状态。'],
@@ -388,9 +412,43 @@
       6:['周六建议：补漏 / 轻有氧', '今天更适合补掉本周漏掉的部分，或者做点轻有氧和拉伸。'],
       0:['周日建议：恢复一下，准备下周', '不一定非得狠狠干。拉伸、散步、轻活动，也是在给下周攒状态。']
     };
-    const data = map[day] || map[1];
-    if(titleEl) titleEl.textContent = data[0];
-    if(descEl) descEl.textContent = data[1] + ' 有条件就进纯徒手版；想省事一点，家用版也能直接接住今天。';
+    const dayInfo = map[day] || map[1];
+
+    // primary button highlight
+    const gymBtn=document.getElementById('gymTodayLink');
+    const homeBtn=document.getElementById('homeTodayLink');
+    const setBtnMode=(btn, isPrimary)=>{
+      if(!btn) return;
+      btn.classList.remove('primary','secondary');
+      btn.classList.add(isPrimary ? 'primary' : 'secondary');
+    };
+    setBtnMode(gymBtn, recommend==='gym');
+    setBtnMode(homeBtn, recommend==='home');
+
+    // choice UI
+    const atHomeBtn=document.getElementById('atHomeBtn');
+    const hasGearBtn=document.getElementById('hasGearBtn');
+    const resetBtn=document.getElementById('resetChoiceBtn');
+    const hintEl=document.getElementById('choiceHint');
+    if(atHomeBtn) atHomeBtn.classList.toggle('active', atHome);
+    if(hasGearBtn) hasGearBtn.classList.toggle('active', hasGear);
+
+    if(hintEl){
+      if(atHome && hasGear) hintEl.textContent='判断：在家 + 有器械 → 推荐家用版（会记住）';
+      else if(atHome && !hasGear) hintEl.textContent='判断：在家但没器械 → 推荐纯徒手版（会记住）';
+      else if(!atHome && hasGear) hintEl.textContent='判断：有器械但不在家 → 默认推荐纯徒手版（会记住）';
+      else hintEl.textContent='判断：没器械 / 不在家 → 推荐纯徒手版（会记住）';
+    }
+
+    if(titleEl) titleEl.textContent = (recommend==='home') ? '智能推荐：家用版' : '智能推荐：纯徒手版';
+    if(descEl) descEl.textContent = dayInfo[0] + ' · ' + dayInfo[1] + (recommend==='home' ? ' 你选了「在家 + 有器械」，直接进家用版。' : ' 没器械/不在家，纯徒手版更稳。');
+
+    if(!window.__fitnessIndexChoiceBound){
+      window.__fitnessIndexChoiceBound=true;
+      if(atHomeBtn) atHomeBtn.addEventListener('click', ()=>{ setBool(PREF_HOME, !getBool(PREF_HOME)); updateTodaySuggestion(); });
+      if(hasGearBtn) hasGearBtn.addEventListener('click', ()=>{ setBool(PREF_GEAR, !getBool(PREF_GEAR)); updateTodaySuggestion(); });
+      if(resetBtn) resetBtn.addEventListener('click', ()=>{ delKey(PREF_HOME); delKey(PREF_GEAR); updateTodaySuggestion(); });
+    }
   }
 
   applySyncToLinks();

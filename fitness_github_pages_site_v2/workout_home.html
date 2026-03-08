@@ -381,6 +381,7 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
     <div class="quickActions">
       <button class="glassbtn" type="button" onclick="jumpToToday()">去今天</button>
       <button class="glassbtn" type="button" onclick="jumpNext()">继续下一组</button>
+          <button class="glassbtn" type="button" onclick="goOtherMode()">今天没器械？去纯徒手版</button>
     </div>
   </div>
   <div class="overviewStats">
@@ -1567,7 +1568,29 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
 </div></div>
 
 <script>
-const PREFIX='fitness-home-v3:'; const timers={}; const timerState={}; let activeTimerKey=null;
+const PREFIX='fitness-home-v3:';
+const OTHER_MODE_PATH='./workout.html';
+function _getAnySyncCode(){
+  try{
+    const params=new URLSearchParams(location.search);
+    const fromUrl=String(params.get('sync')||params.get('syncCode')||'').trim();
+    if(fromUrl) return fromUrl;
+  }catch(e){}
+  try{
+    const fromLs=String(localStorage.getItem(PREFIX+'cloud:syncCode')||'').trim();
+    if(fromLs) return fromLs;
+  }catch(e){}
+  return '';
+}
+function goOtherMode(){
+  const sync=_getAnySyncCode();
+  if(sync){
+    location.href = OTHER_MODE_PATH + '?sync=' + encodeURIComponent(sync);
+  }else{
+    location.href = OTHER_MODE_PATH;
+  }
+}
+ const timers={}; const timerState={}; let activeTimerKey=null;
 let _audioCtx=null;
 let _audioPrimed=false;
 let soundMuted = (localStorage.getItem(PREFIX+'soundMuted')==='1');
