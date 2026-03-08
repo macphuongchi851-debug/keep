@@ -444,7 +444,10 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
     <button class="settingRow action" onclick="prepareWeeksThrough(4,true)"><span style="font-weight:900">生成 / 刷新第2-4周建议</span><span class="chev">›</span></button>
   </div>
   <div class="settingsList">
-    <button class="settingRow action" onclick="setupCloudSync()"><span><span class="settingLabel">配置云同步</span><div class="settingSub" id="cloudStatusText">未配置 Supabase</div></span><span class="chev">›</span></button>
+    <div class="settingStack">
+      <div class="settingLabel">云端同步</div>
+      <div class="settingSub" id="cloudStatusText">等待专属链接激活</div>
+    </div>
     <button class="settingRow action" onclick="pushCloudNow(false)"><span style="font-weight:900">立即同步到云端</span><span class="chev">›</span></button>
     <button class="settingRow action" onclick="pullCloudNow(false)"><span style="font-weight:900">从云端拉回当前数据</span><span class="chev">›</span></button>
   </div>
@@ -453,23 +456,8 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
     <button class="settingRow action danger" onclick="resetAll()"><span style="font-weight:900">清空当前周训练数据</span></button>
   </div>
 
-  <div class="settingsList cloudCard">
-    <div class="settingLabel">云端同步（Supabase）</div>
-    <div class="settingSub">配置一次后，打卡数据就能存到服务器端。</div>
-    <div class="cloudFields">
-      <input id="supabaseUrlInput" placeholder="Supabase Project URL">
-      <input id="supabaseAnonKeyInput" placeholder="Supabase anon key">
-      <input id="syncCodeInput" placeholder="你的同步码（例如 laodie-fitness）">
-    </div>
-    <div class="cloudActions">
-      <button class="ghost" type="button" onclick="saveCloudConfig()">保存云端配置</button>
-      <button class="primary" type="button" onclick="syncNow(true)">立即同步到云端</button>
-      <button class="ghost" type="button" onclick="pullNow()">从云端拉取</button>
-      <button class="ghost" type="button" onclick="testCloudConnection()">测试连接</button>
-    </div>
-    <div class="cloudHint" id="cloudHint">未配置时仍然只保存在当前浏览器本地。配置完成后会自动同步。</div>
-  </div>
-  <div class="sheetHint">提示：本地会继续缓存；配好 Supabase 后会同步到服务器端。</div>
+  <div class="settingsList cloudCard" style="display:none"></div>
+  <div class="sheetHint" id="cloudHint">提示：用我给你的专属链接打开一次后，后面就会自动连云端。</div>
 </div></div>
 <details class="bulk"><summary>训练前批量设置</summary><div class="sub">如果你想整体加重或减一点，不用一组组改：这里可以一键覆盖整页；每个动作卡片里也能单独批量设置。</div><div class="bulkgrid"><input id="globalWeight" placeholder="默认重量（如 60kg）"><input id="globalRest" type="number" min="0" placeholder="默认休息秒数"><div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" onclick="applyGlobal(false)">仅填空白组</button><button class="ghost" onclick="applyGlobal(true)">覆盖全部组</button></div></div></details>
 <div class="toc">
@@ -1654,16 +1642,46 @@ window.addEventListener('pageshow', _wakeAudio);
 
 // --- UI prefs v2 ---
 const SYNC_PREF_PREFIX = PREFIX + 'cloud:';
+const CLOUD_DEFAULT_URL = 'https://jgxcbylqqgjzaprfiijp.supabase.co';
+const CLOUD_DEFAULT_ANON_KEY = 'sb_publishable_igyb26LqNeN7TKKZ4pbvuw_4Is2buJE';
 const SYNC_STATE = {ready:false,pending:false,pullPending:false,lastHash:'',saveTimer:null};
 function _syncGet(key, def=''){ const v=localStorage.getItem(SYNC_PREF_PREFIX + key); return v===null?def:v; }
 function _syncSet(key, val){ localStorage.setItem(SYNC_PREF_PREFIX + key, String(val ?? '')); }
 function getCloudConfig(){
   return {
-    url:_syncGet('url','').trim(),
-    anonKey:_syncGet('anonKey','').trim(),
+    url:_syncGet('url', CLOUD_DEFAULT_URL).trim(),
+    anonKey:_syncGet('anonKey', CLOUD_DEFAULT_ANON_KEY).trim(),
     syncCode:_syncGet('syncCode','').trim()
   };
 }
+function applyCloudConfigFromUrl(){
+  try{
+    const url = new URL(location.href);
+    const sync = String(url.searchParams.get('sync') || url.searchParams.get('syncCode') || '').trim();
+    const reset = url.searchParams.get('sync_reset') === '1';
+    let changed = false;
+    if(reset){
+      _syncSet('url', '');
+      _syncSet('anonKey', '');
+      _syncSet('syncCode', '');
+      changed = true;
+    }
+    if(sync){
+      _syncSet('url', CLOUD_DEFAULT_URL);
+      _syncSet('anonKey', CLOUD_DEFAULT_ANON_KEY);
+      _syncSet('syncCode', sync);
+      changed = true;
+    }
+    if(changed){
+      url.searchParams.delete('sync');
+      url.searchParams.delete('syncCode');
+      url.searchParams.delete('sync_reset');
+      const next = url.pathname + (url.searchParams.toString() ? ('?' + url.searchParams.toString()) : '') + url.hash;
+      history.replaceState(null, '', next);
+    }
+  }catch(e){}
+}
+
 function setSyncBadge(mode, text){
   const badge=document.getElementById('syncBadge');
   const textEl=document.getElementById('syncBadgeText');
@@ -1805,88 +1823,26 @@ function refreshSyncStatus(){
   }
 }
 async function testCloudConnection(){
-  try{
-    setSyncBadge('pending','连接中');
-    const cfg=getCloudConfig();
-    if(!cfg.url || !cfg.anonKey || !cfg.syncCode) throw new Error('请先填完 URL、anon key、同步码');
-    await supabaseRequest('GET', 'fitness_sync?select=sync_code&sync_code=eq.' + encodeURIComponent(cfg.syncCode) + '&limit=1');
-    const last=getStoredSyncMeta();
-    storeSyncMeta('Supabase 已连接', '连接测试成功，后续改动会自动同步。', {result:'ok', at:last.at || ''});
-  }catch(e){
-    const last=getStoredSyncMeta();
-    storeSyncMeta('Supabase 连接失败', trimSyncMessage(e), {result:'error', at:last.at || ''});
-    alert('Supabase 连接失败：' + (e && e.message ? e.message : e));
-  }
+  if(window.pullCloudNow) return window.pullCloudNow(true);
+  return false;
 }
 async function syncNow(forceAlert){
-  const cfg=getCloudConfig();
-  if(!cfg.url || !cfg.anonKey || !cfg.syncCode){
-    if(forceAlert) alert('先在设置里填 Supabase URL、anon key 和同步码');
-    return false;
-  }
-  if(SYNC_STATE.pending) return false;
-  SYNC_STATE.pending=true;
-  try{
-    setSyncBadge('pending','同步中');
-    const payload=buildServerPayload();
-    const hash=JSON.stringify(payload);
-    const row={sync_code:cfg.syncCode, page_prefix:PREFIX, payload, updated_at:new Date().toISOString()};
-    await supabaseRequest('POST', 'fitness_sync?on_conflict=sync_code,page_prefix', row, {Prefer:'resolution=merge-duplicates,return=representation'});
-    SYNC_STATE.lastHash=hash;
-    storeSyncMeta('已同步到云端', '同步成功，服务器端已更新。', {result:'ok', at:payload.savedAt});
-    return true;
-  }catch(e){
-    const last=getStoredSyncMeta();
-    storeSyncMeta('云同步失败', trimSyncMessage(e), {result:'error', at:last.at || ''});
-    if(forceAlert) alert('同步失败：' + (e && e.message ? e.message : e));
-    return false;
-  }finally{
-    SYNC_STATE.pending=false;
-  }
+  if(window.pushCloudNow) return window.pushCloudNow(forceAlert ? false : true);
+  return false;
 }
 async function pullNow(){
-  const cfg=getCloudConfig();
-  if(!cfg.url || !cfg.anonKey || !cfg.syncCode){ alert('先在设置里填 Supabase URL、anon key 和同步码'); return false; }
-  if(SYNC_STATE.pullPending) return false;
-  SYNC_STATE.pullPending=true;
-  try{
-    setSyncBadge('pending','拉取中');
-    const rows=await supabaseRequest('GET', 'fitness_sync?select=payload&sync_code=eq.' + encodeURIComponent(cfg.syncCode) + '&page_prefix=eq.' + encodeURIComponent(PREFIX) + '&limit=1');
-    const payload=rows && rows[0] ? rows[0].payload : null;
-    if(!payload){
-      const last=getStoredSyncMeta();
-      storeSyncMeta('云端还没有数据', '还没同步过这份页面，先点一次“立即同步到云端”。', {result:'', at:last.at || ''});
-      return false;
-    }
-    if(!applyServerPayload(payload)) throw new Error('云端数据格式不对');
-    try{ applyDarkPref(); applyTodayOnly(); applyImagesPref(); syncSwitches(); }catch(e){}
-    restoreCurrentWeek();
-    storeSyncMeta('已从云端恢复', '拉取成功，当前页面已更新。', {result:'ok', at:payload.savedAt || new Date().toISOString()});
-    return true;
-  }catch(e){
-    const last=getStoredSyncMeta();
-    storeSyncMeta('云端拉取失败', trimSyncMessage(e), {result:'error', at:last.at || ''});
-    alert('拉取失败：' + (e && e.message ? e.message : e));
-    return false;
-  }finally{
-    SYNC_STATE.pullPending=false;
-  }
+  if(window.pullCloudNow) return window.pullCloudNow(false);
+  return false;
 }
 function scheduleCloudSync(){
   const cfg=getCloudConfig();
   if(!cfg.url || !cfg.anonKey || !cfg.syncCode) return;
   if(SYNC_STATE.saveTimer) clearTimeout(SYNC_STATE.saveTimer);
-  SYNC_STATE.saveTimer=setTimeout(()=>{ syncNow(false); }, 700);
+  SYNC_STATE.saveTimer=setTimeout(()=>{ if(window.pushCloudNow) window.pushCloudNow(true); }, 700);
 }
 function saveCloudConfig(){
-  const url=(document.getElementById('supabaseUrlInput')||{}).value||'';
-  const anonKey=(document.getElementById('supabaseAnonKeyInput')||{}).value||'';
-  const syncCode=(document.getElementById('syncCodeInput')||{}).value||'';
-  _syncSet('url', url.trim());
-  _syncSet('anonKey', anonKey.trim());
-  _syncSet('syncCode', syncCode.trim());
   refreshSyncStatus();
-  if(url.trim() && anonKey.trim() && syncCode.trim()) syncNow(false);
+  if(window.pushCloudNow) window.pushCloudNow(true);
 }
 window.__cloudStoreSyncMeta = storeSyncMeta;
 window.__cloudGetSyncMeta = getStoredSyncMeta;
@@ -2141,6 +2097,7 @@ function jumpToToday(){
 }
 
 document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeSheet(); closeTimerOverlay(); } });
+applyCloudConfigFromUrl();
 fillCloudConfig();
 labelTimerButtons();
 restore();
@@ -2682,8 +2639,8 @@ jumpToToday();
   }
   function getCloudConfig(){
     return {
-      url: String(localStorage.getItem(CLOUD_URL_KEY) || '').trim(),
-      anonKey: String(localStorage.getItem(CLOUD_ANON_KEY) || '').trim(),
+      url: String(localStorage.getItem(CLOUD_URL_KEY) || 'https://jgxcbylqqgjzaprfiijp.supabase.co').trim(),
+      anonKey: String(localStorage.getItem(CLOUD_ANON_KEY) || 'sb_publishable_igyb26LqNeN7TKKZ4pbvuw_4Is2buJE').trim(),
       syncCode: String(localStorage.getItem(CLOUD_CODE_KEY) || '').trim()
     };
   }
