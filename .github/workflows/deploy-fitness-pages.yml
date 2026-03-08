@@ -3,9 +3,6 @@ name: Deploy Fitness Pages
 on:
   push:
     branches: [master]
-    paths:
-      - 'fitness_github_pages_site_v2/**'
-      - '.github/workflows/deploy-fitness-pages.yml'
   workflow_dispatch:
 
 permissions:
