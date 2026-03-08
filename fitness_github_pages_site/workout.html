@@ -1,0 +1,2436 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>健身逐组打卡版（纯徒手）</title>
+<style>
+:root{--text:#1f2937;--muted:#64748b;--brand:#4f46e5;--brand2:#7c3aed;--accent:#0ea5e9;--ok:#10b981;--shadow:0 18px 40px rgba(15,23,42,.10)}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei',sans-serif;background:radial-gradient(circle at top,#e9ecff 0,#f4f7fb 30%,#f8fafc 100%);color:var(--text);line-height:1.65}.wrap{max-width:1240px;margin:0 auto;padding:18px 14px 40px}
+.hero{background:linear-gradient(135deg,#312e81 0%,#4f46e5 48%,#0ea5e9 100%);color:#fff;border-radius:28px;padding:24px 22px;box-shadow:var(--shadow)}.hero h1{margin:0 0 8px;font-size:30px;line-height:1.15}.hero p{margin:0;color:rgba(255,255,255,.92)}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);font-size:13px}
+.toolbar,.toc{display:flex;gap:10px;flex-wrap:wrap}.toolbar{margin-top:16px}button,.bulk button,.exbulk button,.timerbtn{border:none;border-radius:14px;padding:11px 14px;font-size:14px;cursor:pointer;transition:.18s transform,.18s box-shadow}button:hover,.bulk button:hover,.exbulk button:hover,.timerbtn:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(79,70,229,.18)}.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}.ghost{background:#fff;color:#374151}
+.bulk{background:rgba(255,255,255,.96);border:1px solid #e8ebff;border-radius:22px;padding:16px;margin:18px 0;box-shadow:var(--shadow)}.bulk h2{margin:0 0 6px;font-size:20px}.sub{font-size:13px;color:var(--muted)}.bulkgrid{display:grid;grid-template-columns:160px 160px 1fr;gap:10px;align-items:center;margin-top:12px}.bulk input,.exbulk input,.setrow input{width:100%;padding:11px 12px;border:1px solid #dbe1ea;border-radius:14px;background:#fff;font-size:14px;outline:none}.bulk input:focus,.exbulk input:focus,.setrow input:focus{border-color:#9bb7ff;box-shadow:0 0 0 4px rgba(79,70,229,.10)}
+.toc{margin:18px 0 10px}.toc a{text-decoration:none;color:#334155;background:rgba(255,255,255,.82);padding:9px 14px;border:1px solid #e7ebf3;border-radius:999px;font-size:14px;box-shadow:0 6px 16px rgba(15,23,42,.05)}
+.toc a.today{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}
+
+.section{margin-top:24px}.dayhead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px}.dayhead h2{margin:0;font-size:26px}.daymeta{min-width:240px}.progressbar{height:10px;background:rgba(148,163,184,.18);border-radius:999px;overflow:hidden;margin-top:8px;box-shadow:inset 0 1px 2px rgba(15,23,42,.06)}.progressfill{height:100%;width:0;background:linear-gradient(90deg,#10b981,#22c55e);transition:width .2s ease}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:18px}.card{background:rgba(255,255,255,.98);border:1px solid #edf0f6;border-radius:24px;padding:16px;box-shadow:var(--shadow)}.card h3{margin:0 0 10px;font-size:22px;line-height:1.25}.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}.tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}.tag.goal{background:#eef2ff;color:#4338ca}.tag.rest{background:#ecfeff;color:#0f766e}.tag.focus{background:#f0fdf4;color:#166534}.tag.weight{background:#fff7ed;color:#c2410c}
+.imgbox{position:relative;margin:12px 0 14px}.imgbox img{width:100%;height:auto;border-radius:18px;border:1px solid #e5e7eb;display:block}.exbulk{display:grid;grid-template-columns:1fr 1fr auto auto;gap:8px;align-items:center;background:linear-gradient(180deg,#f8fbff,#f3f7ff);border:1px solid #dfe8ff;border-radius:18px;padding:12px;margin:12px 0 14px}.exbulk .title{grid-column:1/-1;font-size:13px;color:#425b9a;font-weight:700}
+.sets{display:flex;flex-direction:column;gap:10px}.setrow{display:grid;grid-template-columns:auto 98px 110px 92px 1fr 82px;gap:8px;align-items:center;background:#fafcff;border:1px solid #edf1f7;border-radius:18px;padding:10px}.setlabel{display:flex;align-items:center;gap:8px;font-weight:600}.setlabel input{width:auto;transform:scale(1.2)}.done{text-decoration:line-through;color:#94a3b8}.timerbtn{background:linear-gradient(135deg,#0ea5e9,#3b82f6);color:#fff}.timer{font-weight:700;color:#2563eb}.restbadge{font-size:12px;color:#475569;background:#eef2f7;border-radius:999px;padding:6px 10px;display:inline-block}.helper{font-size:13px;color:var(--muted)}.links{margin-top:12px;font-size:13px}.links a{text-decoration:none;color:#2563eb}.video a{display:inline-block;margin-top:4px;text-decoration:none;color:#7c3aed;font-size:13px;font-weight:600}.note{margin-top:10px;padding:10px 12px;border-radius:14px;background:#fff7ed;color:#9a3412;font-size:13px;border:1px solid #fed7aa}
+@media (max-width:760px){.hero h1{font-size:26px}.bulkgrid{grid-template-columns:1fr 1fr}.bulkgrid .wide{grid-column:1/-1}.exbulk{grid-template-columns:1fr 1fr}.setrow{grid-template-columns:1fr 1fr;grid-template-areas:'label label' 'reps weight' 'timerbtn timer' 'rest rest';}.setlabel{grid-area:label}.reps{grid-area:reps}.weight{grid-area:weight}.timerbtn{grid-area:timerbtn}.timer{grid-area:timer}.restbadge{grid-area:rest;justify-self:start}}
+
+
+
+
+/* --- minimal mode: collapse advanced controls --- */
+summary{cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+details.bulk>summary, details.exbulk>summary{font-weight:800;font-size:14px;color:var(--text);padding:6px 2px}
+details.bulk[open]>summary, details.exbulk[open]>summary{opacity:.9}
+details.bulk .sub{margin-top:6px}
+details.bulk{padding:14px 16px}
+details.exbulk{padding:10px 12px;margin:10px 0 12px}
+details.exbulk input{margin-top:6px}
+/* hide optional links to keep page clean */
+.links{display:none}
+
+/* --- UI tweaks v2 --- */
+:root{--bg:#f8fafc;--cardbg:rgba(255,255,255,.98)}
+body{background:radial-gradient(circle at top,#e9ecff 0,#f4f7fb 30%,#f8fafc 100%)}
+body.dark{--text:#e5e7eb;--muted:#94a3b8;--bg:#0b1020;--cardbg:rgba(255,255,255,.06)}
+body.dark{background:radial-gradient(circle at top,#111827 0,#0b1020 55%,#020617 100%);color:var(--text)}
+body.dark .card, body.dark .bulk, body.dark .toc a{background:var(--cardbg);border-color:rgba(255,255,255,.12)}
+body.dark .ghost{background:rgba(255,255,255,.10);color:var(--text)}
+body.dark .bulk input, body.dark .exbulk input, body.dark .setrow input{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:var(--text)}
+body.dark .tag.goal{background:rgba(99,102,241,.25);color:#c7d2fe}
+body.dark .tag.rest{background:rgba(6,182,212,.20);color:#a5f3fc}
+body.dark .tag.focus{background:rgba(34,197,94,.18);color:#bbf7d0}
+body.dark .tag.weight{background:rgba(251,146,60,.15);color:#fdba74}
+
+/* today-only collapse */
+.section{scroll-margin-top:86px}
+.section.collapsed .grid{display:none}
+.section.collapsed .dayhead{margin-bottom:0}
+.section .daytoggle{margin-left:10px;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;color:#334155;cursor:pointer}
+body.dark .section .daytoggle{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:var(--text)}
+
+/* image collapse */
+.imgbox{margin:10px 0 12px}
+.imgtoggle{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#334155;background:rgba(255,255,255,.8);border:1px solid #e5e7eb;padding:6px 10px;border-radius:999px;cursor:pointer}
+body.dark .imgtoggle{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:var(--text)}
+.imgbox.hidden img{display:none}
+
+/* bottom sticky bar */
+.stickybar{position:sticky;bottom:10px;z-index:50;margin-top:14px}
+.stickypanel{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.92);border:1px solid #e5e7eb;box-shadow:0 16px 40px rgba(15,23,42,.10)}
+body.dark .stickypanel{background:rgba(2,6,23,.72);border-color:rgba(255,255,255,.14)}
+.stickytitle{font-weight:800;font-size:13px}
+.stickysub{font-size:12px;color:var(--muted)}
+.stickystats{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pill{font-size:12px;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#4338ca;font-weight:800}
+body.dark .pill{background:rgba(99,102,241,.22);color:#c7d2fe}
+
+@media (max-width:760px){
+  .wrap{padding:14px 12px 30px}
+  .hero h1{font-size:24px}
+  .dayhead h2{font-size:22px}
+}
+
+
+
+
+
+/* --- Apple UI v4 (polish) --- */
+:root{
+  --bg:#f2f2f7;
+  --card:#ffffff;
+  --text:#0b0b0f;
+  --muted:rgba(60,60,67,.72);
+  --line:rgba(60,60,67,.20);
+  --fill:rgba(120,120,128,.12);
+  --shadowCard:0 1px 0 rgba(0,0,0,.04), 0 12px 30px rgba(0,0,0,.06);
+  --radius:18px;
+  --radius2:14px;
+  --blue:#0a84ff;
+  --green:#34c759;
+  --red:#ff3b30;
+}
+body.dark{
+  --bg:#000000;
+  --card:#1c1c1e;
+  --text:#f5f5f7;
+  --muted:rgba(235,235,245,.60);
+  --line:rgba(84,84,88,.65);
+  --fill:rgba(120,120,128,.24);
+  --shadowCard:none;
+  --blue:#0a84ff;
+  --green:#30d158;
+  --red:#ff453a;
+}
+body{background:var(--bg) !important;color:var(--text) !important;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding:18px 14px calc(50px + env(safe-area-inset-bottom));}
+
+/* header */
+.hero{background:transparent !important;box-shadow:none !important;border-radius:0 !important;padding:0 !important;margin-bottom:12px}
+.topbar{position:sticky;top:calc(10px + env(safe-area-inset-top));z-index:70;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:16px 18px;border-radius:24px;background:linear-gradient(135deg,#0b1020 0%,#111827 42%,#0a84ff 100%);border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 38px rgba(10,132,255,.18)}
+body.dark .topbar{background:linear-gradient(135deg,#020617 0%,#0f172a 46%,#0a84ff 100%);border-color:rgba(255,255,255,.10);box-shadow:0 18px 38px rgba(2,6,23,.45)}
+.titleblock h1{margin:0;font-size:30px;font-weight:900;letter-spacing:-0.03em;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.18)}
+.subtitle{margin-top:6px;font-size:13px;color:rgba(255,255,255,.82);font-weight:800;letter-spacing:.01em}
+.iconbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:42px;min-width:42px;padding:0 13px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.20);color:#fff;backdrop-filter: blur(18px);-webkit-backdrop-filter: blur(18px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+body.dark .iconbtn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.16)}
+.iconbtn svg{width:18px;height:18px;display:block;fill:currentColor;opacity:.96}
+
+.topActions{display:flex;align-items:center;gap:10px}
+.weekbtn{display:inline-flex;align-items:center;justify-content:center;height:42px;min-width:74px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;font-weight:800;letter-spacing:.01em;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+body.dark .weekbtn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18)}
+.settingStack{padding:2px 2px 6px}
+.segRow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.segbtn{appearance:none;border:none;background:var(--fill);color:var(--text);border-radius:12px;padding:12px 14px;font-weight:800;box-shadow:none}
+.segbtn.active{background:var(--blue);color:#fff}
+#weekHint{margin-top:4px}
+
+/* tap feel */
+button,.timerbtn{transition:transform .08s ease, filter .12s ease}
+button:active,.timerbtn:active{transform:scale(.98)}
+
+/* toc → horizontal pills */
+.toc{margin:10px 0 12px;display:flex;gap:10px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.toc::-webkit-scrollbar{display:none}
+.toc a{white-space:nowrap;text-decoration:none;color:var(--text);background:rgba(255,255,255,.66);border:1px solid rgba(0,0,0,.10);padding:9px 14px;border-radius:999px;font-weight:800;box-shadow:none}
+body.dark .toc a{background:rgba(28,28,30,.66);border-color:rgba(255,255,255,.12)}
+.toc a.today{background:var(--blue);color:#fff;border-color:transparent}
+
+/* sections */
+.section{margin-top:18px;scroll-margin-top:110px}
+.dayhead h2{font-size:20px;letter-spacing:-0.01em}
+.progressbar{height:8px;background:rgba(120,120,128,.20);border-radius:999px;overflow:hidden}
+.progressfill{background:linear-gradient(90deg,var(--green),#2bd46a)}
+
+/* cards */
+.grid{gap:14px !important}
+.card{background:var(--card) !important;border:1px solid var(--line) !important;border-radius:var(--radius) !important;box-shadow:var(--shadowCard) !important;padding:14px 14px 12px}
+.card h3{font-size:18px;margin-bottom:8px;letter-spacing:-0.01em}
+.helper{color:var(--muted) !important}
+
+/* tags → lighter */
+.tag{font-size:12px;font-weight:800;border-radius:999px;border:1px solid rgba(0,0,0,.06)}
+body.dark .tag{border-color:rgba(255,255,255,.12)}
+.tag.goal{background:rgba(10,132,255,.12);color:var(--blue)}
+.tag.rest{background:rgba(52,199,89,.12);color:#15803d}
+body.dark .tag.rest{color:#baf7d0}
+.tag.focus{background:rgba(120,120,128,.14);color:rgba(60,60,67,.85)}
+body.dark .tag.focus{color:rgba(235,235,245,.85)}
+.tag.weight{background:rgba(255,149,0,.14);color:#b45309}
+body.dark .tag.weight{color:#ffd6a1}
+
+/* images */
+.imgbox img{border-radius:var(--radius2) !important;border:1px solid rgba(0,0,0,.10) !important}
+body.dark .imgbox img{border-color:rgba(255,255,255,.10) !important}
+
+/* details: iOS chevron */
+details.bulk, details.exbulk{background:rgba(255,255,255,.66) !important;border:1px solid rgba(0,0,0,.10) !important;border-radius:var(--radius) !important;box-shadow:none !important}
+body.dark details.bulk, body.dark details.exbulk{background:rgba(28,28,30,.66) !important;border-color:rgba(255,255,255,.12) !important}
+details.bulk>summary, details.exbulk>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 2px;font-weight:900}
+details.bulk>summary::after, details.exbulk>summary::after{content:'›';font-size:18px;opacity:.55;transform:rotate(90deg);transition:transform .15s ease, opacity .15s ease}
+details.bulk[open]>summary::after, details.exbulk[open]>summary::after{transform:rotate(-90deg);opacity:.75}
+
+/* inputs */
+.bulk input,.exbulk input,.setrow input{background:rgba(120,120,128,.10) !important;border:1px solid rgba(0,0,0,.10) !important;color:var(--text) !important}
+body.dark .bulk input, body.dark .exbulk input, body.dark .setrow input{background:rgba(120,120,128,.18) !important;border-color:rgba(255,255,255,.12) !important}
+.bulk input:focus,.exbulk input:focus,.setrow input:focus{border-color:rgba(10,132,255,.65) !important;box-shadow:0 0 0 4px rgba(10,132,255,.18) !important}
+input[type=checkbox]{accent-color:var(--blue)}
+
+/* set rows */
+.setrow{background:rgba(120,120,128,.08) !important;border:1px solid rgba(0,0,0,.08) !important;border-radius:var(--radius2) !important}
+body.dark .setrow{background:linear-gradient(180deg, rgba(30,41,59,.68), rgba(15,23,42,.58)) !important;border-color:rgba(255,255,255,.08) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.timer{color:var(--blue) !important}
+.restbadge{background:rgba(120,120,128,.16) !important;color:var(--muted) !important}
+
+/* sticky bar */
+.stickybar{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;margin-top:14px}
+.stickypanel{background:rgba(255,255,255,.72) !important;border:1px solid rgba(0,0,0,.10) !important;border-radius:16px !important;backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px);box-shadow:none !important}
+body.dark .stickypanel{background:rgba(28,28,30,.72) !important;border-color:rgba(255,255,255,.12) !important}
+.pill{background:rgba(10,132,255,.12) !important;color:var(--blue) !important}
+
+/* bottom sheet */
+.sheetMask{position:fixed;inset:0;background:rgba(0,0,0,.28);display:none;z-index:90}
+.sheet{position:fixed;left:0;right:0;bottom:0;transform:translateY(110%);transition:transform .22s ease;z-index:95}
+.sheetInner{max-width:720px;margin:0 auto;background:rgba(255,255,255,.86);backdrop-filter: blur(26px);-webkit-backdrop-filter: blur(26px);border:1px solid rgba(0,0,0,.12);border-bottom:none;border-radius:24px 24px 0 0;box-shadow:0 -18px 40px rgba(0,0,0,.18);padding:10px 14px calc(16px + env(safe-area-inset-bottom))}
+body.dark .sheetInner{background:rgba(28,28,30,.86);border-color:rgba(255,255,255,.12)}
+.grabber{width:44px;height:5px;border-radius:999px;background:rgba(120,120,128,.40);margin:2px auto 10px}
+.sheetHeader{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sheetTitle{font-weight:900;font-size:16px;letter-spacing:-0.01em}
+.sheetClose{background:rgba(120,120,128,.18) !important;border:1px solid rgba(0,0,0,.10) !important}
+body.dark .sheetClose{border-color:rgba(255,255,255,.12) !important}
+
+.settingsList{margin-top:10px;border:1px solid rgba(0,0,0,.10);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.60)}
+body.dark .settingsList{background:rgba(28,28,30,.60);border-color:rgba(255,255,255,.12)}
+.settingRow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 12px;border-top:1px solid rgba(0,0,0,.08)}
+body.dark .settingRow{border-top-color:rgba(255,255,255,.10)}
+.settingRow:first-child{border-top:none}
+.settingLabel{font-weight:900}
+.settingStack{padding:12px 12px 10px}
+.settingSub{font-size:12px;color:var(--muted);margin-top:2px}
+
+.settingsList button.settingRow{width:100%;text-align:left;background:transparent;border:none;color:var(--text);font:inherit}
+.settingRow.action{cursor:pointer}
+.settingRow.action .chev{opacity:.55;font-weight:900}
+.settingRow.danger{color:var(--red)}
+
+/* iOS-like switch */
+.switch{position:relative;width:48px;height:28px;background:rgba(0,0,0,.18);border-radius:999px;border:1px solid rgba(0,0,0,.12);cursor:pointer;flex:0 0 auto}
+body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.14)}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:24px;height:24px;background:#fff;border-radius:50%;box-shadow:0 6px 14px rgba(0,0,0,.20);transition:left .18s ease}
+.switch.on{background:rgba(52,199,89,.95);border-color:rgba(52,199,89,.95)}
+.switch.on::after{left:22px}
+
+.sheetHint{margin-top:8px;color:var(--muted);font-size:12px;font-weight:700}
+.syncBadge{display:inline-flex;align-items:center;gap:8px;min-width:86px;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.92);font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:all .22s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.syncDot{width:7px;height:7px;border-radius:50%;background:#ff9f0a;box-shadow:0 0 0 4px rgba(255,159,10,.14);transition:all .22s ease}
+.syncBadge.ok{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.10);color:rgba(255,255,255,.72)}
+.syncBadge.ok .syncDot{background:var(--green);box-shadow:0 0 0 4px rgba(52,199,89,.12)}
+.syncBadge.pending{background:rgba(255,159,10,.16);border-color:rgba(255,159,10,.30);color:#fff;box-shadow:0 10px 26px rgba(255,159,10,.14)}
+.syncBadge.pending .syncDot{background:#ffb340;box-shadow:0 0 0 5px rgba(255,179,64,.16)}
+.syncBadge.error{background:rgba(255,69,58,.18);border-color:rgba(255,69,58,.34);color:#fff;box-shadow:0 10px 26px rgba(255,69,58,.18)}
+.syncBadge.error .syncDot{background:#ff453a;box-shadow:0 0 0 5px rgba(255,69,58,.18)}
+.syncBadge.off{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.10);color:rgba(255,255,255,.66)}
+.syncBadge.off .syncDot{background:rgba(255,255,255,.45);box-shadow:none}
+body.dark .syncBadge{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.12)}
+body.dark .syncBadge.ok{background:rgba(255,255,255,.07)}
+body.dark .syncBadge.off{background:rgba(255,255,255,.06)}
+.cloudCard{padding:12px}
+.cloudFields{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+.cloudFields input{width:100%;padding:12px 13px;border-radius:14px;border:1px solid rgba(0,0,0,.10);background:rgba(120,120,128,.10);color:var(--text);font-size:14px}
+body.dark .cloudFields input{border-color:rgba(255,255,255,.12);background:rgba(120,120,128,.18);color:var(--text)}
+.cloudActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.cloudHint{margin-top:10px;font-size:12px;line-height:1.5;color:var(--muted)}
+@media (max-width:760px){.cloudActions{grid-template-columns:1fr}}
+.timerOverlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(6,10,20,.34);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:120}
+.timerOverlay.show{display:flex}
+.timerPanel{width:min(100%,620px);border-radius:32px;border:1px solid rgba(0,0,0,.10);background:rgba(255,255,255,.88);box-shadow:0 24px 60px rgba(2,6,23,.24);padding:18px 18px calc(20px + env(safe-area-inset-bottom));text-align:center}
+body.dark .timerPanel{background:rgba(28,28,30,.90);border-color:rgba(255,255,255,.12);box-shadow:0 24px 60px rgba(0,0,0,.46)}
+.timerPanelHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;text-align:left}
+.timerPanelEyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.timerPanelTitle{margin-top:6px;font-size:20px;font-weight:900;letter-spacing:-.02em;line-height:1.2}
+.timerPanelSet{margin-top:4px;font-size:13px;color:var(--muted)}
+.timerPanelClose{min-width:88px;white-space:nowrap}
+.timerBig{margin-top:20px;font-size:clamp(68px,18vw,126px);line-height:.95;font-weight:900;letter-spacing:-.06em;font-variant-numeric:tabular-nums;color:var(--text)}
+.timerOverlay.done .timerBig{color:var(--green)}
+.timerBar{height:14px;margin-top:18px;border-radius:999px;background:rgba(120,120,128,.16);overflow:hidden}
+.timerFill{height:100%;width:0;background:linear-gradient(90deg,#0a84ff,#5ac8fa,#34c759);transition:width .25s ease}
+.timerPanelMeta{margin-top:12px;font-size:13px;color:var(--muted);font-weight:800}
+.timerPanelActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.timerPanelActions button{min-height:46px}
+@media (max-width:640px){
+  .timerOverlay{padding:12px}
+  .timerPanel{min-height:min(78vh,680px);display:flex;flex-direction:column;justify-content:center;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+  .timerPanelHead{align-items:center}
+  .timerPanelTitle{font-size:18px}
+  .timerPanelActions{grid-template-columns:1fr}
+}
+
+@media (max-width:760px){
+  .wrap{padding:14px 12px calc(50px + env(safe-area-inset-bottom))}
+  .titleblock h1{font-size:26px}
+  .grid{grid-template-columns:1fr !important}
+}
+
+
+/* --- Apple UI v5 (app-shell refinement) --- */
+body{
+  background:
+    radial-gradient(circle at top, rgba(10,132,255,.12), transparent 34%),
+    var(--bg) !important;
+}
+body.sheetOpen,body.timerPageOpen{overflow:hidden}
+.wrap{max-width:1180px;padding-top:14px}
+.topbar{align-items:center;padding:18px;border-radius:28px;background:linear-gradient(135deg,#081120 0%,#0f1d35 46%,#0a84ff 100%);box-shadow:0 18px 40px rgba(10,132,255,.16)}
+body.dark .topbar{background:linear-gradient(135deg,#020617 0%,#0b1629 44%,#0a84ff 100%)}
+.titleblock{min-width:0}
+.titleblock h1{font-size:31px}
+.subtitle{font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.topActions{flex-shrink:0}
+.weekbtn,.iconbtn{height:44px}
+.weekbtn{min-width:84px}
+
+.overview{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:12px;margin:12px 0 18px}
+.overviewMain,.overviewStats{border:1px solid rgba(0,0,0,.10);background:rgba(255,255,255,.72);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:22px}
+body.dark .overviewMain,body.dark .overviewStats{background:linear-gradient(180deg, rgba(22,30,42,.94), rgba(13,20,31,.90));border-color:rgba(255,255,255,.08);box-shadow:0 18px 38px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.03)}
+.overviewMain{padding:18px 18px 16px;box-shadow:var(--shadowCard)}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.overviewTitle{font-size:28px;font-weight:900;letter-spacing:-.03em;line-height:1.08}
+.overviewSub{margin-top:8px;font-size:14px;color:var(--muted);max-width:44ch}
+.quickActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.glassbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(0,0,0,.10);background:rgba(10,132,255,.10);color:var(--blue);font-weight:900;box-shadow:none}
+body.dark .glassbtn{border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.06);color:#e5f0ff}
+.overviewStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:10px}
+.statCard{padding:14px 12px;border-radius:18px;background:rgba(120,120,128,.10);border:1px solid rgba(0,0,0,.06);min-width:0}
+body.dark .statCard{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));border-color:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.statLabel{font-size:12px;font-weight:800;color:var(--muted)}
+.statValue{margin-top:8px;font-size:24px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.statMeta{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.35}
+
+.bulk{padding:16px 16px 14px !important;background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.90)) !important;border:1px solid rgba(15,23,42,.06) !important;box-shadow:0 18px 34px rgba(15,23,42,.06), inset 0 1px 0 rgba(255,255,255,.72)}
+.bulkgrid{grid-template-columns:1fr 1fr auto;gap:10px}
+.bulkgrid .wide{display:flex;gap:8px;flex-wrap:wrap}
+body.dark .bulk{background:linear-gradient(180deg, rgba(27,36,48,.92), rgba(16,24,35,.88)) !important;border-color:rgba(255,255,255,.08) !important;box-shadow:0 18px 34px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.03) !important}
+.dayhead{align-items:flex-start;gap:14px;padding:2px 2px 0}
+.dayhead h2{font-size:22px}
+.daymeta{padding:12px 14px;border-radius:16px;border:1px solid rgba(0,0,0,.10);background:rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+body.dark .daymeta{background:linear-gradient(180deg, rgba(28,37,50,.92), rgba(18,27,40,.88));border-color:rgba(255,255,255,.08);box-shadow:0 14px 30px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.03)}
+.grid{grid-template-columns:repeat(auto-fit,minmax(320px,1fr)) !important}
+.card{padding:17px 17px 15px !important;background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)) !important;border:1px solid rgba(15,23,42,.06) !important;box-shadow:0 18px 36px rgba(15,23,42,.07), inset 0 1px 0 rgba(255,255,255,.72) !important}
+.card h3{font-size:19px}
+body.dark .card{background:linear-gradient(180deg, rgba(26,35,47,.94), rgba(15,22,33,.90)) !important;border-color:rgba(255,255,255,.08) !important;box-shadow:0 18px 34px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.03) !important}
+body.dark .card h3{color:#f8fafc}
+.video a{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:999px;background:linear-gradient(180deg, rgba(10,132,255,.12), rgba(10,132,255,.08));border:1px solid rgba(10,132,255,.14);color:var(--blue);font-weight:800;text-decoration:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+body.dark .video a{background:rgba(10,132,255,.14);border-color:rgba(10,132,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.note{background:rgba(255,149,0,.10) !important;border:1px solid rgba(255,149,0,.18) !important;color:#9a5710 !important}
+body.dark .note{background:linear-gradient(180deg, rgba(36,51,72,.88), rgba(24,38,57,.84)) !important;border-color:rgba(96,165,250,.16) !important;color:#dbeafe !important}
+.exbulk .title{color:var(--muted) !important}
+.setrow{grid-template-columns:auto 92px 104px 132px 1fr 82px;gap:10px;padding:12px 11px !important;background:linear-gradient(180deg, rgba(248,250,252,.96), rgba(241,245,249,.94)) !important;border:1px solid rgba(15,23,42,.06) !important;box-shadow:inset 0 1px 0 rgba(255,255,255,.68)}
+.setlabel{min-width:0;align-items:flex-start}
+.setlabel span{display:inline-flex;align-items:center;min-height:24px}
+.setrow.next-up{border-color:rgba(10,132,255,.45) !important;box-shadow:0 0 0 4px rgba(10,132,255,.12)}
+body.dark .setrow.next-up{box-shadow:0 0 0 4px rgba(10,132,255,.20)}
+.timerbtn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;writing-mode:horizontal-tb;min-height:44px;min-width:126px;border-radius:12px !important;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);background:linear-gradient(135deg,#0a84ff,#5ac8fa) !important}
+.timer{font-variant-numeric:tabular-nums}
+body.dark .bulk input,body.dark .exbulk input,body.dark .setrow input{background:rgba(255,255,255,.05) !important;border-color:rgba(255,255,255,.08) !important;color:#f8fafc !important}
+.ghost{background:rgba(120,120,128,.14);border:1px solid rgba(0,0,0,.10);color:var(--text)}
+body.dark .ghost{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.08)}
+.stickypanel{padding:12px 14px !important}
+.stickypanel .ghost{background:rgba(10,132,255,.10);border-color:rgba(10,132,255,.14);color:var(--blue)}
+body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.10);color:#e5f0ff}
+.sheetHeader{padding-bottom:4px}
+.sheetTitle{font-size:17px}
+.settingStack{padding:12px 12px 10px}
+.settingRow{padding:13px 14px}
+.sheetHint{padding:0 4px}
+
+@media (max-width:760px){
+  .wrap{padding-top:12px}
+  .topbar{align-items:flex-start;padding:16px 16px 14px;border-radius:24px}
+  .titleblock h1{font-size:27px}
+  .overview{grid-template-columns:1fr}
+  .overviewMain{padding:16px}
+  .overviewTitle{font-size:24px}
+  .overviewSub{font-size:13px}
+  .quickActions{display:grid;grid-template-columns:1fr 1fr}
+  .overviewStats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .statCard{padding:12px 10px;border-radius:16px}
+  .statValue{font-size:20px}
+  .dayhead{flex-direction:column}
+  .daymeta{width:100%}
+  .bulkgrid{grid-template-columns:1fr}
+  .bulkgrid .wide{grid-column:auto}
+  .segRow{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media (max-width:480px){
+  .topActions{gap:8px}
+  .weekbtn,.iconbtn{height:40px}
+  .weekbtn{min-width:72px;padding:0 12px}
+  .quickActions{grid-template-columns:1fr}
+  .overviewStats{grid-template-columns:1fr}
+}
+
+</style></head><body><div class="wrap">
+<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><div class="syncBadge off" id="syncBadge"><span class="syncDot"></span><span id="syncBadgeText">本机</span></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
+
+
+<div class="overview" id="overviewPanel">
+  <div class="overviewMain">
+    <div class="eyebrow">Today Focus</div>
+    <div class="overviewTitle" id="heroTodayTitle">今天按计划开练</div>
+    <div class="overviewSub" id="heroTodaySub">我会默认帮你定位到当天训练；想偷懒也行，但先点进去看一眼。</div>
+    <div class="quickActions">
+      <button class="glassbtn" type="button" onclick="jumpToToday()">去今天</button>
+      <button class="glassbtn" type="button" onclick="jumpNext()">继续下一组</button>
+          <button class="glassbtn" type="button" onclick="goOtherMode()">今天有器械？去家用版</button>
+    </div>
+  </div>
+  <div class="overviewStats">
+    <div class="statCard">
+      <div class="statLabel">今日完成</div>
+      <div class="statValue" id="heroTodayPct">0%</div>
+      <div class="statMeta" id="heroTodayMeta">0 / 0 组</div>
+    </div>
+    <div class="statCard">
+      <div class="statLabel">本周完成</div>
+      <div class="statValue" id="heroWeekPct">0%</div>
+      <div class="statMeta" id="heroWeekMeta">0 / 0 组</div>
+    </div>
+    <div class="statCard">
+      <div class="statLabel">当前周</div>
+      <div class="statValue" id="heroWeekName">第1周</div>
+      <div class="statMeta" id="heroWeekState">原方案</div>
+    </div>
+  </div>
+</div>
+
+<div class="timerOverlay" id="timerOverlay">
+  <div class="timerPanel" role="dialog" aria-label="倒计时页面" aria-modal="true">
+    <div class="timerPanelHead">
+      <div>
+        <div class="timerPanelEyebrow">Rest Timer</div>
+        <div class="timerPanelTitle" id="timerOverlayExercise">当前动作</div>
+        <div class="timerPanelSet" id="timerOverlaySet">当前组</div>
+      </div>
+      <button class="ghost timerPanelClose" type="button" onclick="closeTimerOverlay()">收起</button>
+    </div>
+    <div class="timerBig" id="timerOverlayValue">00:00</div>
+    <div class="timerBar"><div class="timerFill" id="timerOverlayFill"></div></div>
+    <div class="timerPanelMeta" id="timerOverlayMeta">最后 10 秒会响</div>
+    <div class="timerPanelActions">
+      <button class="ghost" type="button" onclick="closeTimerOverlay()">返回训练</button>
+      <button class="primary" type="button" onclick="stopActiveTimer()">结束计时</button>
+    </div>
+  </div>
+</div>
+
+<div class="sheetMask" id="sheetMask" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet"><div class="sheetInner" role="dialog" aria-label="设置">
+  <div class="grabber"></div>
+  <div class="sheetHeader"><div class="sheetTitle">设置</div><button class="ghost sheetClose" onclick="closeSheet()">完成</button></div>
+  <div class="settingsList">
+    <div class="settingRow">
+      <div><div class="settingLabel">倒计时声音</div><div class="settingSub">最后 10 秒提示音 + 结束提示</div></div>
+      <div class="switch" id="swSound" onclick="toggleSound(); syncSwitches()"></div>
+    </div>
+    <div class="settingRow">
+      <div><div class="settingLabel">只看今天</div><div class="settingSub">只显示当天训练</div></div>
+      <div class="switch" id="swToday" onclick="toggleTodayOnly(); syncSwitches()"></div>
+    </div>
+    <div class="settingRow">
+      <div><div class="settingLabel">显示图片</div><div class="settingSub">展开/收起动作图</div></div>
+      <div class="switch" id="swImg" onclick="toggleImages(); syncSwitches()"></div>
+    </div>
+    <div class="settingRow">
+      <div><div class="settingLabel">暗色模式</div><div class="settingSub">夜间更舒服</div></div>
+      <div class="switch" id="swDark" onclick="toggleDark(); syncSwitches()"></div>
+    </div>
+  </div>
+  <div class="settingsList">
+    <div class="settingStack">
+      <div class="settingLabel">训练周</div>
+      <div class="settingSub" id="weekHint">第1周保持原方案；第2-4周会按上一周打卡自动生成。</div>
+      <div class="segRow">
+        <button class="segbtn" id="week1Btn" onclick="setWeek(1)">第1周</button>
+        <button class="segbtn" id="week2Btn" onclick="prepareWeek(2,false)">第2周</button>
+        <button class="segbtn" id="week3Btn" onclick="prepareWeek(3,false)">第3周</button>
+        <button class="segbtn" id="week4Btn" onclick="prepareWeek(4,false)">第4周</button>
+      </div>
+    </div>
+    <button class="settingRow action" onclick="prepareWeeksThrough(4,true)"><span style="font-weight:900">生成 / 刷新第2-4周建议</span><span class="chev">›</span></button>
+  </div>
+  <div class="settingsList">
+    <div class="settingStack">
+      <div class="settingLabel">数据备份</div>
+      <div class="settingSub" id="cloudStatusText">首次打开专属入口后自动开启</div>
+      <div class="settingSub" id="cloudHint">保持自动备份；需要时也可以手动恢复。</div>
+    </div>
+    <button class="settingRow action" onclick="pushCloudNow(false)"><span style="font-weight:900">立即备份</span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="pullCloudNow(false)"><span style="font-weight:900">恢复备份</span><span class="chev">›</span></button>
+  </div>
+  <div class="settingsList">
+    <button class="settingRow action" onclick="scrollToTop(); closeSheet()"><span style="font-weight:900">回顶部</span><span class="chev">›</span></button>
+    <button class="settingRow action danger" onclick="resetAll()"><span style="font-weight:900">清空当前周训练数据</span></button>
+  </div>
+
+  <div class="settingsList cloudCard" style="display:none"></div>
+</div></div>
+<details class="bulk"><summary>训练前批量设置</summary><div class="sub">如果你想整体加重或减一点，不用一组组改：这里可以一键覆盖整页；每个动作卡片里也能单独批量设置。</div><div class="bulkgrid"><input id="globalWeight" placeholder="默认重量（如 60kg）"><input id="globalRest" type="number" min="0" placeholder="默认休息秒数"><div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" onclick="applyGlobal(false)">仅填空白组</button><button class="ghost" onclick="applyGlobal(true)">覆盖全部组</button></div></div></details>
+<div class="toc">
+<a href="#周一｜上肢力量">周一</a>
+<a href="#周二｜下肢力量 + 核心">周二</a>
+<a href="#周三｜体能恢复 / 有氧 / 旗帜基础">周三</a>
+<a href="#周四｜上肢增肌 + 体态">周四</a>
+<a href="#周五｜下肢增肌 + 后链 + 核心">周五</a>
+</div>
+<section class="section" id="周一｜推 + 核心"><div class="dayhead"><div><h2>周一｜推 + 核心</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周一｜推 + 核心">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周一｜推 + 核心"></div></div></div></div><div class="grid"><div class="card"><h3>标准俯卧撑 / Push-up </h3><div class="tags"><span class="tag goal">目标 8–15</span><span class="tag rest">休息 75秒</span><span class="tag focus">胸/前三角/肱三</span><span class="tag weight">建议 自重 / 自重 / 自重 / 自重</span></div><div class="helper">提示：全程收紧核心，身体一条线</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex1" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex1', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set1:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set1:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex1-set1">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex1-set1">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set2:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set2:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex1-set2">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex1-set2">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set3:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set3:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex1-set3">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex1-set3">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set4:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set4">第4组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set4:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set4:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set4" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex1-set4">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex1-set4">休息 75秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>钻石俯卧撑 / Diamond Push-up </h3><div class="tags"><span class="tag goal">目标 6–12</span><span class="tag rest">休息 75秒</span><span class="tag focus">肱三/胸内侧</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作幅度别偷，宁可次数少一点</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex2" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex2', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex2-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex2-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set1:reps" placeholder="次数/时长" value="6–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex2-set1:weight" data-group="周一｜推 + 核心-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex2" data-timer-key="周一｜推 + 核心-ex2-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex2-set1">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex2-set1">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex2-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex2-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set2:reps" placeholder="次数/时长" value="6–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex2-set2:weight" data-group="周一｜推 + 核心-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex2" data-timer-key="周一｜推 + 核心-ex2-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex2-set2">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex2-set2">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex2-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex2-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set3:reps" placeholder="次数/时长" value="6–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex2-set3:weight" data-group="周一｜推 + 核心-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex2" data-timer-key="周一｜推 + 核心-ex2-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex2-set3">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex2-set3">休息 75秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>Pike Push-up / 臀高俯卧撑 </h3><div class="tags"><span class="tag goal">目标 6–10</span><span class="tag rest">休息 75秒</span><span class="tag focus">肩部/上胸</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：屁股抬高，发力集中到肩</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex3" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex3', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex3-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex3-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set1:reps" placeholder="次数/时长" value="6–10" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex3-set1:weight" data-group="周一｜推 + 核心-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex3" data-timer-key="周一｜推 + 核心-ex3-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex3-set1">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex3-set1">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex3-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex3-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set2:reps" placeholder="次数/时长" value="6–10" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex3-set2:weight" data-group="周一｜推 + 核心-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex3" data-timer-key="周一｜推 + 核心-ex3-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex3-set2">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex3-set2">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex3-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex3-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set3:reps" placeholder="次数/时长" value="6–10" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex3-set3:weight" data-group="周一｜推 + 核心-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex3" data-timer-key="周一｜推 + 核心-ex3-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex3-set3">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex3-set3">休息 75秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>平板支撑 / Plank </h3><div class="tags"><span class="tag goal">目标 40–60秒</span><span class="tag rest">休息 45秒</span><span class="tag focus">核心抗伸展</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：腰别塌，肋骨收住</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex4" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex4', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex4-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex4-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set1:reps" placeholder="次数/时长" value="40–60秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex4-set1:weight" data-group="周一｜推 + 核心-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex4" data-timer-key="周一｜推 + 核心-ex4-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex4-set1">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex4-set1">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex4-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex4-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set2:reps" placeholder="次数/时长" value="40–60秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex4-set2:weight" data-group="周一｜推 + 核心-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex4" data-timer-key="周一｜推 + 核心-ex4-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex4-set2">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex4-set2">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex4-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex4-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set3:reps" placeholder="次数/时长" value="40–60秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex4-set3:weight" data-group="周一｜推 + 核心-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex4" data-timer-key="周一｜推 + 核心-ex4-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex4-set3">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex4-set3">休息 45秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>死虫 / Dead Bug </h3><div class="tags"><span class="tag goal">目标 10–12/侧</span><span class="tag rest">休息 45秒</span><span class="tag focus">核心稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：下背贴稳地面</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex5" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex5', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex5-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex5-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set1:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex5-set1:weight" data-group="周一｜推 + 核心-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex5" data-timer-key="周一｜推 + 核心-ex5-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex5-set1">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex5-set1">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex5-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex5-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set2:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex5-set2:weight" data-group="周一｜推 + 核心-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex5" data-timer-key="周一｜推 + 核心-ex5-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex5-set2">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex5-set2">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex5-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex5-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set3:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周一｜推 + 核心-ex5-set3:weight" data-group="周一｜推 + 核心-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周一｜推 + 核心-ex5" data-timer-key="周一｜推 + 核心-ex5-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周一｜推 + 核心-ex5-set3">--:--</span>
+<span class="restbadge" id="rest-周一｜推 + 核心-ex5-set3">休息 45秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周二｜腿 + 臀"><div class="dayhead"><div><h2>周二｜腿 + 臀</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周二｜腿 + 臀">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周二｜腿 + 臀"></div></div></div></div><div class="grid"><div class="card"><h3>徒手深蹲 / Bodyweight Squat </h3><div class="tags"><span class="tag goal">目标 15–25</span><span class="tag rest">休息 60秒</span><span class="tag focus">股四/臀</span><span class="tag weight">建议 自重 / 自重 / 自重 / 自重</span></div><div class="helper">提示：先把动作节奏和蹲深做好</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex1" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex1', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set1:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set1:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex1-set1">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set1">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set2:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set2:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex1-set2">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set2">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set3:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set3:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex1-set3">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set3">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set4:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set4">第4组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set4:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set4:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set4" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex1-set4">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set4">休息 60秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>反向箭步蹲 / Reverse Lunge </h3><div class="tags"><span class="tag goal">目标 10–12/侧</span><span class="tag rest">休息 60秒</span><span class="tag focus">臀/腿稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：重心稳，膝盖跟脚尖同向</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex2" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex2', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex2-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex2-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set1:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex2-set1:weight" data-group="周二｜腿 + 臀-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex2" data-timer-key="周二｜腿 + 臀-ex2-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex2-set1">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex2-set1">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex2-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex2-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set2:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex2-set2:weight" data-group="周二｜腿 + 臀-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex2" data-timer-key="周二｜腿 + 臀-ex2-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex2-set2">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex2-set2">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex2-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex2-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set3:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex2-set3:weight" data-group="周二｜腿 + 臀-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex2" data-timer-key="周二｜腿 + 臀-ex2-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex2-set3">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex2-set3">休息 60秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>保加利亚分腿蹲（徒手） </h3><div class="tags"><span class="tag goal">目标 8–12/侧</span><span class="tag rest">休息 75秒</span><span class="tag focus">单腿力量</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作别急，吃到臀腿发力</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex3" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex3', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex3-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex3-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set1:reps" placeholder="次数/时长" value="8–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex3-set1:weight" data-group="周二｜腿 + 臀-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex3" data-timer-key="周二｜腿 + 臀-ex3-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex3-set1">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex3-set1">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex3-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex3-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set2:reps" placeholder="次数/时长" value="8–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex3-set2:weight" data-group="周二｜腿 + 臀-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex3" data-timer-key="周二｜腿 + 臀-ex3-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex3-set2">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex3-set2">休息 75秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex3-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex3-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set3:reps" placeholder="次数/时长" value="8–12/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex3-set3:weight" data-group="周二｜腿 + 臀-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex3" data-timer-key="周二｜腿 + 臀-ex3-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex3-set3">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex3-set3">休息 75秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>臀桥 / Glute Bridge </h3><div class="tags"><span class="tag goal">目标 15–20</span><span class="tag rest">休息 45秒</span><span class="tag focus">臀部</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：顶端停 1 秒，骨盆别乱晃</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex4" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex4', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex4-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex4-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set1:reps" placeholder="次数/时长" value="15–20" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex4-set1:weight" data-group="周二｜腿 + 臀-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex4" data-timer-key="周二｜腿 + 臀-ex4-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex4-set1">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex4-set1">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex4-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex4-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set2:reps" placeholder="次数/时长" value="15–20" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex4-set2:weight" data-group="周二｜腿 + 臀-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex4" data-timer-key="周二｜腿 + 臀-ex4-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex4-set2">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex4-set2">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex4-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex4-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set3:reps" placeholder="次数/时长" value="15–20" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex4-set3:weight" data-group="周二｜腿 + 臀-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex4" data-timer-key="周二｜腿 + 臀-ex4-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex4-set3">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex4-set3">休息 45秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>提踵 / Calf Raise </h3><div class="tags"><span class="tag goal">目标 18–25</span><span class="tag rest">休息 30秒</span><span class="tag focus">小腿</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：顶端停顿，别弹</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex5" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex5', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex5-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex5-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set1:reps" placeholder="次数/时长" value="18–25" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex5-set1:weight" data-group="周二｜腿 + 臀-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex5" data-timer-key="周二｜腿 + 臀-ex5-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex5-set1">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex5-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex5-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex5-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set2:reps" placeholder="次数/时长" value="18–25" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex5-set2:weight" data-group="周二｜腿 + 臀-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex5" data-timer-key="周二｜腿 + 臀-ex5-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex5-set2">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex5-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex5-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex5-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set3:reps" placeholder="次数/时长" value="18–25" oninput="persist(this)">
+<input class="weight" type="text" data-key="周二｜腿 + 臀-ex5-set3:weight" data-group="周二｜腿 + 臀-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周二｜腿 + 臀-ex5" data-timer-key="周二｜腿 + 臀-ex5-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周二｜腿 + 臀-ex5-set3">--:--</span>
+<span class="restbadge" id="rest-周二｜腿 + 臀-ex5-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周三｜恢复 + 体能"><div class="dayhead"><div><h2>周三｜恢复 + 体能</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周三｜恢复 + 体能">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周三｜恢复 + 体能"></div></div></div></div><div class="grid"><div class="card"><h3>开合跳 / Jumping Jack </h3><div class="tags"><span class="tag goal">目标 45–60秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">心肺激活</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：先把呼吸节奏带起来</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex1" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex1', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex1-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex1-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set1:reps" placeholder="次数/时长" value="45–60秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex1-set1:weight" data-group="周三｜恢复 + 体能-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex1" data-timer-key="周三｜恢复 + 体能-ex1-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex1-set1">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex1-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex1-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex1-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set2:reps" placeholder="次数/时长" value="45–60秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex1-set2:weight" data-group="周三｜恢复 + 体能-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex1" data-timer-key="周三｜恢复 + 体能-ex1-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex1-set2">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex1-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex1-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex1-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set3:reps" placeholder="次数/时长" value="45–60秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex1-set3:weight" data-group="周三｜恢复 + 体能-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex1" data-timer-key="周三｜恢复 + 体能-ex1-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex1-set3">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex1-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>登山跑 / Mountain Climber </h3><div class="tags"><span class="tag goal">目标 30–45秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">体能/核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：脚步快，但躯干别散</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex2" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex2', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex2-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex2-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set1:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex2-set1:weight" data-group="周三｜恢复 + 体能-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex2" data-timer-key="周三｜恢复 + 体能-ex2-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex2-set1">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex2-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex2-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex2-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set2:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex2-set2:weight" data-group="周三｜恢复 + 体能-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex2" data-timer-key="周三｜恢复 + 体能-ex2-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex2-set2">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex2-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex2-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex2-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set3:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex2-set3:weight" data-group="周三｜恢复 + 体能-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex2" data-timer-key="周三｜恢复 + 体能-ex2-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex2-set3">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex2-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>波比跳 / Burpee </h3><div class="tags"><span class="tag goal">目标 8–12</span><span class="tag rest">休息 45秒</span><span class="tag focus">全身代谢</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：先稳，再提速</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex3" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex3', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex3-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex3-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set1:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex3-set1:weight" data-group="周三｜恢复 + 体能-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex3" data-timer-key="周三｜恢复 + 体能-ex3-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex3-set1">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex3-set1">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex3-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex3-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set2:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex3-set2:weight" data-group="周三｜恢复 + 体能-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex3" data-timer-key="周三｜恢复 + 体能-ex3-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex3-set2">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex3-set2">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex3-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex3-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set3:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex3-set3:weight" data-group="周三｜恢复 + 体能-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex3" data-timer-key="周三｜恢复 + 体能-ex3-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex3-set3">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex3-set3">休息 45秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>侧桥 / Side Plank </h3><div class="tags"><span class="tag goal">目标 30–45秒/侧</span><span class="tag rest">休息 30秒</span><span class="tag focus">侧核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：身体保持一条线</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex4" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex4', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex4-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex4-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set1:reps" placeholder="次数/时长" value="30–45秒/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex4-set1:weight" data-group="周三｜恢复 + 体能-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex4" data-timer-key="周三｜恢复 + 体能-ex4-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex4-set1">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex4-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex4-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex4-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set2:reps" placeholder="次数/时长" value="30–45秒/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex4-set2:weight" data-group="周三｜恢复 + 体能-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex4" data-timer-key="周三｜恢复 + 体能-ex4-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex4-set2">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex4-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex4-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex4-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set3:reps" placeholder="次数/时长" value="30–45秒/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex4-set3:weight" data-group="周三｜恢复 + 体能-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex4" data-timer-key="周三｜恢复 + 体能-ex4-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex4-set3">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex4-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>肩胛俯卧撑 / Scap Push-up </h3><div class="tags"><span class="tag goal">目标 12–15</span><span class="tag rest">休息 30秒</span><span class="tag focus">肩胛控制</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：只动肩胛，别塌腰</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex5" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex5', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex5-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex5-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set1:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex5-set1:weight" data-group="周三｜恢复 + 体能-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex5" data-timer-key="周三｜恢复 + 体能-ex5-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex5-set1">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex5-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex5-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex5-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set2:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex5-set2:weight" data-group="周三｜恢复 + 体能-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex5" data-timer-key="周三｜恢复 + 体能-ex5-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex5-set2">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex5-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex5-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex5-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set3:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周三｜恢复 + 体能-ex5-set3:weight" data-group="周三｜恢复 + 体能-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周三｜恢复 + 体能-ex5" data-timer-key="周三｜恢复 + 体能-ex5-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周三｜恢复 + 体能-ex5-set3">--:--</span>
+<span class="restbadge" id="rest-周三｜恢复 + 体能-ex5-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周四｜上肢耐力 + 体态"><div class="dayhead"><div><h2>周四｜上肢耐力 + 体态</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周四｜上肢耐力 + 体态">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周四｜上肢耐力 + 体态"></div></div></div></div><div class="grid"><div class="card"><h3>宽距俯卧撑 / Wide Push-up </h3><div class="tags"><span class="tag goal">目标 10–15</span><span class="tag rest">休息 60秒</span><span class="tag focus">胸/肩</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：别耸肩，胸先发力</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex1" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex1', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex1-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex1-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set1:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set1:weight" data-group="周四｜上肢耐力 + 体态-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex1" data-timer-key="周四｜上肢耐力 + 体态-ex1-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex1-set1">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex1-set1">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex1-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex1-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set2:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set2:weight" data-group="周四｜上肢耐力 + 体态-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex1" data-timer-key="周四｜上肢耐力 + 体态-ex1-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex1-set2">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex1-set2">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex1-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex1-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set3:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set3:weight" data-group="周四｜上肢耐力 + 体态-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex1" data-timer-key="周四｜上肢耐力 + 体态-ex1-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex1-set3">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex1-set3">休息 60秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>椅上臂屈伸 / Bench Dip </h3><div class="tags"><span class="tag goal">目标 8–12</span><span class="tag rest">休息 60秒</span><span class="tag focus">肱三</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：肩不舒服就减量</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex2" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex2', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex2-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex2-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set1:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set1:weight" data-group="周四｜上肢耐力 + 体态-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex2" data-timer-key="周四｜上肢耐力 + 体态-ex2-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex2-set1">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex2-set1">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex2-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex2-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set2:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set2:weight" data-group="周四｜上肢耐力 + 体态-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex2" data-timer-key="周四｜上肢耐力 + 体态-ex2-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex2-set2">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex2-set2">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex2-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex2-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set3:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set3:weight" data-group="周四｜上肢耐力 + 体态-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex2" data-timer-key="周四｜上肢耐力 + 体态-ex2-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex2-set3">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex2-set3">休息 60秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>俯身 Y-T-W </h3><div class="tags"><span class="tag goal">目标 8–10/型</span><span class="tag rest">休息 45秒</span><span class="tag focus">肩胛/后束</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作慢一点，找背上发力</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex3" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex3', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex3-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex3-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set1:reps" placeholder="次数/时长" value="8–10/型" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set1:weight" data-group="周四｜上肢耐力 + 体态-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex3" data-timer-key="周四｜上肢耐力 + 体态-ex3-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex3-set1">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex3-set1">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex3-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex3-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set2:reps" placeholder="次数/时长" value="8–10/型" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set2:weight" data-group="周四｜上肢耐力 + 体态-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex3" data-timer-key="周四｜上肢耐力 + 体态-ex3-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex3-set2">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex3-set2">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex3-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex3-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set3:reps" placeholder="次数/时长" value="8–10/型" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set3:weight" data-group="周四｜上肢耐力 + 体态-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex3" data-timer-key="周四｜上肢耐力 + 体态-ex3-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex3-set3">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex3-set3">休息 45秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>反向支撑静止 / Reverse Plank </h3><div class="tags"><span class="tag goal">目标 30–45秒</span><span class="tag rest">休息 45秒</span><span class="tag focus">后链/肩稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：抬髋，胸口打开</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex4" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex4', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex4-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex4-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set1:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set1:weight" data-group="周四｜上肢耐力 + 体态-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex4" data-timer-key="周四｜上肢耐力 + 体态-ex4-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex4-set1">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex4-set1">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex4-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex4-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set2:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set2:weight" data-group="周四｜上肢耐力 + 体态-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex4" data-timer-key="周四｜上肢耐力 + 体态-ex4-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex4-set2">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex4-set2">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex4-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex4-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set3:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set3:weight" data-group="周四｜上肢耐力 + 体态-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex4" data-timer-key="周四｜上肢耐力 + 体态-ex4-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex4-set3">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex4-set3">休息 45秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>仰卧举腿 / Leg Raise </h3><div class="tags"><span class="tag goal">目标 10–15</span><span class="tag rest">休息 45秒</span><span class="tag focus">下腹</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：下放慢，不要甩腿</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex5" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex5', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex5-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex5-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set1:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set1:weight" data-group="周四｜上肢耐力 + 体态-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex5" data-timer-key="周四｜上肢耐力 + 体态-ex5-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex5-set1">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex5-set1">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex5-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex5-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set2:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set2:weight" data-group="周四｜上肢耐力 + 体态-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex5" data-timer-key="周四｜上肢耐力 + 体态-ex5-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex5-set2">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex5-set2">休息 45秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex5-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex5-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set3:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set3:weight" data-group="周四｜上肢耐力 + 体态-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex5" data-timer-key="周四｜上肢耐力 + 体态-ex5-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周四｜上肢耐力 + 体态-ex5-set3">--:--</span>
+<span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex5-set3">休息 45秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周五｜全身串联"><div class="dayhead"><div><h2>周五｜全身串联</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周五｜全身串联">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周五｜全身串联"></div></div></div></div><div class="grid"><div class="card"><h3>俯卧撑 + 深蹲循环 </h3><div class="tags"><span class="tag goal">目标 10 + 15</span><span class="tag rest">休息 60秒</span><span class="tag focus">全身</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：每轮动作都做完整</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex1" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex1', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex1-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex1-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex1-set1:reps" placeholder="次数/时长" value="10 + 15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex1-set1:weight" data-group="周五｜全身串联-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex1" data-timer-key="周五｜全身串联-ex1-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex1-set1">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex1-set1">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex1-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex1-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex1-set2:reps" placeholder="次数/时长" value="10 + 15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex1-set2:weight" data-group="周五｜全身串联-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex1" data-timer-key="周五｜全身串联-ex1-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex1-set2">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex1-set2">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex1-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex1-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex1-set3:reps" placeholder="次数/时长" value="10 + 15" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex1-set3:weight" data-group="周五｜全身串联-ex1" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex1" data-timer-key="周五｜全身串联-ex1-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex1-set3">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex1-set3">休息 60秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>箭步蹲跳（可改普通箭步） </h3><div class="tags"><span class="tag goal">目标 8–10/侧</span><span class="tag rest">休息 60秒</span><span class="tag focus">爆发/腿</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：膝不舒服就改普通箭步</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex2" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex2', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex2-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex2-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex2-set1:reps" placeholder="次数/时长" value="8–10/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex2-set1:weight" data-group="周五｜全身串联-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex2" data-timer-key="周五｜全身串联-ex2-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex2-set1">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex2-set1">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex2-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex2-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex2-set2:reps" placeholder="次数/时长" value="8–10/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex2-set2:weight" data-group="周五｜全身串联-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex2" data-timer-key="周五｜全身串联-ex2-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex2-set2">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex2-set2">休息 60秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex2-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex2-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex2-set3:reps" placeholder="次数/时长" value="8–10/侧" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex2-set3:weight" data-group="周五｜全身串联-ex2" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex2" data-timer-key="周五｜全身串联-ex2-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex2-set3">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex2-set3">休息 60秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>高抬腿 / High Knees </h3><div class="tags"><span class="tag goal">目标 30–40秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">心肺</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：保持节奏</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex3" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex3', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex3-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex3-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex3-set1:reps" placeholder="次数/时长" value="30–40秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex3-set1:weight" data-group="周五｜全身串联-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex3" data-timer-key="周五｜全身串联-ex3-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex3-set1">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex3-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex3-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex3-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex3-set2:reps" placeholder="次数/时长" value="30–40秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex3-set2:weight" data-group="周五｜全身串联-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex3" data-timer-key="周五｜全身串联-ex3-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex3-set2">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex3-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex3-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex3-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex3-set3:reps" placeholder="次数/时长" value="30–40秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex3-set3:weight" data-group="周五｜全身串联-ex3" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex3" data-timer-key="周五｜全身串联-ex3-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex3-set3">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex3-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>登山跑 </h3><div class="tags"><span class="tag goal">目标 40秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">体能</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：最后再冲一把</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex4" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex4', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex4-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex4-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex4-set1:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex4-set1:weight" data-group="周五｜全身串联-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex4" data-timer-key="周五｜全身串联-ex4-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex4-set1">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex4-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex4-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex4-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex4-set2:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex4-set2:weight" data-group="周五｜全身串联-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex4" data-timer-key="周五｜全身串联-ex4-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex4-set2">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex4-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex4-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex4-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex4-set3:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex4-set3:weight" data-group="周五｜全身串联-ex4" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex4" data-timer-key="周五｜全身串联-ex4-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex4-set3">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex4-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>Hollow Hold / 船式静止 </h3><div class="tags"><span class="tag goal">目标 20–30秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：腰别顶地过猛，稳住呼吸</div>
+<details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex5" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex5', true)">覆盖全部</button></details>
+<div class="sets"><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex5-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex5-set1">第1组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex5-set1:reps" placeholder="次数/时长" value="20–30秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex5-set1:weight" data-group="周五｜全身串联-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex5" data-timer-key="周五｜全身串联-ex5-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex5-set1">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex5-set1">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex5-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex5-set2">第2组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex5-set2:reps" placeholder="次数/时长" value="20–30秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex5-set2:weight" data-group="周五｜全身串联-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex5" data-timer-key="周五｜全身串联-ex5-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex5-set2">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex5-set2">休息 30秒</span>
+</div><div class="setrow">
+<label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex5-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex5-set3">第3组</span></label>
+<input class="reps" type="text" data-key="周五｜全身串联-ex5-set3:reps" placeholder="次数/时长" value="20–30秒" oninput="persist(this)">
+<input class="weight" type="text" data-key="周五｜全身串联-ex5-set3:weight" data-group="周五｜全身串联-ex5" placeholder="重量" value="自重" oninput="persist(this)">
+<button class="timerbtn" data-group="周五｜全身串联-ex5" data-timer-key="周五｜全身串联-ex5-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
+<span class="timer" id="timer-周五｜全身串联-ex5-set3">--:--</span>
+<span class="restbadge" id="rest-周五｜全身串联-ex5-set3">休息 30秒</span>
+</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section>
+
+<div class="stickybar"><div class="stickypanel">
+  <div>
+    <div class="stickytitle" id="stickyTitle">今天</div>
+    <div class="stickysub" id="stickySub">统计</div>
+  </div>
+  <div class="stickystats">
+    <span class="pill" id="pillDay">今日 0%</span>
+    <span class="pill" id="pillWeek">本周 0%</span>
+    <button class="ghost" onclick="jumpNext()">下一组</button>
+  </div>
+</div></div>
+
+<script>
+const PREFIX='fitness-set-check-v4:';
+const OTHER_MODE_PATH='./workout_home.html';
+function _getAnySyncCode(){
+  try{
+    const params=new URLSearchParams(location.search);
+    const fromUrl=String(params.get('sync')||params.get('syncCode')||'').trim();
+    if(fromUrl) return fromUrl;
+  }catch(e){}
+  try{
+    const fromLs=String(localStorage.getItem(PREFIX+'cloud:syncCode')||'').trim();
+    if(fromLs) return fromLs;
+  }catch(e){}
+  return '';
+}
+function goOtherMode(){
+  const sync=_getAnySyncCode();
+  if(sync){
+    location.href = OTHER_MODE_PATH + '?sync=' + encodeURIComponent(sync);
+  }else{
+    location.href = OTHER_MODE_PATH;
+  }
+}
+ const timers={}; const timerState={}; let activeTimerKey=null;
+let _audioCtx=null;
+let _audioPrimed=false;
+let soundMuted = (localStorage.getItem(PREFIX+'soundMuted')==='1');
+async function _ensureAudio(){
+  try{
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if(!AC) return false;
+    if(!_audioCtx) _audioCtx = new AC();
+    if(_audioCtx && _audioCtx.state!=='running'){
+      try{ await _audioCtx.resume(); }catch(e){}
+    }
+    if(_audioCtx && !_audioPrimed){
+      try{
+        const buffer=_audioCtx.createBuffer(1,1,_audioCtx.sampleRate||44100);
+        const src=_audioCtx.createBufferSource();
+        const gain=_audioCtx.createGain();
+        gain.gain.value=0.00001;
+        src.buffer=buffer;
+        src.connect(gain);
+        gain.connect(_audioCtx.destination);
+        src.start(0);
+        if(src.stop) src.stop((_audioCtx.currentTime||0)+0.01);
+      }catch(e){}
+      _audioPrimed=true;
+    }
+    return !!(_audioCtx && _audioCtx.state==='running');
+  }catch(e){
+    return false;
+  }
+}
+function _beep(freq=880, duration=0.08, volume=0.15){
+  if(soundMuted) return;
+  const play=()=>{
+    if(!_audioCtx || _audioCtx.state!=='running') return;
+    try{
+      const ctx=_audioCtx;
+      const now=ctx.currentTime;
+      const o=ctx.createOscillator();
+      const g=ctx.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(Math.max(volume,0.0001), now+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+duration);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(now);
+      o.stop(now + duration + 0.02);
+    }catch(e){}
+  };
+  if(_audioCtx && _audioCtx.state==='running'){
+    play();
+  }else{
+    Promise.resolve(_ensureAudio()).then(play).catch(()=>{});
+  }
+}
+async function toggleSound(){
+  soundMuted=!soundMuted;
+  localStorage.setItem(PREFIX+'soundMuted', soundMuted?'1':'0');
+  scheduleCloudSync();
+  updateSoundBtn();
+  if(!soundMuted){
+    const ok = await _ensureAudio();
+    if(ok) _beep(660, 0.06, 0.05);
+  }
+}
+function updateSoundBtn(){
+  const b=document.getElementById('soundBtn');
+  if(b) b.textContent = soundMuted ? '声音：关' : '声音：开';
+  try{ syncSwitches(); }catch(e){}
+}
+
+function _wakeAudio(){
+  if(!soundMuted) _ensureAudio();
+}
+// Telegram / iOS：需要在多种交互里反复尝试解锁；从后台回来也补一次
+['pointerdown','touchstart','touchend','click'].forEach(evt=>{
+  document.addEventListener(evt, _wakeAudio, {passive:true});
+});
+document.addEventListener('keydown', _wakeAudio);
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden) _wakeAudio();
+});
+window.addEventListener('pageshow', _wakeAudio);
+
+// --- UI prefs v2 ---
+const SYNC_PREF_PREFIX = PREFIX + 'cloud:';
+const CLOUD_DEFAULT_URL = 'https://jgxcbylqqgjzaprfiijp.supabase.co';
+const CLOUD_DEFAULT_ANON_KEY = 'sb_publishable_igyb26LqNeN7TKKZ4pbvuw_4Is2buJE';
+const SYNC_STATE = {ready:false,pending:false,pullPending:false,lastHash:'',saveTimer:null};
+function _syncGet(key, def=''){ const v=localStorage.getItem(SYNC_PREF_PREFIX + key); return v===null?def:v; }
+function _syncSet(key, val){ localStorage.setItem(SYNC_PREF_PREFIX + key, String(val ?? '')); }
+function getCloudConfig(){
+  return {
+    url:_syncGet('url', CLOUD_DEFAULT_URL).trim(),
+    anonKey:_syncGet('anonKey', CLOUD_DEFAULT_ANON_KEY).trim(),
+    syncCode:_syncGet('syncCode','').trim()
+  };
+}
+function applyCloudConfigFromUrl(){
+  try{
+    const url = new URL(location.href);
+    const sync = String(url.searchParams.get('sync') || url.searchParams.get('syncCode') || '').trim();
+    const reset = url.searchParams.get('sync_reset') === '1';
+    let changed = false;
+    if(reset){
+      _syncSet('url', '');
+      _syncSet('anonKey', '');
+      _syncSet('syncCode', '');
+      changed = true;
+    }
+    if(sync){
+      _syncSet('url', CLOUD_DEFAULT_URL);
+      _syncSet('anonKey', CLOUD_DEFAULT_ANON_KEY);
+      _syncSet('syncCode', sync);
+      changed = true;
+    }
+    if(changed){
+      url.searchParams.delete('sync');
+      url.searchParams.delete('syncCode');
+      url.searchParams.delete('sync_reset');
+      const next = url.pathname + (url.searchParams.toString() ? ('?' + url.searchParams.toString()) : '') + url.hash;
+      history.replaceState(null, '', next);
+    }
+  }catch(e){}
+}
+
+function setSyncBadge(mode, text){
+  const badge=document.getElementById('syncBadge');
+  const textEl=document.getElementById('syncBadgeText');
+  if(textEl) textEl.textContent=text;
+  if(badge){
+    badge.classList.remove('ok','off','pending','error');
+    if(mode==='ok') badge.classList.add('ok');
+    else if(mode==='off') badge.classList.add('off');
+    else if(mode==='error') badge.classList.add('error');
+    else badge.classList.add('pending');
+  }
+}
+function setCloudHint(text){
+  const el=document.getElementById('cloudHint');
+  if(el) el.textContent=text;
+}
+function formatSyncTime(ts){
+  if(!ts) return '未备份';
+  const d=new Date(ts);
+  if(Number.isNaN(d.getTime())) return '未备份';
+  const now=new Date();
+  const pad=n=>String(n).padStart(2,'0');
+  const sameYear=now.getFullYear()===d.getFullYear();
+  const sameDay=sameYear && now.getMonth()===d.getMonth() && now.getDate()===d.getDate();
+  if(sameDay) return '今天 ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  const prefix = sameYear ? '' : (d.getFullYear() + '-');
+  return prefix + (d.getMonth()+1) + '-' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+function trimSyncMessage(err){
+  const msg=String(err && err.message ? err.message : err || '').replace(/\s+/g,' ').trim();
+  if(!msg) return '未知错误';
+  return msg.length>42 ? (msg.slice(0,42) + '…') : msg;
+}
+function getStoredSyncMeta(){
+  return {
+    status:_syncGet('lastStatus',''),
+    detail:_syncGet('lastDetail',''),
+    result:_syncGet('lastResult',''),
+    at:_syncGet('lastAt','')
+  };
+}
+function storeSyncMeta(status, detail, opts={}){
+  if(status!==undefined) _syncSet('lastStatus', status || '');
+  if(detail!==undefined) _syncSet('lastDetail', detail || '');
+  if(Object.prototype.hasOwnProperty.call(opts,'result')) _syncSet('lastResult', opts.result || '');
+  if(Object.prototype.hasOwnProperty.call(opts,'at')) _syncSet('lastAt', opts.at || '');
+  refreshSyncStatus();
+}
+function fillCloudConfig(){
+  const cfg=getCloudConfig();
+  const urlEl=document.getElementById('supabaseUrlInput');
+  const keyEl=document.getElementById('supabaseAnonKeyInput');
+  const codeEl=document.getElementById('syncCodeInput');
+  if(urlEl) urlEl.value=cfg.url;
+  if(keyEl) keyEl.value=cfg.anonKey;
+  if(codeEl) codeEl.value=cfg.syncCode;
+  refreshSyncStatus();
+}
+function buildServerPayload(){
+  try{
+    const raw=localStorage.getItem(PREFIX + 'db:v2');
+    const db=raw?JSON.parse(raw):null;
+    return {
+      prefix:PREFIX,
+      schema:'fitness-sync-v1',
+      savedAt:new Date().toISOString(),
+      db:db,
+      prefs:{
+        dark:_getPref('dark','0'),
+        todayOnly:_getPref('todayOnly','1'),
+        hideImg:_getPref('hideImg','1'),
+        soundMuted:soundMuted?'1':'0'
+      }
+    };
+  }catch(e){
+    return {
+      prefix:PREFIX,
+      schema:'fitness-sync-v1',
+      savedAt:new Date().toISOString(),
+      db:null,
+      prefs:{dark:'0',todayOnly:'1',hideImg:'1',soundMuted:soundMuted?'1':'0'}
+    };
+  }
+}
+async function supabaseRequest(method, path, body, extraHeaders={}){
+  const cfg=getCloudConfig();
+  if(!cfg.url || !cfg.anonKey || !cfg.syncCode) throw new Error('先用专属入口打开一次，再使用备份功能');
+  const headers={
+    'apikey':cfg.anonKey,
+    'Authorization':'Bearer ' + cfg.anonKey,
+    ...extraHeaders
+  };
+  if(body!==undefined) headers['Content-Type']='application/json';
+  const res=await fetch(cfg.url.replace(/\/$/,'') + '/rest/v1/' + path, {
+    method,
+    headers,
+    body: body===undefined ? undefined : JSON.stringify(body)
+  });
+  const text=await res.text();
+  if(!res.ok) throw new Error(text || ('HTTP ' + res.status));
+  return text ? JSON.parse(text) : null;
+}
+function applyServerPayload(payload){
+  if(!payload || !payload.db) return false;
+  try{
+    localStorage.setItem(PREFIX + 'db:v2', JSON.stringify(payload.db));
+    if(payload.prefs){
+      _setPref('dark', payload.prefs.dark ?? '0');
+      _setPref('todayOnly', payload.prefs.todayOnly ?? '1');
+      _setPref('hideImg', payload.prefs.hideImg ?? '1');
+      soundMuted = (String(payload.prefs.soundMuted ?? '0') === '1');
+      localStorage.setItem(PREFIX+'soundMuted', soundMuted?'1':'0');
+    }
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+function refreshSyncStatus(){
+  const cfg=getCloudConfig();
+  const meta=getStoredSyncMeta();
+  const statusEl=document.getElementById('cloudStatusText');
+  const lastText = meta.at ? ('上次备份：' + formatSyncTime(meta.at)) : '上次备份：未备份';
+  const detailText = meta.detail ? (' · ' + meta.detail) : '';
+  if(cfg.url && cfg.anonKey && cfg.syncCode){
+    if(statusEl) statusEl.textContent = meta.status || '自动备份已开启';
+    if(meta.result === 'ok'){
+      setSyncBadge('ok','已备份');
+      setCloudHint(lastText + detailText);
+    }else if(meta.result === 'error'){
+      setSyncBadge('error','异常');
+      setCloudHint(lastText + detailText);
+    }else{
+      setSyncBadge('pending','准备中');
+      setCloudHint(meta.at ? (lastText + detailText) : '保持自动备份；需要时也可以手动恢复。');
+    }
+  }else{
+    if(statusEl) statusEl.textContent = '当前只保存在本机';
+    setSyncBadge('off','本机');
+    setCloudHint('当前只保存在这台设备。');
+  }
+}
+async function testCloudConnection(){
+  if(window.pullCloudNow) return window.pullCloudNow(true);
+  return false;
+}
+async function syncNow(forceAlert){
+  if(window.pushCloudNow) return window.pushCloudNow(forceAlert ? false : true);
+  return false;
+}
+async function pullNow(){
+  if(window.pullCloudNow) return window.pullCloudNow(false);
+  return false;
+}
+function scheduleCloudSync(){
+  const cfg=getCloudConfig();
+  if(!cfg.url || !cfg.anonKey || !cfg.syncCode) return;
+  if(SYNC_STATE.saveTimer) clearTimeout(SYNC_STATE.saveTimer);
+  SYNC_STATE.saveTimer=setTimeout(()=>{ if(window.pushCloudNow) window.pushCloudNow(true); }, 700);
+}
+function saveCloudConfig(){
+  refreshSyncStatus();
+  if(window.pushCloudNow) window.pushCloudNow(true);
+}
+window.__cloudStoreSyncMeta = storeSyncMeta;
+window.__cloudGetSyncMeta = getStoredSyncMeta;
+window.__cloudRefreshSyncStatus = refreshSyncStatus;
+
+const PREF_PREFIX = PREFIX + 'pref:';
+function _getPref(k, def){
+  const v=localStorage.getItem(PREF_PREFIX+k);
+  return v===null?def:v;
+}
+function _setPref(k,v){
+  localStorage.setItem(PREF_PREFIX+k,String(v));
+  scheduleCloudSync();
+}
+
+function toggleDark(){
+  const on = document.body.classList.toggle('dark');
+  _setPref('dark', on?'1':'0');
+  const b=document.getElementById('darkBtn');
+  if(b) b.textContent = on ? '暗色：开' : '暗色：关';
+}
+function applyDarkPref(){
+  const on = (_getPref('dark','0')==='1');
+  document.body.classList.toggle('dark', on);
+  const b=document.getElementById('darkBtn');
+  if(b) b.textContent = on ? '暗色：开' : '暗色：关';
+}
+
+function toggleTodayOnly(){
+  const cur = (_getPref('todayOnly','1')==='1');
+  _setPref('todayOnly', cur?'0':'1');
+  applyTodayOnly();
+}
+
+function applyTodayOnly(){
+  const todayOnly = (_getPref('todayOnly','1')==='1');
+  const b=document.getElementById('todayBtn');
+  if(b) b.textContent = todayOnly ? '只看今天：开' : '只看今天：关';
+  const todayId=_todaySectionId();
+  document.querySelectorAll('section.section').forEach(sec=>{
+    const isToday = todayId && sec.id===todayId;
+    const collapse = todayOnly && todayId && !isToday;
+    sec.classList.toggle('collapsed', collapse);
+  });
+}
+
+function toggleImages(){
+  const cur = (_getPref('hideImg','1')==='1');
+  _setPref('hideImg', cur?'0':'1');
+  applyImagesPref();
+}
+function applyImagesPref(){
+  const hide = (_getPref('hideImg','1')==='1');
+  const b=document.getElementById('imgBtn');
+  if(b) b.textContent = hide ? '图片：收起' : '图片：展开';
+  document.querySelectorAll('.imgbox').forEach(box=>{
+    box.classList.toggle('hidden', hide);
+  });
+}
+
+function injectImgToggles(){
+  // Put a small toggle just above each image
+  document.querySelectorAll('.imgbox').forEach(box=>{
+    if(box.querySelector('.imgtoggle')) return;
+    const altImg = box.querySelector('img');
+    const alt = altImg ? (altImg.getAttribute('alt')||'动作图') : '动作图';
+    const btn=document.createElement('button');
+    btn.className='imgtoggle';
+    btn.type='button';
+    btn.textContent='显示/隐藏图片 · '+alt;
+    btn.onclick=()=>box.classList.toggle('hidden');
+    box.prepend(btn);
+  });
+}
+
+function computeWeekStats(){
+  let total=0, done=0;
+  document.querySelectorAll('input[type=checkbox][data-key$=":done"]').forEach(b=>{ total++; if(b.checked) done++; });
+  const pct=total?Math.round(done*100/total):0;
+  return {total,done,pct};
+}
+function updateSticky(){
+  const todayId=_todaySectionId();
+  const week=computeWeekStats();
+  const elT=document.getElementById('stickyTitle');
+  const elS=document.getElementById('stickySub');
+  const elW=document.getElementById('pillWeek');
+  const elD=document.getElementById('pillDay');
+  if(elT) elT.textContent = todayId?('今天：'+todayId):'今天：周末（默认周一）';
+  if(elS) elS.textContent = '本周完成 '+week.done+' / '+week.total+'（'+week.pct+'%）';
+  if(elW) elW.textContent = '本周 '+week.pct+'%';
+  if(todayId){
+    const sec=document.getElementById(todayId);
+    if(sec){
+      const boxes=sec.querySelectorAll('input[type=checkbox][data-key$=":done"]');
+      const t=boxes.length; const d=[...boxes].filter(b=>b.checked).length;
+      const p=t?Math.round(d*100/t):0;
+      if(elD) elD.textContent = '今日 '+p+'%';
+    }
+  }
+}
+
+
+function computeDayStatsById(dayId){
+  if(!dayId) return {total:0,done:0,pct:0,cards:0};
+  const sec=document.getElementById(dayId);
+  if(!sec) return {total:0,done:0,pct:0,cards:0};
+  const boxes=[...sec.querySelectorAll('input[type=checkbox][data-key$=":done"]')];
+  const total=boxes.length;
+  const done=boxes.filter(b=>b.checked).length;
+  const pct=total?Math.round(done*100/total):0;
+  const cards=sec.querySelectorAll('.card').length;
+  return {total,done,pct,cards};
+}
+
+function updateOverview(){
+  const todayId=_todaySectionId();
+  const week=computeWeekStats();
+  const today=computeDayStatsById(todayId);
+  const weekLabel=((document.getElementById('weekBtn')||{}).textContent||'第1周').trim();
+  const heroTitle=document.getElementById('heroTodayTitle');
+  const heroSub=document.getElementById('heroTodaySub');
+  const todayPct=document.getElementById('heroTodayPct');
+  const todayMeta=document.getElementById('heroTodayMeta');
+  const weekPct=document.getElementById('heroWeekPct');
+  const weekMeta=document.getElementById('heroWeekMeta');
+  const weekName=document.getElementById('heroWeekName');
+  const weekState=document.getElementById('heroWeekState');
+  if(heroTitle){
+    heroTitle.textContent = todayId ? ('今天练 ' + todayId.split('｜')[0]) : '今天休息也行';
+  }
+  if(heroSub){
+    if(todayId){
+      const left=Math.max(0, today.total-today.done);
+      heroSub.textContent = '已经帮你定位到“' + todayId + '”。今天共有 ' + today.cards + ' 个动作，还有 ' + left + ' 组没做。';
+    }else{
+      heroSub.textContent = '今天是周末，默认会从周一开始；上面那排日期点一下，想练哪天就练哪天。';
+    }
+  }
+  if(todayPct) todayPct.textContent = today.pct + '%';
+  if(todayMeta) todayMeta.textContent = today.done + ' / ' + today.total + ' 组';
+  if(weekPct) weekPct.textContent = week.pct + '%';
+  if(weekMeta) weekMeta.textContent = week.done + ' / ' + week.total + ' 组';
+  if(weekName) weekName.textContent = weekLabel || '第1周';
+  const weekNum = Number((weekLabel.match(/第(\d+)周/)||[])[1] || 1);
+  if(weekState) weekState.textContent = weekNum > 1 ? ('基于第' + (weekNum - 1) + '周自动进阶') : '原方案 / 本周记录';
+}
+
+function markNextUp(){
+  document.querySelectorAll('.setrow.next-up').forEach(row=>row.classList.remove('next-up'));
+  const todayId=_todaySectionId();
+  const scope=(todayId && document.getElementById(todayId)) || document;
+  if(!scope) return;
+  const next=[...scope.querySelectorAll('input[type=checkbox][data-key$=":done"]')].find(box=>!box.checked);
+  const row=next ? next.closest('.setrow') : null;
+  if(row) row.classList.add('next-up');
+}
+
+const _baseUpdateStickyV5 = updateSticky;
+updateSticky = function(){
+  _baseUpdateStickyV5();
+  updateOverview();
+  labelTimerButtons();
+  markNextUp();
+};
+
+
+function jumpNext(){
+  // scroll to next unchecked set (today first)
+  const todayId=_todaySectionId();
+  const scope = todayId ? document.getElementById(todayId) : document;
+  if(!scope) return;
+  const boxes=[...scope.querySelectorAll('input[type=checkbox][data-key$=":done"]')];
+  const next=boxes.find(b=>!b.checked);
+  if(next){
+    const row=next.closest('.setrow') || next.closest('.card') || next;
+    row.scrollIntoView({behavior:'smooth',block:'center'});
+    // little focus
+    setTimeout(()=>{ try{ next.focus(); }catch(e){} }, 150);
+  } else {
+    alert('今天的组都打完了 👌');
+  }
+}
+
+
+function persist(el){ const key=PREFIX+el.dataset.key; const val=(el.type==='checkbox')?(el.checked?'1':'0'):el.value; localStorage.setItem(key,val); scheduleCloudSync(); if(el.type==='checkbox'){ updateSticky(); const id='label-'+el.dataset.key.replace(':done',''); const label=document.getElementById(id); if(label) label.classList.toggle('done', el.checked);} }
+function restore(){ document.querySelectorAll('[data-key]').forEach(el=>{ const v=localStorage.getItem(PREFIX+el.dataset.key); if(v!==null){ if(el.type==='checkbox'){ el.checked=(v==='1'); const id='label-'+el.dataset.key.replace(':done',''); const label=document.getElementById(id); if(label) label.classList.toggle('done', el.checked);} else { el.value=v; } } }); document.querySelectorAll('button[data-timer-key]').forEach(btn=>{ const v=localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'); if(v!==null){ btn.dataset.rest=v; const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+v+'秒'; } }); document.querySelectorAll('section[id]').forEach(sec=>refreshDay(sec.id)); }
+function fmt(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const ss=(s%60).toString().padStart(2,'0'); return m+':'+ss; }
+function labelTimerButtons(){ document.querySelectorAll('.timerbtn').forEach(btn=>{ btn.textContent='开始倒计时'; btn.setAttribute('aria-label','开始倒计时'); }); }
+function _timerStateFor(btn, key, seconds){ const row=btn.closest('.setrow'); const card=btn.closest('.card'); const exercise=((card&&card.querySelector('h3'))?card.querySelector('h3').textContent:'当前动作').trim(); const set=((row&&row.querySelector('.setlabel span'))?row.querySelector('.setlabel span').textContent:'当前组').trim(); return {key,total:seconds,endAt:Date.now()+seconds*1000,exercise,set}; }
+function updateTimerOverlay(key, left){ const overlay=document.getElementById('timerOverlay'); if(!overlay) return; const state=timerState[key]; if(!state) return; const remain=(typeof left==='number')?Math.max(0,left):Math.max(0, Math.ceil((state.endAt-Date.now())/1000)); const pct=state.total?Math.max(0,Math.min(100,Math.round((1-remain/state.total)*100))):0; const title=document.getElementById('timerOverlayExercise'); const set=document.getElementById('timerOverlaySet'); const value=document.getElementById('timerOverlayValue'); const meta=document.getElementById('timerOverlayMeta'); const fill=document.getElementById('timerOverlayFill'); if(title) title.textContent=state.exercise||'当前动作'; if(set) set.textContent=state.set||'当前组'; if(value) value.textContent=remain>0?fmt(remain):'完成'; if(meta) meta.textContent = remain>10 ? '倒计时进行中' : remain>0 ? '最后 10 秒会响' : '休息结束，开始下一组吧'; if(fill) fill.style.width=pct+'%'; overlay.classList.toggle('done', remain===0); }
+function openTimerOverlay(key){ activeTimerKey=key; const overlay=document.getElementById('timerOverlay'); if(!overlay) return; overlay.classList.remove('done'); overlay.classList.add('show'); document.body.classList.add('timerPageOpen'); updateTimerOverlay(key); }
+function closeTimerOverlay(){ const overlay=document.getElementById('timerOverlay'); if(overlay){ overlay.classList.remove('show'); overlay.classList.remove('done'); } document.body.classList.remove('timerPageOpen'); activeTimerKey=null; }
+function stopTimer(key, hideOverlay=true){ if(!key) return; if(timers[key]){ clearInterval(timers[key]); delete timers[key]; } delete timerState[key]; const el=document.getElementById('timer-'+key); if(el) el.textContent='--:--'; if(activeTimerKey===key && hideOverlay) closeTimerOverlay(); }
+function stopActiveTimer(){ if(activeTimerKey) stopTimer(activeTimerKey, true); else closeTimerOverlay(); }
+function startTimer(btn){ const key=btn.dataset.timerKey; const seconds=parseInt(btn.dataset.rest||'0',10); if(!seconds||seconds<=0){ alert('这个动作当前休息时间是 0 秒'); return; } _ensureAudio(); if(timers[key]) clearInterval(timers[key]); const el=document.getElementById('timer-'+key); timerState[key]=_timerStateFor(btn, key, seconds); if(el) el.textContent=fmt(seconds); openTimerOverlay(key); updateTimerOverlay(key, seconds); const endAt=timerState[key].endAt; let lastShown=seconds; let lastBeepLeft=null; timers[key]=setInterval(()=>{ const left=Math.max(0, Math.ceil((endAt-Date.now())/1000)); if(el && left!==lastShown){ el.textContent = left>0 ? fmt(left) : '完成'; lastShown=left; } if(activeTimerKey===key) updateTimerOverlay(key, left); if(left>0 && left<=10 && left!==lastBeepLeft){ _beep(920 + (10-left)*24, 0.10, 0.18); lastBeepLeft=left; } if(left<=0){ if(lastBeepLeft!==0){ _beep(440, 0.30, 0.22); lastBeepLeft=0; } clearInterval(timers[key]); delete timers[key]; if(el) el.textContent='完成'; if(activeTimerKey===key) updateTimerOverlay(key, 0); } }, 250); }
+function refreshDay(day){ const sec=document.getElementById(day); if(!sec) return; const boxes=sec.querySelectorAll('input[type=checkbox][data-key$=":done"]'); const total=boxes.length; const done=[...boxes].filter(b=>b.checked).length; const pct=total?Math.round(done*100/total):0; const t=document.getElementById('prog-text-'+day); const f=document.getElementById('prog-fill-'+day); if(t) t.textContent='今日完成度：'+done+' / '+total+'（'+pct+'%）'; if(f) f.style.width=pct+'%'; }
+function applyGlobal(overwrite){ const weight=(document.getElementById('globalWeight').value||'').trim(); const rest=(document.getElementById('globalRest').value||'').trim(); if(!weight && !rest){ alert('先填默认重量或默认休息秒数'); return; } document.querySelectorAll('input.weight[data-group]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-timer-key]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
+function applyExercise(group, overwrite){ const weight=(document.getElementById('w-'+group).value||'').trim(); const rest=(document.getElementById('r-'+group).value||'').trim(); if(!weight && !rest){ alert('先填这个动作的重量或休息秒数'); return; } document.querySelectorAll('input.weight[data-group="'+group+'"]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-group="'+group+'"]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
+function resetAll(){ if(!confirm('确定清空全部逐组打卡和输入内容？')) return; Object.keys(localStorage).forEach(k=>{ if(k.startsWith(PREFIX)) localStorage.removeItem(k); }); location.reload(); }
+function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+function openSheet(){
+  const m=document.getElementById('sheetMask');
+  const s=document.getElementById('sheet');
+  if(m) m.style.display='block';
+  if(s) s.style.transform='translateY(0)';
+  document.body.classList.add('sheetOpen');
+  syncSwitches();
+}
+function closeSheet(){
+  const m=document.getElementById('sheetMask');
+  const s=document.getElementById('sheet');
+  if(m) m.style.display='none';
+  if(s) s.style.transform='translateY(110%)';
+  document.body.classList.remove('sheetOpen');
+}
+function syncSwitches(){
+  // soundMuted: true => off
+  const swSound=document.getElementById('swSound');
+  if(swSound) swSound.classList.toggle('on', !soundMuted);
+  const swToday=document.getElementById('swToday');
+  if(swToday) swToday.classList.toggle('on', (_getPref('todayOnly','1')==='1'));
+  const swImg=document.getElementById('swImg');
+  if(swImg) swImg.classList.toggle('on', (_getPref('hideImg','1')!=='1'));
+  const swDark=document.getElementById('swDark');
+  if(swDark) swDark.classList.toggle('on', (_getPref('dark','0')==='1'));
+}
+
+
+function _todaySectionId(){
+  const d=new Date().getDay();
+  if(d===1) return '周一｜上肢力量';
+  if(d===2) return '周二｜下肢力量 + 核心';
+  if(d===3) return '周三｜体能恢复 / 有氧 / 旗帜基础';
+  if(d===4) return '周四｜上肢增肌 + 体态';
+  if(d===5) return '周五｜下肢增肌 + 后链 + 核心';
+  return null;
+}
+function markTodayInToc(){
+  const id=_todaySectionId();
+  if(!id) return;
+  document.querySelectorAll('.toc a').forEach(a=>{
+    a.classList.toggle('today', a.getAttribute('href')==='#'+id);
+  });
+}
+function jumpToToday(){
+  // 如果你手动点了目录/带了 hash，我们尊重你的选择；否则默认跳到“今天”。
+  if(location.hash && location.hash.length>1) return;
+  const id=_todaySectionId() || '周一｜上肢力量';
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({block:'start'});
+}
+
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeSheet(); closeTimerOverlay(); } });
+applyCloudConfigFromUrl();
+fillCloudConfig();
+labelTimerButtons();
+restore();
+applyDarkPref();
+applyTodayOnly();
+applyImagesPref();
+injectImgToggles();
+updateSoundBtn();
+updateSticky();
+markTodayInToc();
+jumpToToday();
+</script><script>
+(function(){
+  if(window.__workoutWeekDbLoaded) return;
+  window.__workoutWeekDbLoaded = true;
+
+  const DB_KEY = PREFIX + 'db:v2';
+  const DUMBBELL_STEPS = [2,2.5,3.5,4.5,5.5,6.5,8,9,10,11.5,13.5,16,18,20.5];
+
+  function loadDb(){
+    try{
+      const raw = localStorage.getItem(DB_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && parsed.weeks) return parsed;
+      }
+    }catch(e){}
+    return {version:1,currentWeek:1,weeks:{}};
+  }
+  const db = loadDb();
+
+  function saveDb(){
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+    if(window.__cloudMaybeSchedule) window.__cloudMaybeSchedule('db');
+  }
+
+  function ensureWeek(week){
+    const key = String(week);
+    if(!db.weeks[key]) db.weeks[key] = {fields:{}, rests:{}, meta:{}};
+    return db.weeks[key];
+  }
+
+  function captureTemplateDefaults(){
+    const fields = {};
+    const rests = {};
+    document.querySelectorAll('[data-key]').forEach(el=>{
+      if(el.type === 'checkbox') fields[el.dataset.key] = el.defaultChecked ? '1' : '0';
+      else fields[el.dataset.key] = (el.defaultValue ?? el.getAttribute('value') ?? '').trim();
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      const badge = document.getElementById('rest-'+btn.dataset.timerKey);
+      const m = badge ? badge.textContent.match(/(\d+)/) : null;
+      rests[btn.dataset.timerKey] = String(m ? m[1] : (btn.dataset.rest || '0'));
+    });
+    return {fields, rests};
+  }
+
+  function captureCurrentDomState(){
+    const fields = {};
+    const rests = {};
+    document.querySelectorAll('[data-key]').forEach(el=>{
+      fields[el.dataset.key] = el.type === 'checkbox' ? (el.checked ? '1' : '0') : String(el.value ?? '');
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      rests[btn.dataset.timerKey] = String(btn.dataset.rest || '0');
+    });
+    return {fields, rests, meta:{bootstrappedAt:new Date().toISOString()}};
+  }
+
+  const TEMPLATE = captureTemplateDefaults();
+  if(!db.weeks['1'] || !db.weeks['1'].fields || !Object.keys(db.weeks['1'].fields).length){
+    db.weeks['1'] = captureCurrentDomState();
+  }
+
+  let CURRENT_WEEK = Number(db.currentWeek || 1);
+
+  function getWeekField(week, key){
+    const wk = ensureWeek(week);
+    if(Object.prototype.hasOwnProperty.call(wk.fields, key)) return wk.fields[key];
+    return Object.prototype.hasOwnProperty.call(TEMPLATE.fields, key) ? TEMPLATE.fields[key] : (key.endsWith(':done') ? '0' : '');
+  }
+  function setWeekField(week, key, value){
+    const wk = ensureWeek(week);
+    wk.fields[key] = String(value);
+    if(Number(week) === 1) localStorage.setItem(PREFIX + key, String(value));
+    saveDb();
+    scheduleCloudSync();
+  }
+  function getWeekRest(week, key){
+    const wk = ensureWeek(week);
+    if(Object.prototype.hasOwnProperty.call(wk.rests, key)) return wk.rests[key];
+    return TEMPLATE.rests[key] || '0';
+  }
+  function setWeekRest(week, key, value){
+    const wk = ensureWeek(week);
+    wk.rests[key] = String(value);
+    if(Number(week) === 1) localStorage.setItem(PREFIX + key + ':rest', String(value));
+    saveDb();
+    scheduleCloudSync();
+  }
+
+  function summarizeValues(values){
+    const cleaned = values.map(v => String(v ?? '').trim());
+    const unique = [...new Set(cleaned)];
+    return unique.length === 1 ? unique[0] : cleaned.join(' / ');
+  }
+
+  function refreshCardSummary(card){
+    const goalTag = card.querySelector('.tag.goal');
+    const weightTag = card.querySelector('.tag.weight');
+    const repInputs = [...card.querySelectorAll('.reps[data-key]')];
+    const weightInputs = [...card.querySelectorAll('.weight[data-key]')];
+    if(goalTag && !goalTag.dataset.basePrefix){
+      goalTag.dataset.basePrefix = goalTag.textContent.trim().startsWith('每组次数') ? '每组次数' : '目标';
+    }
+    if(weightTag && !weightTag.dataset.basePrefix){
+      weightTag.dataset.basePrefix = '建议';
+    }
+    if(goalTag && repInputs.length){
+      goalTag.textContent = goalTag.dataset.basePrefix + ' ' + summarizeValues(repInputs.map(el=>el.value));
+    }
+    if(weightTag && weightInputs.length){
+      weightTag.textContent = weightTag.dataset.basePrefix + ' ' + summarizeValues(weightInputs.map(el=>el.value));
+    }
+  }
+
+  function refreshAllCardSummaries(){
+    document.querySelectorAll('.card').forEach(refreshCardSummary);
+  }
+
+  const baseUpdateSticky = updateSticky;
+  updateSticky = function(){
+    baseUpdateSticky();
+    const elS = document.getElementById('stickySub');
+    if(elS){
+      const text = elS.textContent.replace(/^第\d+周 · /,'');
+      elS.textContent = '第' + CURRENT_WEEK + '周 · ' + text;
+    }
+  };
+
+  const MAX_WEEK = 4;
+  function weekLabel(week){
+    return '第' + week + '周';
+  }
+
+  function updateWeekUI(){
+    const weekBtn = document.getElementById('weekBtn');
+    if(weekBtn) weekBtn.textContent = weekLabel(CURRENT_WEEK);
+    for(let i=1;i<=MAX_WEEK;i++){
+      const btn = document.getElementById('week' + i + 'Btn');
+      if(btn) btn.classList.toggle('active', CURRENT_WEEK === i);
+    }
+    const hint = document.getElementById('weekHint');
+    if(hint){
+      if(CURRENT_WEEK === 1) hint.textContent = '第1周保持原方案和原重量；这里只记录你本周自己的打卡。';
+      else hint.textContent = weekLabel(CURRENT_WEEK) + ' 会独立保存；默认基于' + weekLabel(CURRENT_WEEK - 1) + '的打卡结果自动生成，你也可以再手动微调。';
+    }
+  }
+
+  function restoreCurrentWeek(){
+    document.querySelectorAll('[data-key]').forEach(el=>{
+      const val = getWeekField(CURRENT_WEEK, el.dataset.key);
+      if(el.type === 'checkbox'){
+        el.checked = (val === '1');
+        const label = document.getElementById('label-' + el.dataset.key.replace(':done',''));
+        if(label) label.classList.toggle('done', el.checked);
+      }else{
+        el.value = val;
+      }
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      const rest = getWeekRest(CURRENT_WEEK, btn.dataset.timerKey);
+      btn.dataset.rest = rest;
+      const badge = document.getElementById('rest-' + btn.dataset.timerKey);
+      if(badge) badge.textContent = '休息 ' + rest + '秒';
+    });
+    document.querySelectorAll('section[id]').forEach(sec=>refreshDay(sec.id));
+    refreshAllCardSummaries();
+    updateWeekUI();
+    updateSoundBtn();
+    updateSticky();
+    markTodayInToc();
+  }
+
+  function weekDoneStats(week){
+    let total = 0, done = 0;
+    Object.keys(TEMPLATE.fields).forEach(key=>{
+      if(key.endsWith(':done')){
+        total++;
+        if(getWeekField(week, key) === '1') done++;
+      }
+    });
+    return {total, done, pct: total ? Math.round(done * 100 / total) : 0};
+  }
+
+  function parseNumbers(text){
+    return (String(text || '').match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
+  }
+  function parseBounds(text){
+    const nums = parseNumbers(text);
+    if(!nums.length) return {min: NaN, max: NaN};
+    if(nums.length === 1) return {min: nums[0], max: nums[0]};
+    return {min: nums[0], max: nums[1]};
+  }
+  function firstNumber(text){
+    const nums = parseNumbers(text);
+    return nums.length ? nums[0] : NaN;
+  }
+  function formatNumber(n){
+    return Number.isInteger(n) ? String(n) : String(Math.round(n * 10) / 10).replace(/\.0$/,'');
+  }
+  function formatKg(n){
+    return formatNumber(Math.round(n * 2) / 2) + 'kg';
+  }
+  function formatDumbbell(n){
+    return formatNumber(n) + 'kg/手';
+  }
+  function nextDumbbell(n){
+    for(const step of DUMBBELL_STEPS){ if(step > n + 1e-9) return step; }
+    return n;
+  }
+  function bumpNumericText(text, delta){
+    return String(text).replace(/\d+(?:\.\d+)?/g, m => formatNumber(Number(m) + delta));
+  }
+  function isTimeText(text){ return /秒|分钟/.test(String(text || '')); }
+  function isBodyweight(text){ return /自重|轻中强度/.test(String(text || '')); }
+  function isDumbbell(text){ return /kg\/手/.test(String(text || '')); }
+  function isLoadedKg(text){ return /kg/.test(String(text || '')) && !/kg\/手/.test(String(text || '')); }
+  function isLowerExercise(name, day){ return /下肢|臀|腿|提踵|深蹲|硬拉|分腿蹲|箭步蹲|高脚杯/.test((day || '') + ' ' + (name || '')); }
+  function isBigLower(name){ return /深蹲|硬拉|臀推|臀桥/.test(name || ''); }
+
+  function cardProgressFromWeek(card, week){
+    const setRows = [...card.querySelectorAll('.setrow')];
+    let allDone = setRows.length > 0;
+    let success = setRows.length > 0;
+    let excellent = setRows.length > 0;
+    for(const row of setRows){
+      const doneEl = row.querySelector('input[type="checkbox"][data-key$=":done"]');
+      const repsEl = row.querySelector('.reps[data-key]');
+      if(!doneEl || !repsEl) continue;
+      const done = getWeekField(week, doneEl.dataset.key) === '1';
+      const actualText = getWeekField(week, repsEl.dataset.key);
+      const targetText = getWeekField(week, repsEl.dataset.key) || TEMPLATE.fields[repsEl.dataset.key] || repsEl.defaultValue || actualText;
+      const {min, max} = parseBounds(targetText);
+      const actualNum = firstNumber(actualText);
+      const pass = done && (Number.isNaN(min) || (!Number.isNaN(actualNum) && actualNum >= min));
+      const top = done && (Number.isNaN(max) || (!Number.isNaN(actualNum) && actualNum >= max));
+      if(!done) allDone = false;
+      if(!pass) success = false;
+      if(!top) excellent = false;
+    }
+    return {allDone, success, excellent};
+  }
+
+  function buildNextWeek(sourceWeek, targetWeek){
+    const next = {fields:{}, rests:{}, meta:{generatedFrom:sourceWeek, generatedAt:new Date().toISOString()}};
+    Object.keys(TEMPLATE.fields).forEach(key=>{
+      next.fields[key] = key.endsWith(':done') ? '0' : TEMPLATE.fields[key];
+    });
+    Object.keys(TEMPLATE.rests).forEach(key=>{
+      next.rests[key] = getWeekRest(sourceWeek, key);
+    });
+
+    document.querySelectorAll('.card').forEach(card=>{
+      const title = (card.querySelector('h3')?.textContent || '').trim();
+      const day = card.closest('section')?.id || '';
+      const progress = cardProgressFromWeek(card, sourceWeek);
+      const rows = [...card.querySelectorAll('.setrow')];
+      for(const row of rows){
+        const repsEl = row.querySelector('.reps[data-key]');
+        const weightEl = row.querySelector('.weight[data-key]');
+        const doneEl = row.querySelector('input[type="checkbox"][data-key$=":done"]');
+        const timerBtn = row.querySelector('button[data-timer-key]');
+        if(!repsEl || !weightEl || !doneEl || !timerBtn) continue;
+
+        const repsKey = repsEl.dataset.key;
+        const weightKey = weightEl.dataset.key;
+        const timerKey = timerBtn.dataset.timerKey;
+        const baseGoal = TEMPLATE.fields[repsKey] ?? repsEl.defaultValue ?? repsEl.value;
+        const sourceGoal = getWeekField(sourceWeek, repsKey) || baseGoal;
+        const sourceWeight = getWeekField(sourceWeek, weightKey) || TEMPLATE.fields[weightKey] || weightEl.value;
+        const actualText = getWeekField(sourceWeek, repsKey) || sourceGoal;
+
+        let nextGoal = sourceGoal;
+        let nextWeight = sourceWeight;
+
+        if(progress.success){
+          if(isDumbbell(sourceWeight)){
+            if(progress.excellent){
+              const current = firstNumber(sourceWeight);
+              nextWeight = Number.isNaN(current) ? sourceWeight : formatDumbbell(nextDumbbell(current));
+            }else if(/尽可能多/.test(sourceGoal)){
+              const actual = firstNumber(actualText);
+              nextGoal = Number.isNaN(actual) ? ('尽可能多（比第' + sourceWeek + '周多1）') : String(actual + 1);
+            }else if(isTimeText(sourceGoal)){
+              nextGoal = bumpNumericText(sourceGoal, /分钟/.test(sourceGoal) ? 5 : 5);
+            }else if(parseNumbers(sourceGoal).length){
+              nextGoal = bumpNumericText(sourceGoal, 1);
+            }
+          }else if(isLoadedKg(sourceWeight)){
+            const current = firstNumber(sourceWeight);
+            if(!Number.isNaN(current)){
+              let delta = 2.5;
+              if(isLowerExercise(title, day) && isBigLower(title) && progress.excellent) delta = 5;
+              nextWeight = formatKg(current + delta);
+            }
+          }else if(isBodyweight(sourceWeight)){
+            if(/尽可能多/.test(sourceGoal)){
+              const actual = firstNumber(actualText);
+              nextGoal = Number.isNaN(actual) ? ('尽可能多（比第' + sourceWeek + '周多1）') : String(actual + 1);
+            }else if(isTimeText(sourceGoal)){
+              nextGoal = bumpNumericText(sourceGoal, /分钟/.test(sourceGoal) ? 5 : 5);
+            }else if(parseNumbers(sourceGoal).length){
+              nextGoal = bumpNumericText(sourceGoal, 1);
+            }
+          }
+        }
+
+        next.fields[doneEl.dataset.key] = '0';
+        next.fields[repsKey] = nextGoal;
+        next.fields[weightKey] = nextWeight;
+        next.rests[timerKey] = getWeekRest(sourceWeek, timerKey);
+      }
+    });
+
+    db.weeks[String(targetWeek)] = next;
+    saveDb();
+    scheduleCloudSync();
+  }
+
+  function hasWeek(week){
+    const wk = db.weeks[String(week)];
+    return !!(wk && wk.fields && Object.keys(wk.fields).length);
+  }
+
+  window.setWeek = function(week){
+    week = Math.max(1, Math.min(MAX_WEEK, Number(week) || 1));
+    if(week > 1 && !hasWeek(week)){
+      window.prepareWeek(week, false);
+      return;
+    }
+    CURRENT_WEEK = week;
+    db.currentWeek = CURRENT_WEEK;
+    saveDb();
+    scheduleCloudSync();
+    restoreCurrentWeek();
+    closeSheet();
+  };
+
+  window.prepareWeeksThrough = function(targetWeek, force){
+    targetWeek = Math.max(2, Math.min(MAX_WEEK, Number(targetWeek) || 2));
+    const existing = [];
+    for(let w=2; w<=targetWeek; w++){
+      if(hasWeek(w)) existing.push(weekLabel(w));
+    }
+    if(force && existing.length){
+      if(!confirm('会按前一周当前打卡结果重新生成 ' + existing.join('、') + '，已有手动调整会被覆盖。继续吗？')) return;
+    }
+
+    let warnedZero = false;
+    for(let w=2; w<=targetWeek; w++){
+      if(!force && hasWeek(w)) continue;
+      const sourceWeek = w - 1;
+      const stats = weekDoneStats(sourceWeek);
+      if(!force && stats.done === 0 && !warnedZero){
+        const sourceLabel = weekLabel(sourceWeek);
+        const targetLabel = weekLabel(w);
+        const sourceText = sourceWeek === 1 ? '当前模板' : (sourceLabel + '的当前目标');
+        if(!confirm('你' + sourceLabel + '还没打卡，我先按' + sourceText + '生成' + targetLabel + '；后面你做完' + sourceLabel + '后还能再刷新。继续吗？')) return;
+        warnedZero = true;
+      }
+      buildNextWeek(sourceWeek, w);
+    }
+    window.setWeek(targetWeek);
+  };
+
+  window.prepareWeek = function(week, force){
+    if(Number(week) <= 1) return window.setWeek(1);
+    return window.prepareWeeksThrough(week, force);
+  };
+
+  window.prepareWeek2 = function(force){
+    return window.prepareWeek(2, force);
+  };
+
+  window.toggleWeek = function(){
+    const nextWeek = CURRENT_WEEK >= MAX_WEEK ? 1 : (CURRENT_WEEK + 1);
+    if(nextWeek === 1) window.setWeek(1);
+    else window.prepareWeek(nextWeek, false);
+  };
+
+  window.__workoutWeekBridge = {
+    getDbKey(){ return DB_KEY; },
+    getDb(){ return JSON.parse(JSON.stringify(db)); },
+    replaceDb(next){
+      if(!next || typeof next !== 'object') return;
+      db.version = Number(next.version || 1);
+      db.weeks = (next.weeks && typeof next.weeks === 'object') ? next.weeks : {};
+      CURRENT_WEEK = Math.max(1, Math.min(MAX_WEEK, Number(next.currentWeek || 1)));
+      while(CURRENT_WEEK > 1 && !hasWeek(CURRENT_WEEK)) CURRENT_WEEK--;
+      db.currentWeek = CURRENT_WEEK;
+      saveDb();
+      restoreCurrentWeek();
+    },
+    getCurrentWeek(){ return CURRENT_WEEK; },
+    setCurrentWeek(week){ window.setWeek(week); },
+    hasWeek(week){ return hasWeek(week); },
+    saveDb(){ saveDb(); }
+  };
+
+  window.persist = function(el){
+    const value = (el.type === 'checkbox') ? (el.checked ? '1' : '0') : String(el.value ?? '');
+    setWeekField(CURRENT_WEEK, el.dataset.key, value);
+    if(el.type === 'checkbox'){
+      const label = document.getElementById('label-' + el.dataset.key.replace(':done',''));
+      if(label) label.classList.toggle('done', el.checked);
+    }else{
+      const card = el.closest('.card');
+      if(card) refreshCardSummary(card);
+    }
+    updateSticky();
+    const section = el.closest('section');
+    if(section) refreshDay(section.id);
+  };
+
+  window.applyGlobal = function(overwrite){
+    const weight = (document.getElementById('globalWeight').value || '').trim();
+    const rest = (document.getElementById('globalRest').value || '').trim();
+    if(!weight && !rest){ alert('先填默认重量或默认休息秒数'); return; }
+    document.querySelectorAll('input.weight[data-group]').forEach(inp=>{
+      if(weight && (overwrite || !String(inp.value || '').trim())){
+        inp.value = weight;
+        setWeekField(CURRENT_WEEK, inp.dataset.key, weight);
+        const card = inp.closest('.card');
+        if(card) refreshCardSummary(card);
+      }
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      if(rest && (overwrite || !String(btn.dataset.rest || '').trim())){
+        btn.dataset.rest = rest;
+        setWeekRest(CURRENT_WEEK, btn.dataset.timerKey, rest);
+        const badge = document.getElementById('rest-' + btn.dataset.timerKey);
+        if(badge) badge.textContent = '休息 ' + rest + '秒';
+      }
+    });
+  };
+
+  window.applyExercise = function(group, overwrite){
+    const weight = (document.getElementById('w-' + group).value || '').trim();
+    const rest = (document.getElementById('r-' + group).value || '').trim();
+    if(!weight && !rest){ alert('先填这个动作的重量或休息秒数'); return; }
+    document.querySelectorAll('input.weight[data-group="' + group + '"]').forEach(inp=>{
+      if(weight && (overwrite || !String(inp.value || '').trim())){
+        inp.value = weight;
+        setWeekField(CURRENT_WEEK, inp.dataset.key, weight);
+        const card = inp.closest('.card');
+        if(card) refreshCardSummary(card);
+      }
+    });
+    document.querySelectorAll('button[data-group="' + group + '"]').forEach(btn=>{
+      if(rest && (overwrite || !String(btn.dataset.rest || '').trim())){
+        btn.dataset.rest = rest;
+        setWeekRest(CURRENT_WEEK, btn.dataset.timerKey, rest);
+        const badge = document.getElementById('rest-' + btn.dataset.timerKey);
+        if(badge) badge.textContent = '休息 ' + rest + '秒';
+      }
+    });
+  };
+
+  window.resetAll = function(){
+    if(!confirm('确定清空当前周的打卡勾选？重量、次数和休息设置会保留。')) return;
+    document.querySelectorAll('input[type="checkbox"][data-key$=":done"]').forEach(box=>{
+      box.checked = false;
+      setWeekField(CURRENT_WEEK, box.dataset.key, '0');
+      const label = document.getElementById('label-' + box.dataset.key.replace(':done',''));
+      if(label) label.classList.remove('done');
+    });
+    document.querySelectorAll('section[id]').forEach(sec=>refreshDay(sec.id));
+    updateSticky();
+  };
+
+  window._todaySectionId = function(){
+    const ids = [...document.querySelectorAll('.toc a')].map(a => (a.getAttribute('href') || '').replace(/^#/, '')).filter(Boolean);
+    const idxMap = {1:0,2:1,3:2,4:3,5:4};
+    const idx = idxMap[new Date().getDay()];
+    return idx === undefined ? null : (ids[idx] || null);
+  };
+
+  window.markTodayInToc = function(){
+    const id = window._todaySectionId();
+    document.querySelectorAll('.toc a').forEach(a=>{
+      a.classList.toggle('today', !!id && a.getAttribute('href') === '#' + id);
+    });
+  };
+
+  window.jumpToToday = function(){
+    if(location.hash && location.hash.length > 1) return;
+    const ids = [...document.querySelectorAll('.toc a')].map(a => (a.getAttribute('href') || '').replace(/^#/, '')).filter(Boolean);
+    const id = window._todaySectionId() || ids[0] || null;
+    const el = id ? document.getElementById(id) : null;
+    if(el) el.scrollIntoView({block:'start'});
+  };
+
+  saveDb();
+  if(CURRENT_WEEK < 1 || CURRENT_WEEK > MAX_WEEK) CURRENT_WEEK = 1;
+  while(CURRENT_WEEK > 1 && !hasWeek(CURRENT_WEEK)) CURRENT_WEEK--;
+  db.currentWeek = CURRENT_WEEK;
+  saveDb();
+  restoreCurrentWeek();
+  jumpToToday();
+})();
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+(function(){
+  const CLOUD_URL_KEY = PREFIX + 'cloud:url';
+  const CLOUD_ANON_KEY = PREFIX + 'cloud:anon';
+  const CLOUD_CODE_KEY = PREFIX + 'cloud:code';
+  const APP_ID = /home/i.test(PREFIX) ? 'fitness-workout-home' : 'fitness-workout-gym';
+  let _cloudClient = null;
+  let _cloudClientKey = '';
+  let _cloudApplying = false;
+  let _cloudBooted = false;
+  let _cloudTimer = null;
+  let _lastPayloadHash = '';
+
+  function cloudMeta(){
+    return window.__cloudGetSyncMeta ? window.__cloudGetSyncMeta() : {at:'',status:'',detail:'',result:''};
+  }
+  function mirrorCloudMeta(status, detail, opts={}){
+    if(window.__cloudStoreSyncMeta) window.__cloudStoreSyncMeta(status, detail, opts);
+    else if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
+  }
+
+  function cloudStatusEl(){
+    return document.getElementById('cloudStatusText');
+  }
+  function setCloudStatus(text){
+    const el = cloudStatusEl();
+    if(el) el.textContent = text;
+  }
+  function getCloudConfig(){
+    return {
+      url: String(localStorage.getItem(CLOUD_URL_KEY) || 'https://jgxcbylqqgjzaprfiijp.supabase.co').trim(),
+      anonKey: String(localStorage.getItem(CLOUD_ANON_KEY) || 'sb_publishable_igyb26LqNeN7TKKZ4pbvuw_4Is2buJE').trim(),
+      syncCode: String(localStorage.getItem(CLOUD_CODE_KEY) || '').trim()
+    };
+  }
+  function cloudConfigured(){
+    const cfg = getCloudConfig();
+    return !!(cfg.url && cfg.anonKey && cfg.syncCode);
+  }
+  async function sha256(text){
+    const data = new TextEncoder().encode(String(text || ''));
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  async function ownerHash(){
+    const cfg = getCloudConfig();
+    return cfg.syncCode ? sha256(cfg.syncCode) : '';
+  }
+  function getCloudClient(){
+    const cfg = getCloudConfig();
+    if(!cfg.url || !cfg.anonKey) return null;
+    const cacheKey = cfg.url + '|' + cfg.anonKey;
+    if(!_cloudClient || _cloudClientKey !== cacheKey){
+      if(!window.supabase || !window.supabase.createClient) throw new Error('备份服务加载失败');
+      _cloudClient = window.supabase.createClient(cfg.url, cfg.anonKey, {
+        auth:{persistSession:false, autoRefreshToken:false},
+        global:{headers:{'x-client-info':'fitness-workout-pages'}}
+      });
+      _cloudClientKey = cacheKey;
+    }
+    return _cloudClient;
+  }
+  function dbSnapshot(){
+    const bridge = window.__workoutWeekBridge;
+    if(bridge && bridge.getDb) return bridge.getDb();
+    try{ return JSON.parse(localStorage.getItem(PREFIX + 'db:v2') || 'null') || {version:1,currentWeek:1,weeks:{}}; }catch(e){ return {version:1,currentWeek:1,weeks:{}}; }
+  }
+  function snapshotPayload(){
+    return {
+      version: 1,
+      app: APP_ID,
+      savedAt: new Date().toISOString(),
+      db: dbSnapshot(),
+      prefs: {
+        dark: _getPref('dark','0'),
+        todayOnly: _getPref('todayOnly','1'),
+        hideImg: _getPref('hideImg','1'),
+        soundMuted: localStorage.getItem(PREFIX + 'soundMuted') === '1' ? '1' : '0'
+      }
+    };
+  }
+  function applyPayload(payload){
+    if(!payload || typeof payload !== 'object') return false;
+    _cloudApplying = true;
+    try{
+      const prefs = payload.prefs || {};
+      if(Object.prototype.hasOwnProperty.call(prefs,'dark')) localStorage.setItem(PREF_PREFIX + 'dark', String(prefs.dark));
+      if(Object.prototype.hasOwnProperty.call(prefs,'todayOnly')) localStorage.setItem(PREF_PREFIX + 'todayOnly', String(prefs.todayOnly));
+      if(Object.prototype.hasOwnProperty.call(prefs,'hideImg')) localStorage.setItem(PREF_PREFIX + 'hideImg', String(prefs.hideImg));
+      if(Object.prototype.hasOwnProperty.call(prefs,'soundMuted')) localStorage.setItem(PREFIX + 'soundMuted', String(prefs.soundMuted));
+      const bridge = window.__workoutWeekBridge;
+      if(payload.db && bridge && bridge.replaceDb){
+        bridge.replaceDb(payload.db);
+      }
+      applyDarkPref();
+      applyTodayOnly();
+      applyImagesPref();
+      updateSoundBtn();
+      try{ syncSwitches(); }catch(e){}
+      return true;
+    } finally {
+      _cloudApplying = false;
+    }
+  }
+  async function pushCloudNow(silent){
+    if(_cloudApplying) return false;
+    if(!cloudConfigured()){
+      setCloudStatus('当前只保存在本机');
+      if(!silent) alert('先用你的专属入口打开一次，再使用备份功能。');
+      return false;
+    }
+    try{
+      setCloudStatus('数据备份中…');
+      const client = getCloudClient();
+      const hash = await ownerHash();
+      const payload = snapshotPayload();
+      const encoded = JSON.stringify(payload);
+      if(silent && encoded === _lastPayloadHash){
+        setCloudStatus('已经是最新');
+        if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
+        return true;
+      }
+      const { error } = await client.rpc('save_workout_state', {
+        p_app: APP_ID,
+        p_owner_hash: hash,
+        p_payload: payload
+      });
+      if(error) throw error;
+      _lastPayloadHash = encoded;
+      setCloudStatus('已备份');
+      mirrorCloudMeta('已备份', '备份成功。', {result:'ok', at:payload.savedAt});
+      return true;
+    }catch(err){
+      console.error(err);
+      setCloudStatus('自动备份失败');
+      const last=cloudMeta();
+      mirrorCloudMeta('自动备份失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
+      if(!silent) alert('自动备份失败：' + (err && err.message ? err.message : err));
+      return false;
+    }
+  }
+  async function pullCloudNow(silent){
+    if(!cloudConfigured()){
+      setCloudStatus('当前只保存在本机');
+      if(!silent) alert('先用你的专属入口打开一次，再使用备份功能。');
+      return false;
+    }
+    try{
+      setCloudStatus('正在恢复…');
+      const client = getCloudClient();
+      const hash = await ownerHash();
+      const { data, error } = await client.rpc('load_workout_state', {
+        p_app: APP_ID,
+        p_owner_hash: hash
+      });
+      if(error) throw error;
+      if(!data){
+        setCloudStatus('还没有备份');
+        const last=cloudMeta();
+        mirrorCloudMeta('还没有备份', '这份页面还没有备份记录。', {result:'', at:last.at || ''});
+        if(!silent) alert('还没有可恢复的备份，我会继续保留你当前这份。');
+        return false;
+      }
+      applyPayload(data);
+      _lastPayloadHash = JSON.stringify(snapshotPayload());
+      setCloudStatus('恢复成功');
+      mirrorCloudMeta('恢复成功', '已恢复到当前页面。', {result:'ok', at:data.savedAt || new Date().toISOString()});
+      if(!silent) alert('已经恢复到当前页面。');
+      return true;
+    }catch(err){
+      console.error(err);
+      setCloudStatus('恢复失败');
+      const last=cloudMeta();
+      mirrorCloudMeta('恢复失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
+      if(!silent) alert('恢复失败：' + (err && err.message ? err.message : err));
+      return false;
+    }
+  }
+  function scheduleCloudPush(){
+    if(_cloudApplying || !_cloudBooted || !cloudConfigured()) return;
+    clearTimeout(_cloudTimer);
+    _cloudTimer = setTimeout(()=>{ pushCloudNow(true); }, 900);
+  }
+
+  window.__cloudMaybeSchedule = function(){
+    scheduleCloudPush();
+  };
+  window.pushCloudNow = function(silent){
+    return pushCloudNow(!!silent);
+  };
+  window.pullCloudNow = function(silent){
+    return pullCloudNow(!!silent);
+  };
+  window.setupCloudSync = async function(){
+    const current = getCloudConfig();
+    const url = prompt('备份服务地址', current.url || '');
+    if(url === null) return;
+    const anonKey = prompt('访问密钥', current.anonKey || '');
+    if(anonKey === null) return;
+    const syncCode = prompt('你的专属口令（建议 16 位以上，只你自己知道）', current.syncCode || '');
+    if(syncCode === null) return;
+
+    localStorage.setItem(CLOUD_URL_KEY, String(url).trim());
+    localStorage.setItem(CLOUD_ANON_KEY, String(anonKey).trim());
+    localStorage.setItem(CLOUD_CODE_KEY, String(syncCode).trim());
+    _cloudClient = null;
+    _cloudClientKey = '';
+    setCloudStatus('正在连接自动备份…');
+
+    const pulled = await pullCloudNow(true);
+    _cloudBooted = true;
+    if(!pulled){
+      await pushCloudNow(false);
+    }else{
+      setCloudStatus('已连接云同步');
+      if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
+      alert('自动备份已经接好。之后用同一个专属入口，就能在别的设备恢复同一份数据。');
+    }
+  };
+
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden) pushCloudNow(true);
+  });
+  window.addEventListener('beforeunload', ()=>{
+    pushCloudNow(true);
+  });
+
+  (async function initCloud(){
+    if(cloudConfigured()){
+      setCloudStatus('自动备份准备中…');
+      const pulled = await pullCloudNow(true);
+      _cloudBooted = true;
+      if(!pulled) await pushCloudNow(true);
+      if(cloudConfigured()){
+        setCloudStatus('已连接云同步');
+        if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
+      }
+    }else{
+      setCloudStatus('当前只保存在本机');
+      if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
+      _cloudBooted = true;
+    }
+  })();
+})();
+</script></div></body></html>

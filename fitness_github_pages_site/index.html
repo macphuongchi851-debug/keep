@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>健身打卡</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:rgba(255,255,255,.08);
+      --panel-strong:rgba(255,255,255,.12);
+      --border:rgba(255,255,255,.12);
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --blue:#0a84ff;
+      --cyan:#67e8f9;
+      --green:#34c759;
+      --purple:#a78bfa;
+      --yellow:#ffb340;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(103,232,249,.18), transparent 34%),
+        radial-gradient(circle at top right, rgba(167,139,250,.22), transparent 32%),
+        linear-gradient(180deg,#08101d 0%, #0b1627 44%, #07111f 100%);
+    }
+    .wrap{max-width:1020px;margin:0 auto;padding:24px 16px 40px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border-radius:34px;
+      padding:24px 22px 22px;
+      background:linear-gradient(135deg, rgba(11,17,32,.94) 0%, rgba(15,23,42,.90) 42%, rgba(10,132,255,.78) 100%);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 26px 60px rgba(2,6,23,.34);
+      backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+    }
+    .hero::before,
+    .hero::after{
+      content:"";
+      position:absolute;
+      border-radius:999px;
+      filter:blur(8px);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .hero::before{
+      width:220px;height:220px;right:-40px;top:-60px;
+      background:radial-gradient(circle, rgba(103,232,249,.24) 0%, transparent 72%);
+    }
+    .hero::after{
+      width:260px;height:260px;left:-60px;bottom:-120px;
+      background:radial-gradient(circle, rgba(167,139,250,.18) 0%, transparent 72%);
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12);
+      color:#e2e8f0;font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(52,199,89,.14)}
+    h1{margin:16px 0 10px;font-size:clamp(30px,7vw,48px);line-height:1.02;letter-spacing:-.05em}
+    .hero p{margin:0;max-width:720px;color:rgba(241,245,249,.86);font-size:15px;line-height:1.7}
+    .heroGrid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:20px}
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.07));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:28px;
+      padding:18px;
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .stat{
+      border-radius:20px;padding:14px 12px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .statLabel{font-size:12px;color:#bfdbfe;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+    .statValue{margin-top:8px;font-size:24px;font-weight:900;letter-spacing:-.04em}
+    .statSub{margin-top:6px;font-size:12px;color:rgba(226,232,240,.72);line-height:1.45}
+    .heroNote{display:flex;align-items:flex-start;gap:12px}
+    .heroNoteIcon{
+      width:46px;height:46px;border-radius:16px;display:grid;place-items:center;flex:0 0 auto;
+      background:linear-gradient(135deg, rgba(103,232,249,.22), rgba(167,139,250,.22));
+      border:1px solid rgba(255,255,255,.12);font-size:20px
+    }
+    .heroNote strong{display:block;font-size:16px;letter-spacing:-.02em}
+    .heroNote span{display:block;margin-top:4px;font-size:13px;line-height:1.6;color:rgba(226,232,240,.78)}
+    .sectionTitle{margin:22px 0 12px;font-size:16px;font-weight:900;letter-spacing:-.02em;color:#e2e8f0}
+    .quickGrid{display:grid;grid-template-columns:1.08fr .92fr;gap:14px;margin-top:14px}
+    .quickCard{
+      position:relative;overflow:hidden;
+      border-radius:28px;padding:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 18px 42px rgba(2,6,23,.22), inset 0 1px 0 rgba(255,255,255,.06);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+    .quickCard::before{
+      content:"";position:absolute;inset:auto -30px -58px auto;width:160px;height:160px;border-radius:50%;opacity:.46;pointer-events:none
+    }
+    .quickCard.recent::before{background:radial-gradient(circle, rgba(103,232,249,.24) 0%, transparent 72%)}
+    .quickCard.today::before{background:radial-gradient(circle, rgba(167,139,250,.24) 0%, transparent 72%)}
+    .cardEyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#bfdbfe}
+    .cardTitle{margin-top:10px;font-size:24px;font-weight:900;letter-spacing:-.04em}
+    .cardText{margin-top:6px;font-size:13px;line-height:1.65;color:rgba(226,232,240,.74)}
+    .recentList{display:grid;gap:10px;margin-top:16px}
+    .recentRow{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 14px;border-radius:20px;text-decoration:none;color:var(--text);
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)
+    }
+    .recentMain{display:flex;flex-direction:column;gap:4px}
+    .recentName{font-size:15px;font-weight:900;letter-spacing:-.02em}
+    .recentMeta{font-size:12px;color:rgba(226,232,240,.72)}
+    .recentPct{
+      padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.10);color:#f8fafc;white-space:nowrap
+    }
+    .suggestDay{margin-top:10px;font-size:28px;font-weight:900;letter-spacing:-.05em;line-height:1.1}
+    .suggestDesc{margin-top:8px;font-size:14px;line-height:1.65;color:rgba(226,232,240,.78)}
+    .actionRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .choiceRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .choiceBtn{appearance:none;border:none;cursor:pointer;user-select:none;
+      padding:10px 12px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:-.01em;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);color:var(--text)}
+    .choiceBtn.active{background:linear-gradient(135deg, rgba(10,132,255,.92), rgba(91,192,255,.86));border-color:rgba(255,255,255,.10);color:#fff;box-shadow:0 16px 34px rgba(10,132,255,.18)}
+    .choiceBtn.ghost{background:rgba(255,255,255,.06)}
+    .choiceHint{margin-top:8px;font-size:12px;line-height:1.55;color:rgba(226,232,240,.72)}
+    .miniBtn{
+      display:inline-flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;
+      padding:12px 12px;border-radius:18px;font-size:14px;font-weight:900;letter-spacing:-.01em;
+      border:1px solid rgba(255,255,255,.10);color:var(--text);background:rgba(255,255,255,.08)
+    }
+    .miniBtn.primary{background:linear-gradient(135deg, rgba(10,132,255,.92), rgba(91,192,255,.86));border-color:rgba(255,255,255,.10);color:#fff;box-shadow:0 16px 34px rgba(10,132,255,.24)}
+    .miniBtn.secondary{background:linear-gradient(135deg, rgba(103,232,249,.24), rgba(167,139,250,.18));}
+    .entryGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .entry{
+      position:relative;
+      overflow:hidden;
+      text-decoration:none;color:var(--text);
+      border-radius:30px;padding:20px 18px 18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 18px 42px rgba(2,6,23,.22), inset 0 1px 0 rgba(255,255,255,.06);
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .entry:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.22);box-shadow:0 24px 48px rgba(2,6,23,.28)}
+    .entry::before{
+      content:"";position:absolute;inset:auto -20% -38% auto;width:200px;height:200px;border-radius:50%;opacity:.55;pointer-events:none
+    }
+    .entry.gym::before{background:radial-gradient(circle, rgba(10,132,255,.34) 0%, transparent 72%)}
+    .entry.home::before{background:radial-gradient(circle, rgba(103,232,249,.28) 0%, transparent 72%)}
+    .entryTop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .entryBadge{
+      display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.10);
+      font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:#dbeafe
+    }
+    .entryArrow{font-size:20px;opacity:.72}
+    .entryTitle{margin-top:16px;font-size:26px;font-weight:900;letter-spacing:-.05em}
+    .entryDesc{margin-top:8px;font-size:14px;line-height:1.65;color:rgba(226,232,240,.78)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .chip{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);color:#e2e8f0
+    }
+    .footerNote{
+      margin-top:14px;padding:14px 16px;border-radius:18px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
+      color:rgba(226,232,240,.78);font-size:13px;line-height:1.65
+    }
+    @media (max-width:900px){
+      .heroGrid,.quickGrid,.entryGrid{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr 1fr 1fr}
+    }
+    @media (max-width:640px){
+      .wrap{padding:16px 12px 30px}
+      .hero{border-radius:28px;padding:20px 16px 18px}
+      .panel,.quickCard,.entry{border-radius:24px}
+      .stats{grid-template-columns:1fr}
+      .entryTitle{font-size:22px}
+      .hero p{font-size:14px}
+      .cardTitle{font-size:22px}
+      .suggestDay{font-size:24px}
+      .actionRow{grid-template-columns:1fr}
+      .recentRow{align-items:flex-start;flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span>打开就练 · 直接推进</div>
+      <h1>今天开练。<br>别让状态掉。</h1>
+      <p>打开就练。练完就记。进度自己往前走。</p>
+
+      <div class="heroGrid">
+        <div class="panel">
+          <div class="stats">
+            <div class="stat">
+              <div class="statLabel">训练方式</div>
+              <div class="statValue">2 套</div>
+              <div class="statSub">两套模式，直接开练。</div>
+            </div>
+            <div class="stat">
+              <div class="statLabel">训练周期</div>
+              <div class="statValue">4 周</div>
+              <div class="statSub">不是一天热血，是持续推进。</div>
+            </div>
+            <div class="stat">
+              <div class="statLabel">记录方式</div>
+              <div class="statValue">逐组</div>
+              <div class="statSub">每一组，都能留下痕迹。</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="heroNote">
+            <div class="heroNoteIcon">🏁</div>
+            <div>
+              <strong>练完一页，今天就算拿下。</strong>
+              <span>打开、训练、打卡。剩下的，它自己记。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="quickGrid">
+      <section class="quickCard recent">
+        <div class="cardEyebrow">最近状态</div>
+        <div class="cardTitle" id="recentHeadline">还没开练，现在正好。</div>
+        <div class="cardText" id="recentText">选一个入口，直接接着往下推。</div>
+        <div class="recentList">
+          <a class="recentRow" data-sync-link href="./workout.html">
+            <div class="recentMain">
+              <div class="recentName">纯徒手版</div>
+              <div class="recentMeta" id="gymMeta">第1周 · 暂无记录</div>
+            </div>
+            <div class="recentPct" id="gymPct">待开始</div>
+          </a>
+          <a class="recentRow" data-sync-link href="./workout_home.html">
+            <div class="recentMain">
+              <div class="recentName">家用版</div>
+              <div class="recentMeta" id="homeMeta">第1周 · 暂无记录</div>
+            </div>
+            <div class="recentPct" id="homePct">待开始</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="quickCard today">
+        <div class="cardEyebrow">今日建议</div>
+        <div class="suggestDay" id="todayTitle">今天练什么，下面直接进。</div>
+        <div class="suggestDesc" id="todayDesc">想直接开练就上纯徒手版；需要器械辅助，再进家庭版。</div>
+        <div class="actionRow">
+          <a class="miniBtn" id="gymTodayLink" data-sync-link href="./workout.html">去纯徒手版</a>
+          <a class="miniBtn" id="homeTodayLink" data-sync-link href="./workout_home.html">去家用版</a>
+        </div>
+        <div class="choiceRow" aria-label="智能判断">
+          <button class="choiceBtn" id="atHomeBtn" type="button">我在家</button>
+          <button class="choiceBtn" id="hasGearBtn" type="button">我有器械</button>
+          <button class="choiceBtn ghost" id="resetChoiceBtn" type="button">重置</button>
+        </div>
+        <div class="choiceHint" id="choiceHint">（点一下就行，会记住）</div>
+      </section>
+    </div>
+
+    <div class="sectionTitle">选择今天怎么练</div>
+    <div class="entryGrid">
+      <a class="entry gym" id="gymLink" data-sync-link href="./workout.html">
+        <div class="entryTop">
+          <span class="entryBadge">Bodyweight Mode</span>
+          <span class="entryArrow">→</span>
+        </div>
+        <div class="entryTitle">纯徒手版</div>
+        <div class="entryDesc">纯徒手也能狠狠干。打开就练，不靠器械也能把强度做起来。</div>
+        <div class="chips">
+          <span class="chip">纯徒手</span>
+          <span class="chip">逐组打卡</span>
+          <span class="chip">4 周推进</span>
+        </div>
+      </a>
+
+      <a class="entry home" id="homeLink" data-sync-link href="./workout_home.html">
+        <div class="entryTop">
+          <span class="entryBadge">Home Mode</span>
+          <span class="entryArrow">→</span>
+        </div>
+        <div class="entryTitle">家用版</div>
+        <div class="entryDesc">在家也别断。器械少一点，强度和节奏照样接上。</div>
+        <div class="chips">
+          <span class="chip">家用器械</span>
+          <span class="chip">同样可备份</span>
+          <span class="chip">一打开就能练</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="footerNote">用过一次专属入口，后面就放心直接点。</div>
+  </div>
+<script>
+(function(){
+  const sync = (()=>{
+    try{
+      const params = new URLSearchParams(location.search);
+      return (params.get('sync') || params.get('syncCode') || '').trim();
+    }catch(e){ return ''; }
+  })();
+
+  function applySyncToLinks(){
+    document.querySelectorAll('[data-sync-link]').forEach(el=>{
+      try{
+        if(!sync) return;
+        const url = new URL(el.getAttribute('href'), location.href);
+        url.searchParams.set('sync', sync);
+        el.setAttribute('href', url.pathname + '?' + url.searchParams.toString());
+      }catch(e){}
+    });
+  }
+
+  function readDb(prefix){
+    try{
+      return JSON.parse(localStorage.getItem(prefix + 'db:v2') || 'null');
+    }catch(e){
+      return null;
+    }
+  }
+
+  function getStats(prefix){
+    const db = readDb(prefix) || {currentWeek:1,weeks:{}};
+    const week = Number(db.currentWeek || 1);
+    const fields = ((db.weeks || {})[String(week)] || {}).fields || {};
+    const doneKeys = Object.keys(fields).filter(key=>key.endsWith(':done'));
+    const total = doneKeys.length;
+    const done = doneKeys.filter(key=>String(fields[key]) === '1').length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    return {week, total, done, pct};
+  }
+
+  function setModeRow(metaId, pctId, stats){
+    const metaEl = document.getElementById(metaId);
+    const pctEl = document.getElementById(pctId);
+    if(metaEl){
+      metaEl.textContent = stats.total
+        ? ('第' + stats.week + '周 · 已完成 ' + stats.done + '/' + stats.total + ' 组')
+        : ('第' + stats.week + '周 · 暂无记录');
+    }
+    if(pctEl){
+      pctEl.textContent = stats.total
+        ? (stats.pct + '% 已完成')
+        : '待开始';
+    }
+  }
+
+  function updateRecent(){
+    const gym = getStats('fitness-set-check-v4:');
+    const home = getStats('fitness-home-v3:');
+    setModeRow('gymMeta','gymPct', gym);
+    setModeRow('homeMeta','homePct', home);
+
+    const headline = document.getElementById('recentHeadline');
+    const text = document.getElementById('recentText');
+    const best = [
+      {label:'纯徒手版', stats:gym},
+      {label:'家用版', stats:home}
+    ].sort((a,b)=> (b.stats.done - a.stats.done) || (b.stats.week - a.stats.week))[0];
+
+    if(headline && text){
+      if((gym.done + home.done) === 0){
+        headline.textContent = '还没开练，现在正好。';
+        text.textContent = '你现在是干净开局，打开任意一套模式就能直接进入训练。';
+      }else{
+        headline.textContent = '最近进度：' + best.label + '更靠前。';
+        text.textContent = '当前最靠前的是第' + best.stats.week + '周，已完成 ' + best.stats.done + '/' + (best.stats.total || 0) + ' 组。想延续手感，直接从它继续。';
+      }
+    }
+  }
+
+  function updateTodaySuggestion(){
+    const titleEl = document.getElementById('todayTitle');
+    const descEl = document.getElementById('todayDesc');
+
+    const PREF_HOME='fitness:index:atHome';
+    const PREF_GEAR='fitness:index:hasGear';
+    const getBool=(k)=>{ try{ return localStorage.getItem(k)==='1'; }catch(e){ return false; } };
+    const setBool=(k,v)=>{ try{ localStorage.setItem(k, v?'1':'0'); }catch(e){} };
+    const delKey=(k)=>{ try{ localStorage.removeItem(k); }catch(e){} };
+
+    const atHome = getBool(PREF_HOME);
+    const hasGear = getBool(PREF_GEAR);
+    const recommend = (atHome && hasGear) ? 'home' : 'gym';
+
+    const day = new Date().getDay();
+    const map = {
+      1:['周一建议：上肢力量', '更适合把这一周狠狠干开。推、拉、稳定性都更容易进入状态。'],
+      2:['周二建议：下肢力量 + 核心', '今天更适合把腿和核心安排上，后面几天训练会更稳。'],
+      3:['周三建议：恢复 / 有氧 / 技巧', '中段别硬刚到底，做点恢复、有氧或者技巧训练，反而更能接住后半周。'],
+      4:['周四建议：上肢增肌 + 体态', '今天更适合做一点量，手感、泵感和姿态控制都能一起补。'],
+      5:['周五建议：下肢增肌 + 后链', '适合把本周最后一次硬活做好，练完整个人会很踏实。'],
+      6:['周六建议：补漏 / 轻有氧', '今天更适合补掉本周漏掉的部分，或者做点轻有氧和拉伸。'],
+      0:['周日建议：恢复一下，准备下周', '不一定非得狠狠干。拉伸、散步、轻活动，也是在给下周攒状态。']
+    };
+    const dayInfo = map[day] || map[1];
+
+    // primary button highlight
+    const gymBtn=document.getElementById('gymTodayLink');
+    const homeBtn=document.getElementById('homeTodayLink');
+    const setBtnMode=(btn, isPrimary)=>{
+      if(!btn) return;
+      btn.classList.remove('primary','secondary');
+      btn.classList.add(isPrimary ? 'primary' : 'secondary');
+    };
+    setBtnMode(gymBtn, recommend==='gym');
+    setBtnMode(homeBtn, recommend==='home');
+
+    // choice UI
+    const atHomeBtn=document.getElementById('atHomeBtn');
+    const hasGearBtn=document.getElementById('hasGearBtn');
+    const resetBtn=document.getElementById('resetChoiceBtn');
+    const hintEl=document.getElementById('choiceHint');
+    if(atHomeBtn) atHomeBtn.classList.toggle('active', atHome);
+    if(hasGearBtn) hasGearBtn.classList.toggle('active', hasGear);
+
+    if(hintEl){
+      if(atHome && hasGear) hintEl.textContent='判断：在家 + 有器械 → 推荐家用版（会记住）';
+      else if(atHome && !hasGear) hintEl.textContent='判断：在家但没器械 → 推荐纯徒手版（会记住）';
+      else if(!atHome && hasGear) hintEl.textContent='判断：有器械但不在家 → 默认推荐纯徒手版（会记住）';
+      else hintEl.textContent='判断：没器械 / 不在家 → 推荐纯徒手版（会记住）';
+    }
+
+    if(titleEl) titleEl.textContent = (recommend==='home') ? '智能推荐：家用版' : '智能推荐：纯徒手版';
+    if(descEl) descEl.textContent = dayInfo[0] + ' · ' + dayInfo[1] + (recommend==='home' ? ' 你选了「在家 + 有器械」，直接进家用版。' : ' 没器械/不在家，纯徒手版更稳。');
+
+    if(!window.__fitnessIndexChoiceBound){
+      window.__fitnessIndexChoiceBound=true;
+      if(atHomeBtn) atHomeBtn.addEventListener('click', ()=>{ setBool(PREF_HOME, !getBool(PREF_HOME)); updateTodaySuggestion(); });
+      if(hasGearBtn) hasGearBtn.addEventListener('click', ()=>{ setBool(PREF_GEAR, !getBool(PREF_GEAR)); updateTodaySuggestion(); });
+      if(resetBtn) resetBtn.addEventListener('click', ()=>{ delKey(PREF_HOME); delKey(PREF_GEAR); updateTodaySuggestion(); });
+    }
+  }
+
+  applySyncToLinks();
+  updateRecent();
+  updateTodaySuggestion();
+})();
+</script></body>
+</html>
