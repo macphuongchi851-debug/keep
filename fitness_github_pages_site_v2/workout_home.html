@@ -219,10 +219,19 @@ body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255
 .switch.on::after{left:22px}
 
 .sheetHint{margin-top:10px;color:var(--muted);font-size:12px;font-weight:700}
-.syncBadge{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:12px;font-weight:900;letter-spacing:.02em;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-.syncDot{width:8px;height:8px;border-radius:50%;background:#ff9f0a;box-shadow:0 0 0 4px rgba(255,159,10,.18)}
-.syncBadge.ok .syncDot{background:var(--green);box-shadow:0 0 0 4px rgba(52,199,89,.18)}
-.syncBadge.off .syncDot{background:rgba(255,255,255,.55);box-shadow:none}
+.syncBadge{display:inline-flex;align-items:center;gap:8px;min-width:86px;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.92);font-size:11px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:all .22s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.syncDot{width:7px;height:7px;border-radius:50%;background:#ff9f0a;box-shadow:0 0 0 4px rgba(255,159,10,.14);transition:all .22s ease}
+.syncBadge.ok{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.10);color:rgba(255,255,255,.72)}
+.syncBadge.ok .syncDot{background:var(--green);box-shadow:0 0 0 4px rgba(52,199,89,.12)}
+.syncBadge.pending{background:rgba(255,159,10,.16);border-color:rgba(255,159,10,.30);color:#fff;box-shadow:0 10px 26px rgba(255,159,10,.14)}
+.syncBadge.pending .syncDot{background:#ffb340;box-shadow:0 0 0 5px rgba(255,179,64,.16)}
+.syncBadge.error{background:rgba(255,69,58,.18);border-color:rgba(255,69,58,.34);color:#fff;box-shadow:0 10px 26px rgba(255,69,58,.18)}
+.syncBadge.error .syncDot{background:#ff453a;box-shadow:0 0 0 5px rgba(255,69,58,.18)}
+.syncBadge.off{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.10);color:rgba(255,255,255,.66)}
+.syncBadge.off .syncDot{background:rgba(255,255,255,.45);box-shadow:none}
+body.dark .syncBadge{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.12)}
+body.dark .syncBadge.ok{background:rgba(255,255,255,.07)}
+body.dark .syncBadge.off{background:rgba(255,255,255,.06)}
 .cloudCard{padding:12px}
 .cloudFields{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
 .cloudFields input{width:100%;padding:12px 13px;border-radius:14px;border:1px solid rgba(0,0,0,.10);background:rgba(120,120,128,.10);color:var(--text);font-size:14px}
@@ -1685,9 +1694,11 @@ function setSyncBadge(mode, text){
   const textEl=document.getElementById('syncBadgeText');
   if(textEl) textEl.textContent=text;
   if(badge){
-    badge.classList.remove('ok','off');
+    badge.classList.remove('ok','off','pending','error');
     if(mode==='ok') badge.classList.add('ok');
     else if(mode==='off') badge.classList.add('off');
+    else if(mode==='error') badge.classList.add('error');
+    else badge.classList.add('pending');
   }
 }
 function setCloudHint(text){
@@ -1808,7 +1819,7 @@ function refreshSyncStatus(){
       setSyncBadge('ok','已备份');
       setCloudHint(lastText + detailText);
     }else if(meta.result === 'error'){
-      setSyncBadge('pending','异常');
+      setSyncBadge('error','异常');
       setCloudHint(lastText + detailText);
     }else{
       setSyncBadge('pending','准备中');
