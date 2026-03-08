@@ -1488,36 +1488,68 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
 <script>
 const PREFIX='fitness-home-v3:'; const timers={};
 let _audioCtx=null;
+let _audioPrimed=false;
 let soundMuted = (localStorage.getItem(PREFIX+'soundMuted')==='1');
-function _ensureAudio(){
+async function _ensureAudio(){
   try{
     const AC = window.AudioContext || window.webkitAudioContext;
-    if(!AC) return;
+    if(!AC) return false;
     if(!_audioCtx) _audioCtx = new AC();
-    if(_audioCtx && _audioCtx.state==='suspended') _audioCtx.resume();
-  }catch(e){}
+    if(_audioCtx && _audioCtx.state!=='running'){
+      try{ await _audioCtx.resume(); }catch(e){}
+    }
+    if(_audioCtx && !_audioPrimed){
+      try{
+        const buffer=_audioCtx.createBuffer(1,1,_audioCtx.sampleRate||44100);
+        const src=_audioCtx.createBufferSource();
+        const gain=_audioCtx.createGain();
+        gain.gain.value=0.00001;
+        src.buffer=buffer;
+        src.connect(gain);
+        gain.connect(_audioCtx.destination);
+        src.start(0);
+        if(src.stop) src.stop((_audioCtx.currentTime||0)+0.01);
+      }catch(e){}
+      _audioPrimed=true;
+    }
+    return !!(_audioCtx && _audioCtx.state==='running');
+  }catch(e){
+    return false;
+  }
 }
 function _beep(freq=880, duration=0.08, volume=0.15){
   if(soundMuted) return;
-  _ensureAudio();
-  if(!_audioCtx) return;
-  try{
-    const ctx=_audioCtx;
-    const o=ctx.createOscillator();
-    const g=ctx.createGain();
-    o.type='sine';
-    o.frequency.value=freq;
-    g.gain.value=volume;
-    o.connect(g); g.connect(ctx.destination);
-    o.start();
-    o.stop(ctx.currentTime + duration);
-  }catch(e){}
+  const play=()=>{
+    if(!_audioCtx || _audioCtx.state!=='running') return;
+    try{
+      const ctx=_audioCtx;
+      const now=ctx.currentTime;
+      const o=ctx.createOscillator();
+      const g=ctx.createGain();
+      o.type='sine';
+      o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(0.0001, now);
+      g.gain.exponentialRampToValueAtTime(Math.max(volume,0.0001), now+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, now+duration);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(now);
+      o.stop(now + duration + 0.02);
+    }catch(e){}
+  };
+  if(_audioCtx && _audioCtx.state==='running'){
+    play();
+  }else{
+    Promise.resolve(_ensureAudio()).then(play).catch(()=>{});
+  }
 }
-function toggleSound(){
+async function toggleSound(){
   soundMuted=!soundMuted;
   localStorage.setItem(PREFIX+'soundMuted', soundMuted?'1':'0');
   updateSoundBtn();
-  if(!soundMuted) _ensureAudio();
+  if(!soundMuted){
+    const ok = await _ensureAudio();
+    if(ok) _beep(660, 0.06, 0.05);
+  }
 }
 function updateSoundBtn(){
   const b=document.getElementById('soundBtn');
@@ -1525,8 +1557,18 @@ function updateSoundBtn(){
   try{ syncSwitches(); }catch(e){}
 }
 
-// iOS/Telegram: 需要一次用户交互才能解锁音频
-document.addEventListener('pointerdown', ()=>{ if(!soundMuted) _ensureAudio(); }, {once:true});
+function _wakeAudio(){
+  if(!soundMuted) _ensureAudio();
+}
+// Telegram / iOS：需要在多种交互里反复尝试解锁；从后台回来也补一次
+['pointerdown','touchstart','touchend','click'].forEach(evt=>{
+  document.addEventListener(evt, _wakeAudio, {passive:true});
+});
+document.addEventListener('keydown', _wakeAudio);
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden) _wakeAudio();
+});
+window.addEventListener('pageshow', _wakeAudio);
 
 // --- UI prefs v2 ---
 const PREF_PREFIX = PREFIX + 'pref:';
