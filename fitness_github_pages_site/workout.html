@@ -1340,7 +1340,7 @@ function buildServerPayload(){
       schema:'fitness-sync-v1',
       savedAt:new Date().toISOString(),
       db:null,
-      prefs:{dark:'0',todayOnly:'1',hideImg:'1',soundMuted:soundMuted?'1':'0'}
+      prefs:{dark:'0',todayOnly:'1',hideImg:'0',soundMuted:soundMuted?'1':'0'}
     };
   }
 }
@@ -1369,7 +1369,7 @@ function applyServerPayload(payload){
     if(payload.prefs){
       _setPref('dark', payload.prefs.dark ?? '0');
       _setPref('todayOnly', payload.prefs.todayOnly ?? '1');
-      _setPref('hideImg', payload.prefs.hideImg ?? '1');
+      _setPref('hideImg', payload.prefs.hideImg ?? '0');
       soundMuted = (String(payload.prefs.soundMuted ?? '0') === '1');
       localStorage.setItem(PREFIX+'soundMuted', soundMuted?'1':'0');
     }
@@ -1470,12 +1470,12 @@ function applyTodayOnly(){
 }
 
 function toggleImages(){
-  const cur = (_getPref('hideImg','1')==='1');
+  const cur = (_getPref('hideImg','0')==='1');
   _setPref('hideImg', cur?'0':'1');
   applyImagesPref();
 }
 function applyImagesPref(){
-  const hide = (_getPref('hideImg','1')==='1');
+  const hide = (_getPref('hideImg','0')==='1');
   const b=document.getElementById('imgBtn');
   if(b) b.textContent = hide ? '图片：收起' : '图片：展开';
   document.querySelectorAll('.imgbox').forEach(box=>{
@@ -1680,6 +1680,14 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeShe
 applyCloudConfigFromUrl();
 fillCloudConfig();
 labelTimerButtons();
+try{
+  const k = PREFIX+'pref:hideImg';
+  const mk = PREFIX+'pref:hideImg:migrated-v2';
+  if(localStorage.getItem(mk)!=='1') {
+    localStorage.setItem(k,'0');
+    localStorage.setItem(mk,'1');
+  }
+}catch(e){}
 restore();
 applyDarkPref();
 applyTodayOnly();
