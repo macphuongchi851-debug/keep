@@ -219,6 +219,17 @@ body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255
 .switch.on::after{left:22px}
 
 .sheetHint{margin-top:10px;color:var(--muted);font-size:12px;font-weight:700}
+.syncBadge{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:12px;font-weight:900;letter-spacing:.02em;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.syncDot{width:8px;height:8px;border-radius:50%;background:#ff9f0a;box-shadow:0 0 0 4px rgba(255,159,10,.18)}
+.syncBadge.ok .syncDot{background:var(--green);box-shadow:0 0 0 4px rgba(52,199,89,.18)}
+.syncBadge.off .syncDot{background:rgba(255,255,255,.55);box-shadow:none}
+.cloudCard{padding:12px}
+.cloudFields{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+.cloudFields input{width:100%;padding:12px 13px;border-radius:14px;border:1px solid rgba(0,0,0,.10);background:rgba(120,120,128,.10);color:var(--text);font-size:14px}
+body.dark .cloudFields input{border-color:rgba(255,255,255,.12);background:rgba(120,120,128,.18);color:var(--text)}
+.cloudActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.cloudHint{margin-top:10px;font-size:12px;line-height:1.5;color:var(--muted)}
+@media (max-width:760px){.cloudActions{grid-template-columns:1fr}}
 .timerOverlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(6,10,20,.34);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:120}
 .timerOverlay.show{display:flex}
 .timerPanel{width:min(100%,620px);border-radius:32px;border:1px solid rgba(0,0,0,.10);background:rgba(255,255,255,.88);box-shadow:0 24px 60px rgba(2,6,23,.24);padding:18px 18px calc(20px + env(safe-area-inset-bottom));text-align:center}
@@ -345,7 +356,7 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
 }
 
 </style></head><body><div class="wrap">
-<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡（家用器械）</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
+<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡（家用器械）</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><div class="syncBadge off" id="syncBadge"><span class="syncDot"></span><span id="syncBadgeText">仅本机</span></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
 
 
 <div class="overview" id="overviewPanel">
@@ -436,7 +447,24 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
     <button class="settingRow action" onclick="scrollToTop(); closeSheet()"><span style="font-weight:900">回顶部</span><span class="chev">›</span></button>
     <button class="settingRow action danger" onclick="resetAll()"><span style="font-weight:900">清空当前周训练数据</span></button>
   </div>
-  <div class="sheetHint">提示：打卡与休息时间会自动保存在本机浏览器。</div>
+
+  <div class="settingsList cloudCard">
+    <div class="settingLabel">云端同步（Supabase）</div>
+    <div class="settingSub">配置一次后，打卡数据就能存到服务器端。</div>
+    <div class="cloudFields">
+      <input id="supabaseUrlInput" placeholder="Supabase Project URL">
+      <input id="supabaseAnonKeyInput" placeholder="Supabase anon key">
+      <input id="syncCodeInput" placeholder="你的同步码（例如 laodie-fitness）">
+    </div>
+    <div class="cloudActions">
+      <button class="ghost" type="button" onclick="saveCloudConfig()">保存云端配置</button>
+      <button class="primary" type="button" onclick="syncNow(true)">立即同步到云端</button>
+      <button class="ghost" type="button" onclick="pullNow()">从云端拉取</button>
+      <button class="ghost" type="button" onclick="testCloudConnection()">测试连接</button>
+    </div>
+    <div class="cloudHint" id="cloudHint">未配置时仍然只保存在当前浏览器本地。配置完成后会自动同步。</div>
+  </div>
+  <div class="sheetHint">提示：本地会继续缓存；配好 Supabase 后会同步到服务器端。</div>
 </div></div>
 <details class="bulk"><summary>训练前批量设置</summary><div class="sub">如果你整体想上调/下调一点，不用一组组改：这里可以一键覆盖整页；每个动作卡片里也能单独批量设置。</div><div class="bulkgrid"><input id="globalWeight" placeholder="默认重量（如 60kg）"><input id="globalRest" type="number" min="0" placeholder="默认休息秒数"><div class="wide" style="display:flex;gap:8px;flex-wrap:wrap"><button class="primary" onclick="applyGlobal(false)">仅填空白组</button><button class="ghost" onclick="applyGlobal(true)">覆盖全部组</button></div></div></details>
 <div class="toc">
@@ -1591,6 +1619,7 @@ function _beep(freq=880, duration=0.08, volume=0.15){
 async function toggleSound(){
   soundMuted=!soundMuted;
   localStorage.setItem(PREFIX+'soundMuted', soundMuted?'1':'0');
+  scheduleCloudSync();
   updateSoundBtn();
   if(!soundMuted){
     const ok = await _ensureAudio();
@@ -1617,6 +1646,198 @@ document.addEventListener('visibilitychange', ()=>{
 window.addEventListener('pageshow', _wakeAudio);
 
 // --- UI prefs v2 ---
+const SYNC_PREF_PREFIX = PREFIX + 'cloud:';
+const SYNC_STATE = {ready:false,pending:false,pullPending:false,lastHash:'',saveTimer:null};
+function _syncGet(key, def=''){ const v=localStorage.getItem(SYNC_PREF_PREFIX + key); return v===null?def:v; }
+function _syncSet(key, val){ localStorage.setItem(SYNC_PREF_PREFIX + key, String(val ?? '')); }
+function getCloudConfig(){
+  return {
+    url:_syncGet('url','').trim(),
+    anonKey:_syncGet('anonKey','').trim(),
+    syncCode:_syncGet('syncCode','').trim()
+  };
+}
+function setSyncBadge(mode, text){
+  const badge=document.getElementById('syncBadge');
+  const textEl=document.getElementById('syncBadgeText');
+  if(textEl) textEl.textContent=text;
+  if(badge){
+    badge.classList.remove('ok','off');
+    if(mode==='ok') badge.classList.add('ok');
+    else if(mode==='off') badge.classList.add('off');
+  }
+}
+function setCloudHint(text){
+  const el=document.getElementById('cloudHint');
+  if(el) el.textContent=text;
+}
+function fillCloudConfig(){
+  const cfg=getCloudConfig();
+  const urlEl=document.getElementById('supabaseUrlInput');
+  const keyEl=document.getElementById('supabaseAnonKeyInput');
+  const codeEl=document.getElementById('syncCodeInput');
+  if(urlEl) urlEl.value=cfg.url;
+  if(keyEl) keyEl.value=cfg.anonKey;
+  if(codeEl) codeEl.value=cfg.syncCode;
+  refreshSyncStatus();
+}
+function buildServerPayload(){
+  try{
+    const raw=localStorage.getItem(PREFIX + 'db:v2');
+    const db=raw?JSON.parse(raw):null;
+    return {
+      prefix:PREFIX,
+      schema:'fitness-sync-v1',
+      savedAt:new Date().toISOString(),
+      db:db,
+      prefs:{
+        dark:_getPref('dark','0'),
+        todayOnly:_getPref('todayOnly','1'),
+        hideImg:_getPref('hideImg','1'),
+        soundMuted:soundMuted?'1':'0'
+      }
+    };
+  }catch(e){
+    return {
+      prefix:PREFIX,
+      schema:'fitness-sync-v1',
+      savedAt:new Date().toISOString(),
+      db:null,
+      prefs:{dark:'0',todayOnly:'1',hideImg:'1',soundMuted:soundMuted?'1':'0'}
+    };
+  }
+}
+async function supabaseRequest(method, path, body, extraHeaders={}){
+  const cfg=getCloudConfig();
+  if(!cfg.url || !cfg.anonKey || !cfg.syncCode) throw new Error('请先填 Supabase URL、anon key 和同步码');
+  const headers={
+    'apikey':cfg.anonKey,
+    'Authorization':'Bearer ' + cfg.anonKey,
+    ...extraHeaders
+  };
+  if(body!==undefined) headers['Content-Type']='application/json';
+  const res=await fetch(cfg.url.replace(/\/$/,'') + '/rest/v1/' + path, {
+    method,
+    headers,
+    body: body===undefined ? undefined : JSON.stringify(body)
+  });
+  const text=await res.text();
+  if(!res.ok) throw new Error(text || ('HTTP ' + res.status));
+  return text ? JSON.parse(text) : null;
+}
+function applyServerPayload(payload){
+  if(!payload || !payload.db) return false;
+  try{
+    localStorage.setItem(PREFIX + 'db:v2', JSON.stringify(payload.db));
+    if(payload.prefs){
+      _setPref('dark', payload.prefs.dark ?? '0');
+      _setPref('todayOnly', payload.prefs.todayOnly ?? '1');
+      _setPref('hideImg', payload.prefs.hideImg ?? '1');
+      soundMuted = (String(payload.prefs.soundMuted ?? '0') === '1');
+      localStorage.setItem(PREFIX+'soundMuted', soundMuted?'1':'0');
+    }
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+function refreshSyncStatus(){
+  const cfg=getCloudConfig();
+  if(cfg.url && cfg.anonKey && cfg.syncCode){
+    setSyncBadge('pending','云端待连接');
+    setCloudHint('已保存云端配置。你可以点“测试连接”或“立即同步到云端”。');
+  }else{
+    setSyncBadge('off','仅本机');
+    setCloudHint('未配置时仍然只保存在当前浏览器本地。配置完成后会自动同步。');
+  }
+}
+async function testCloudConnection(){
+  try{
+    setSyncBadge('pending','连接中');
+    const cfg=getCloudConfig();
+    if(!cfg.url || !cfg.anonKey || !cfg.syncCode) throw new Error('请先填完 URL、anon key、同步码');
+    await supabaseRequest('GET', 'fitness_sync?select=sync_code&sync_code=eq.' + encodeURIComponent(cfg.syncCode) + '&limit=1');
+    setSyncBadge('ok','云端已连接');
+    setCloudHint('Supabase 已连通。现在可以直接同步，后续改动也会自动上传。');
+  }catch(e){
+    setSyncBadge('pending','连接失败');
+    setCloudHint('连接失败：' + (e && e.message ? e.message : e));
+    alert('Supabase 连接失败：' + (e && e.message ? e.message : e));
+  }
+}
+async function syncNow(forceAlert){
+  const cfg=getCloudConfig();
+  if(!cfg.url || !cfg.anonKey || !cfg.syncCode){
+    if(forceAlert) alert('先在设置里填 Supabase URL、anon key 和同步码');
+    return false;
+  }
+  if(SYNC_STATE.pending) return false;
+  SYNC_STATE.pending=true;
+  try{
+    setSyncBadge('pending','同步中');
+    const payload=buildServerPayload();
+    const hash=JSON.stringify(payload);
+    const row={sync_code:cfg.syncCode, page_prefix:PREFIX, payload, updated_at:new Date().toISOString()};
+    await supabaseRequest('POST', 'fitness_sync?on_conflict=sync_code,page_prefix', row, {Prefer:'resolution=merge-duplicates,return=representation'});
+    SYNC_STATE.lastHash=hash;
+    setSyncBadge('ok','已同步');
+    setCloudHint('刚刚已经同步到服务器端。换设备后只要填同一个同步码就能拉回来。');
+    return true;
+  }catch(e){
+    setSyncBadge('pending','同步失败');
+    setCloudHint('同步失败：' + (e && e.message ? e.message : e));
+    if(forceAlert) alert('同步失败：' + (e && e.message ? e.message : e));
+    return false;
+  }finally{
+    SYNC_STATE.pending=false;
+  }
+}
+async function pullNow(){
+  const cfg=getCloudConfig();
+  if(!cfg.url || !cfg.anonKey || !cfg.syncCode){ alert('先在设置里填 Supabase URL、anon key 和同步码'); return false; }
+  if(SYNC_STATE.pullPending) return false;
+  SYNC_STATE.pullPending=true;
+  try{
+    setSyncBadge('pending','拉取中');
+    const rows=await supabaseRequest('GET', 'fitness_sync?select=payload&sync_code=eq.' + encodeURIComponent(cfg.syncCode) + '&page_prefix=eq.' + encodeURIComponent(PREFIX) + '&limit=1');
+    const payload=rows && rows[0] ? rows[0].payload : null;
+    if(!payload){
+      setCloudHint('云端还没有这份页面的数据。你先点一次“立即同步到云端”。');
+      setSyncBadge('pending','云端为空');
+      return false;
+    }
+    if(!applyServerPayload(payload)) throw new Error('云端数据格式不对');
+    try{ applyDarkPref(); applyTodayOnly(); applyImagesPref(); syncSwitches(); }catch(e){}
+    restoreCurrentWeek();
+    setSyncBadge('ok','已拉取');
+    setCloudHint('已从服务器端拉回当前页面的全部数据。');
+    return true;
+  }catch(e){
+    setSyncBadge('pending','拉取失败');
+    setCloudHint('拉取失败：' + (e && e.message ? e.message : e));
+    alert('拉取失败：' + (e && e.message ? e.message : e));
+    return false;
+  }finally{
+    SYNC_STATE.pullPending=false;
+  }
+}
+function scheduleCloudSync(){
+  const cfg=getCloudConfig();
+  if(!cfg.url || !cfg.anonKey || !cfg.syncCode) return;
+  if(SYNC_STATE.saveTimer) clearTimeout(SYNC_STATE.saveTimer);
+  SYNC_STATE.saveTimer=setTimeout(()=>{ syncNow(false); }, 700);
+}
+function saveCloudConfig(){
+  const url=(document.getElementById('supabaseUrlInput')||{}).value||'';
+  const anonKey=(document.getElementById('supabaseAnonKeyInput')||{}).value||'';
+  const syncCode=(document.getElementById('syncCodeInput')||{}).value||'';
+  _syncSet('url', url.trim());
+  _syncSet('anonKey', anonKey.trim());
+  _syncSet('syncCode', syncCode.trim());
+  refreshSyncStatus();
+  if(url.trim() && anonKey.trim() && syncCode.trim()) syncNow(false);
+}
+
 const PREF_PREFIX = PREFIX + 'pref:';
 function _getPref(k, def){
   const v=localStorage.getItem(PREF_PREFIX+k);
@@ -1624,6 +1845,7 @@ function _getPref(k, def){
 }
 function _setPref(k,v){
   localStorage.setItem(PREF_PREFIX+k,String(v));
+  scheduleCloudSync();
 }
 
 function toggleDark(){
@@ -1796,7 +2018,7 @@ function jumpNext(){
 }
 
 
-function persist(el){ const key=PREFIX+el.dataset.key; const val=(el.type==='checkbox')?(el.checked?'1':'0'):el.value; localStorage.setItem(key,val); if(el.type==='checkbox'){ updateSticky(); const id='label-'+el.dataset.key.replace(':done',''); const label=document.getElementById(id); if(label) label.classList.toggle('done', el.checked);} }
+function persist(el){ const key=PREFIX+el.dataset.key; const val=(el.type==='checkbox')?(el.checked?'1':'0'):el.value; localStorage.setItem(key,val); scheduleCloudSync(); if(el.type==='checkbox'){ updateSticky(); const id='label-'+el.dataset.key.replace(':done',''); const label=document.getElementById(id); if(label) label.classList.toggle('done', el.checked);} }
 function restore(){ document.querySelectorAll('[data-key]').forEach(el=>{ const v=localStorage.getItem(PREFIX+el.dataset.key); if(v!==null){ if(el.type==='checkbox'){ el.checked=(v==='1'); const id='label-'+el.dataset.key.replace(':done',''); const label=document.getElementById(id); if(label) label.classList.toggle('done', el.checked);} else { el.value=v; } } }); document.querySelectorAll('button[data-timer-key]').forEach(btn=>{ const v=localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'); if(v!==null){ btn.dataset.rest=v; const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+v+'秒'; } }); document.querySelectorAll('section[id]').forEach(sec=>refreshDay(sec.id)); }
 function fmt(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const ss=(s%60).toString().padStart(2,'0'); return m+':'+ss; }
 function labelTimerButtons(){ document.querySelectorAll('.timerbtn').forEach(btn=>{ btn.textContent='开始倒计时'; btn.setAttribute('aria-label','开始倒计时'); }); }
@@ -1865,6 +2087,7 @@ function jumpToToday(){
 }
 
 document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeSheet(); closeTimerOverlay(); } });
+fillCloudConfig();
 labelTimerButtons();
 restore();
 applyDarkPref();
@@ -1949,6 +2172,7 @@ jumpToToday();
     wk.fields[key] = String(value);
     if(Number(week) === 1) localStorage.setItem(PREFIX + key, String(value));
     saveDb();
+    scheduleCloudSync();
   }
   function getWeekRest(week, key){
     const wk = ensureWeek(week);
@@ -1960,6 +2184,7 @@ jumpToToday();
     wk.rests[key] = String(value);
     if(Number(week) === 1) localStorage.setItem(PREFIX + key + ':rest', String(value));
     saveDb();
+    scheduleCloudSync();
   }
 
   function summarizeValues(values){
@@ -2188,6 +2413,7 @@ jumpToToday();
 
     db.weeks[String(targetWeek)] = next;
     saveDb();
+    scheduleCloudSync();
   }
 
   function hasWeek(week){
@@ -2204,6 +2430,7 @@ jumpToToday();
     CURRENT_WEEK = week;
     db.currentWeek = CURRENT_WEEK;
     saveDb();
+    scheduleCloudSync();
     restoreCurrentWeek();
     closeSheet();
   };
