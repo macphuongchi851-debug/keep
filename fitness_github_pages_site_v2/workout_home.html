@@ -1676,6 +1676,38 @@ function setCloudHint(text){
   const el=document.getElementById('cloudHint');
   if(el) el.textContent=text;
 }
+function formatSyncTime(ts){
+  if(!ts) return '未同步';
+  const d=new Date(ts);
+  if(Number.isNaN(d.getTime())) return '未同步';
+  const now=new Date();
+  const pad=n=>String(n).padStart(2,'0');
+  const sameYear=now.getFullYear()===d.getFullYear();
+  const sameDay=sameYear && now.getMonth()===d.getMonth() && now.getDate()===d.getDate();
+  if(sameDay) return '今天 ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  const prefix = sameYear ? '' : (d.getFullYear() + '-');
+  return prefix + (d.getMonth()+1) + '-' + d.getDate() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+}
+function trimSyncMessage(err){
+  const msg=String(err && err.message ? err.message : err || '').replace(/\s+/g,' ').trim();
+  if(!msg) return '未知错误';
+  return msg.length>42 ? (msg.slice(0,42) + '…') : msg;
+}
+function getStoredSyncMeta(){
+  return {
+    status:_syncGet('lastStatus',''),
+    detail:_syncGet('lastDetail',''),
+    result:_syncGet('lastResult',''),
+    at:_syncGet('lastAt','')
+  };
+}
+function storeSyncMeta(status, detail, opts={}){
+  if(status!==undefined) _syncSet('lastStatus', status || '');
+  if(detail!==undefined) _syncSet('lastDetail', detail || '');
+  if(Object.prototype.hasOwnProperty.call(opts,'result')) _syncSet('lastResult', opts.result || '');
+  if(Object.prototype.hasOwnProperty.call(opts,'at')) _syncSet('lastAt', opts.at || '');
+  refreshSyncStatus();
+}
 function fillCloudConfig(){
   const cfg=getCloudConfig();
   const urlEl=document.getElementById('supabaseUrlInput');
@@ -1748,10 +1780,24 @@ function applyServerPayload(payload){
 }
 function refreshSyncStatus(){
   const cfg=getCloudConfig();
+  const meta=getStoredSyncMeta();
+  const statusEl=document.getElementById('cloudStatusText');
+  const lastText = meta.at ? ('上次同步：' + formatSyncTime(meta.at)) : '上次同步：未同步';
+  const detailText = meta.detail ? (' · ' + meta.detail) : '';
   if(cfg.url && cfg.anonKey && cfg.syncCode){
-    setSyncBadge('pending','云端待连接');
-    setCloudHint('已保存云端配置。你可以点“测试连接”或“立即同步到云端”。');
+    if(statusEl) statusEl.textContent = meta.status || '已配置 Supabase';
+    if(meta.result === 'ok'){
+      setSyncBadge('ok','云端已连');
+      setCloudHint(lastText + detailText);
+    }else if(meta.result === 'error'){
+      setSyncBadge('pending','云端异常');
+      setCloudHint(lastText + detailText);
+    }else{
+      setSyncBadge('pending','云端待连');
+      setCloudHint(meta.at ? (lastText + detailText) : '已保存云端配置。你可以点“测试连接”或“立即同步到云端”。');
+    }
   }else{
+    if(statusEl) statusEl.textContent = '未配置 Supabase';
     setSyncBadge('off','仅本机');
     setCloudHint('未配置时仍然只保存在当前浏览器本地。配置完成后会自动同步。');
   }
@@ -1762,11 +1808,11 @@ async function testCloudConnection(){
     const cfg=getCloudConfig();
     if(!cfg.url || !cfg.anonKey || !cfg.syncCode) throw new Error('请先填完 URL、anon key、同步码');
     await supabaseRequest('GET', 'fitness_sync?select=sync_code&sync_code=eq.' + encodeURIComponent(cfg.syncCode) + '&limit=1');
-    setSyncBadge('ok','云端已连接');
-    setCloudHint('Supabase 已连通。现在可以直接同步，后续改动也会自动上传。');
+    const last=getStoredSyncMeta();
+    storeSyncMeta('Supabase 已连接', '连接测试成功，后续改动会自动同步。', {result:'ok', at:last.at || ''});
   }catch(e){
-    setSyncBadge('pending','连接失败');
-    setCloudHint('连接失败：' + (e && e.message ? e.message : e));
+    const last=getStoredSyncMeta();
+    storeSyncMeta('Supabase 连接失败', trimSyncMessage(e), {result:'error', at:last.at || ''});
     alert('Supabase 连接失败：' + (e && e.message ? e.message : e));
   }
 }
@@ -1785,12 +1831,11 @@ async function syncNow(forceAlert){
     const row={sync_code:cfg.syncCode, page_prefix:PREFIX, payload, updated_at:new Date().toISOString()};
     await supabaseRequest('POST', 'fitness_sync?on_conflict=sync_code,page_prefix', row, {Prefer:'resolution=merge-duplicates,return=representation'});
     SYNC_STATE.lastHash=hash;
-    setSyncBadge('ok','已同步');
-    setCloudHint('刚刚已经同步到服务器端。换设备后只要填同一个同步码就能拉回来。');
+    storeSyncMeta('已同步到云端', '同步成功，服务器端已更新。', {result:'ok', at:payload.savedAt});
     return true;
   }catch(e){
-    setSyncBadge('pending','同步失败');
-    setCloudHint('同步失败：' + (e && e.message ? e.message : e));
+    const last=getStoredSyncMeta();
+    storeSyncMeta('云同步失败', trimSyncMessage(e), {result:'error', at:last.at || ''});
     if(forceAlert) alert('同步失败：' + (e && e.message ? e.message : e));
     return false;
   }finally{
@@ -1807,19 +1852,18 @@ async function pullNow(){
     const rows=await supabaseRequest('GET', 'fitness_sync?select=payload&sync_code=eq.' + encodeURIComponent(cfg.syncCode) + '&page_prefix=eq.' + encodeURIComponent(PREFIX) + '&limit=1');
     const payload=rows && rows[0] ? rows[0].payload : null;
     if(!payload){
-      setCloudHint('云端还没有这份页面的数据。你先点一次“立即同步到云端”。');
-      setSyncBadge('pending','云端为空');
+      const last=getStoredSyncMeta();
+      storeSyncMeta('云端还没有数据', '还没同步过这份页面，先点一次“立即同步到云端”。', {result:'', at:last.at || ''});
       return false;
     }
     if(!applyServerPayload(payload)) throw new Error('云端数据格式不对');
     try{ applyDarkPref(); applyTodayOnly(); applyImagesPref(); syncSwitches(); }catch(e){}
     restoreCurrentWeek();
-    setSyncBadge('ok','已拉取');
-    setCloudHint('已从服务器端拉回当前页面的全部数据。');
+    storeSyncMeta('已从云端恢复', '拉取成功，当前页面已更新。', {result:'ok', at:payload.savedAt || new Date().toISOString()});
     return true;
   }catch(e){
-    setSyncBadge('pending','拉取失败');
-    setCloudHint('拉取失败：' + (e && e.message ? e.message : e));
+    const last=getStoredSyncMeta();
+    storeSyncMeta('云端拉取失败', trimSyncMessage(e), {result:'error', at:last.at || ''});
     alert('拉取失败：' + (e && e.message ? e.message : e));
     return false;
   }finally{
@@ -1842,6 +1886,9 @@ function saveCloudConfig(){
   refreshSyncStatus();
   if(url.trim() && anonKey.trim() && syncCode.trim()) syncNow(false);
 }
+window.__cloudStoreSyncMeta = storeSyncMeta;
+window.__cloudGetSyncMeta = getStoredSyncMeta;
+window.__cloudRefreshSyncStatus = refreshSyncStatus;
 
 const PREF_PREFIX = PREFIX + 'pref:';
 function _getPref(k, def){
@@ -2616,6 +2663,14 @@ jumpToToday();
   let _cloudTimer = null;
   let _lastPayloadHash = '';
 
+  function cloudMeta(){
+    return window.__cloudGetSyncMeta ? window.__cloudGetSyncMeta() : {at:'',status:'',detail:'',result:''};
+  }
+  function mirrorCloudMeta(status, detail, opts={}){
+    if(window.__cloudStoreSyncMeta) window.__cloudStoreSyncMeta(status, detail, opts);
+    else if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
+  }
+
   function cloudStatusEl(){
     return document.getElementById('cloudStatusText');
   }
@@ -2714,6 +2769,7 @@ jumpToToday();
       const encoded = JSON.stringify(payload);
       if(silent && encoded === _lastPayloadHash){
         setCloudStatus('云端已是最新');
+        if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
         return true;
       }
       const { error } = await client.rpc('save_workout_state', {
@@ -2724,10 +2780,13 @@ jumpToToday();
       if(error) throw error;
       _lastPayloadHash = encoded;
       setCloudStatus('已同步到云端');
+      mirrorCloudMeta('已同步到云端', '同步成功，服务器端已更新。', {result:'ok', at:payload.savedAt});
       return true;
     }catch(err){
       console.error(err);
       setCloudStatus('云同步失败');
+      const last=cloudMeta();
+      mirrorCloudMeta('云同步失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
       if(!silent) alert('云同步失败：' + (err && err.message ? err.message : err));
       return false;
     }
@@ -2749,17 +2808,22 @@ jumpToToday();
       if(error) throw error;
       if(!data){
         setCloudStatus('云端还没有数据');
+        const last=cloudMeta();
+        mirrorCloudMeta('云端还没有数据', '还没同步过这份页面。', {result:'', at:last.at || ''});
         if(!silent) alert('云端还没有数据，我会继续保留你本地现在这份。');
         return false;
       }
       applyPayload(data);
       _lastPayloadHash = JSON.stringify(snapshotPayload());
       setCloudStatus('已从云端恢复');
+      mirrorCloudMeta('已从云端恢复', '拉取成功，当前页面已更新。', {result:'ok', at:data.savedAt || new Date().toISOString()});
       if(!silent) alert('已经从云端拉回到当前页面。');
       return true;
     }catch(err){
       console.error(err);
       setCloudStatus('云端读取失败');
+      const last=cloudMeta();
+      mirrorCloudMeta('云端拉取失败', (err && err.message ? err.message : String(err || '')).slice(0,42), {result:'error', at:last.at || ''});
       if(!silent) alert('云端读取失败：' + (err && err.message ? err.message : err));
       return false;
     }
@@ -2801,6 +2865,7 @@ jumpToToday();
       await pushCloudNow(false);
     }else{
       setCloudStatus('已连接云同步');
+      if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
       alert('Supabase 云同步已接好。之后别的设备填同样的 URL / anon key / 同步口令，就能拉到同一份数据。');
     }
   };
@@ -2818,9 +2883,13 @@ jumpToToday();
       const pulled = await pullCloudNow(true);
       _cloudBooted = true;
       if(!pulled) await pushCloudNow(true);
-      if(cloudConfigured()) setCloudStatus('已连接云同步');
+      if(cloudConfigured()){
+        setCloudStatus('已连接云同步');
+        if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
+      }
     }else{
       setCloudStatus('未配置 Supabase');
+      if(window.__cloudRefreshSyncStatus) window.__cloudRefreshSyncStatus();
       _cloudBooted = true;
     }
   })();
