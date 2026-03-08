@@ -444,6 +444,11 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
     <button class="settingRow action" onclick="prepareWeeksThrough(4,true)"><span style="font-weight:900">生成 / 刷新第2-4周建议</span><span class="chev">›</span></button>
   </div>
   <div class="settingsList">
+    <button class="settingRow action" onclick="setupCloudSync()"><span><span class="settingLabel">配置云同步</span><div class="settingSub" id="cloudStatusText">未配置 Supabase</div></span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="pushCloudNow(false)"><span style="font-weight:900">立即同步到云端</span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="pullCloudNow(false)"><span style="font-weight:900">从云端拉回当前数据</span><span class="chev">›</span></button>
+  </div>
+  <div class="settingsList">
     <button class="settingRow action" onclick="scrollToTop(); closeSheet()"><span style="font-weight:900">回顶部</span><span class="chev">›</span></button>
     <button class="settingRow action danger" onclick="resetAll()"><span style="font-weight:900">清空当前周训练数据</span></button>
   </div>
@@ -2120,6 +2125,7 @@ jumpToToday();
 
   function saveDb(){
     localStorage.setItem(DB_KEY, JSON.stringify(db));
+    if(window.__cloudMaybeSchedule) window.__cloudMaybeSchedule('db');
   }
 
   function ensureWeek(week){
@@ -2477,6 +2483,25 @@ jumpToToday();
     else window.prepareWeek(nextWeek, false);
   };
 
+  window.__workoutWeekBridge = {
+    getDbKey(){ return DB_KEY; },
+    getDb(){ return JSON.parse(JSON.stringify(db)); },
+    replaceDb(next){
+      if(!next || typeof next !== 'object') return;
+      db.version = Number(next.version || 1);
+      db.weeks = (next.weeks && typeof next.weeks === 'object') ? next.weeks : {};
+      CURRENT_WEEK = Math.max(1, Math.min(MAX_WEEK, Number(next.currentWeek || 1)));
+      while(CURRENT_WEEK > 1 && !hasWeek(CURRENT_WEEK)) CURRENT_WEEK--;
+      db.currentWeek = CURRENT_WEEK;
+      saveDb();
+      restoreCurrentWeek();
+    },
+    getCurrentWeek(){ return CURRENT_WEEK; },
+    setCurrentWeek(week){ window.setWeek(week); },
+    hasWeek(week){ return hasWeek(week); },
+    saveDb(){ saveDb(); }
+  };
+
   window.persist = function(el){
     const value = (el.type === 'checkbox') ? (el.checked ? '1' : '0') : String(el.value ?? '');
     setWeekField(CURRENT_WEEK, el.dataset.key, value);
@@ -2577,5 +2602,227 @@ jumpToToday();
   saveDb();
   restoreCurrentWeek();
   jumpToToday();
+})();
+</script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+(function(){
+  const CLOUD_URL_KEY = PREFIX + 'cloud:url';
+  const CLOUD_ANON_KEY = PREFIX + 'cloud:anon';
+  const CLOUD_CODE_KEY = PREFIX + 'cloud:code';
+  const APP_ID = /home/i.test(PREFIX) ? 'fitness-workout-home' : 'fitness-workout-gym';
+  let _cloudClient = null;
+  let _cloudClientKey = '';
+  let _cloudApplying = false;
+  let _cloudBooted = false;
+  let _cloudTimer = null;
+  let _lastPayloadHash = '';
+
+  function cloudStatusEl(){
+    return document.getElementById('cloudStatusText');
+  }
+  function setCloudStatus(text){
+    const el = cloudStatusEl();
+    if(el) el.textContent = text;
+  }
+  function getCloudConfig(){
+    return {
+      url: String(localStorage.getItem(CLOUD_URL_KEY) || '').trim(),
+      anonKey: String(localStorage.getItem(CLOUD_ANON_KEY) || '').trim(),
+      syncCode: String(localStorage.getItem(CLOUD_CODE_KEY) || '').trim()
+    };
+  }
+  function cloudConfigured(){
+    const cfg = getCloudConfig();
+    return !!(cfg.url && cfg.anonKey && cfg.syncCode);
+  }
+  async function sha256(text){
+    const data = new TextEncoder().encode(String(text || ''));
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  async function ownerHash(){
+    const cfg = getCloudConfig();
+    return cfg.syncCode ? sha256(cfg.syncCode) : '';
+  }
+  function getCloudClient(){
+    const cfg = getCloudConfig();
+    if(!cfg.url || !cfg.anonKey) return null;
+    const cacheKey = cfg.url + '|' + cfg.anonKey;
+    if(!_cloudClient || _cloudClientKey !== cacheKey){
+      if(!window.supabase || !window.supabase.createClient) throw new Error('Supabase SDK 加载失败');
+      _cloudClient = window.supabase.createClient(cfg.url, cfg.anonKey, {
+        auth:{persistSession:false, autoRefreshToken:false},
+        global:{headers:{'x-client-info':'fitness-workout-pages'}}
+      });
+      _cloudClientKey = cacheKey;
+    }
+    return _cloudClient;
+  }
+  function dbSnapshot(){
+    const bridge = window.__workoutWeekBridge;
+    if(bridge && bridge.getDb) return bridge.getDb();
+    try{ return JSON.parse(localStorage.getItem(PREFIX + 'db:v2') || 'null') || {version:1,currentWeek:1,weeks:{}}; }catch(e){ return {version:1,currentWeek:1,weeks:{}}; }
+  }
+  function snapshotPayload(){
+    return {
+      version: 1,
+      app: APP_ID,
+      savedAt: new Date().toISOString(),
+      db: dbSnapshot(),
+      prefs: {
+        dark: _getPref('dark','0'),
+        todayOnly: _getPref('todayOnly','1'),
+        hideImg: _getPref('hideImg','1'),
+        soundMuted: localStorage.getItem(PREFIX + 'soundMuted') === '1' ? '1' : '0'
+      }
+    };
+  }
+  function applyPayload(payload){
+    if(!payload || typeof payload !== 'object') return false;
+    _cloudApplying = true;
+    try{
+      const prefs = payload.prefs || {};
+      if(Object.prototype.hasOwnProperty.call(prefs,'dark')) localStorage.setItem(PREF_PREFIX + 'dark', String(prefs.dark));
+      if(Object.prototype.hasOwnProperty.call(prefs,'todayOnly')) localStorage.setItem(PREF_PREFIX + 'todayOnly', String(prefs.todayOnly));
+      if(Object.prototype.hasOwnProperty.call(prefs,'hideImg')) localStorage.setItem(PREF_PREFIX + 'hideImg', String(prefs.hideImg));
+      if(Object.prototype.hasOwnProperty.call(prefs,'soundMuted')) localStorage.setItem(PREFIX + 'soundMuted', String(prefs.soundMuted));
+      const bridge = window.__workoutWeekBridge;
+      if(payload.db && bridge && bridge.replaceDb){
+        bridge.replaceDb(payload.db);
+      }
+      applyDarkPref();
+      applyTodayOnly();
+      applyImagesPref();
+      updateSoundBtn();
+      try{ syncSwitches(); }catch(e){}
+      return true;
+    } finally {
+      _cloudApplying = false;
+    }
+  }
+  async function pushCloudNow(silent){
+    if(_cloudApplying) return false;
+    if(!cloudConfigured()){
+      setCloudStatus('未配置 Supabase');
+      if(!silent) alert('先配置 Supabase URL、anon key 和同步口令。');
+      return false;
+    }
+    try{
+      setCloudStatus('云端同步中…');
+      const client = getCloudClient();
+      const hash = await ownerHash();
+      const payload = snapshotPayload();
+      const encoded = JSON.stringify(payload);
+      if(silent && encoded === _lastPayloadHash){
+        setCloudStatus('云端已是最新');
+        return true;
+      }
+      const { error } = await client.rpc('save_workout_state', {
+        p_app: APP_ID,
+        p_owner_hash: hash,
+        p_payload: payload
+      });
+      if(error) throw error;
+      _lastPayloadHash = encoded;
+      setCloudStatus('已同步到云端');
+      return true;
+    }catch(err){
+      console.error(err);
+      setCloudStatus('云同步失败');
+      if(!silent) alert('云同步失败：' + (err && err.message ? err.message : err));
+      return false;
+    }
+  }
+  async function pullCloudNow(silent){
+    if(!cloudConfigured()){
+      setCloudStatus('未配置 Supabase');
+      if(!silent) alert('先配置 Supabase URL、anon key 和同步口令。');
+      return false;
+    }
+    try{
+      setCloudStatus('云端读取中…');
+      const client = getCloudClient();
+      const hash = await ownerHash();
+      const { data, error } = await client.rpc('load_workout_state', {
+        p_app: APP_ID,
+        p_owner_hash: hash
+      });
+      if(error) throw error;
+      if(!data){
+        setCloudStatus('云端还没有数据');
+        if(!silent) alert('云端还没有数据，我会继续保留你本地现在这份。');
+        return false;
+      }
+      applyPayload(data);
+      _lastPayloadHash = JSON.stringify(snapshotPayload());
+      setCloudStatus('已从云端恢复');
+      if(!silent) alert('已经从云端拉回到当前页面。');
+      return true;
+    }catch(err){
+      console.error(err);
+      setCloudStatus('云端读取失败');
+      if(!silent) alert('云端读取失败：' + (err && err.message ? err.message : err));
+      return false;
+    }
+  }
+  function scheduleCloudPush(){
+    if(_cloudApplying || !_cloudBooted || !cloudConfigured()) return;
+    clearTimeout(_cloudTimer);
+    _cloudTimer = setTimeout(()=>{ pushCloudNow(true); }, 900);
+  }
+
+  window.__cloudMaybeSchedule = function(){
+    scheduleCloudPush();
+  };
+  window.pushCloudNow = function(silent){
+    return pushCloudNow(!!silent);
+  };
+  window.pullCloudNow = function(silent){
+    return pullCloudNow(!!silent);
+  };
+  window.setupCloudSync = async function(){
+    const current = getCloudConfig();
+    const url = prompt('Supabase Project URL', current.url || '');
+    if(url === null) return;
+    const anonKey = prompt('Supabase anon key', current.anonKey || '');
+    if(anonKey === null) return;
+    const syncCode = prompt('同步口令（建议 16 位以上，只你自己知道；别设简单密码）', current.syncCode || '');
+    if(syncCode === null) return;
+
+    localStorage.setItem(CLOUD_URL_KEY, String(url).trim());
+    localStorage.setItem(CLOUD_ANON_KEY, String(anonKey).trim());
+    localStorage.setItem(CLOUD_CODE_KEY, String(syncCode).trim());
+    _cloudClient = null;
+    _cloudClientKey = '';
+    setCloudStatus('配置已保存，正在连接…');
+
+    const pulled = await pullCloudNow(true);
+    _cloudBooted = true;
+    if(!pulled){
+      await pushCloudNow(false);
+    }else{
+      setCloudStatus('已连接云同步');
+      alert('Supabase 云同步已接好。之后别的设备填同样的 URL / anon key / 同步口令，就能拉到同一份数据。');
+    }
+  };
+
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden) pushCloudNow(true);
+  });
+  window.addEventListener('beforeunload', ()=>{
+    pushCloudNow(true);
+  });
+
+  (async function initCloud(){
+    if(cloudConfigured()){
+      setCloudStatus('已配置，准备连接…');
+      const pulled = await pullCloudNow(true);
+      _cloudBooted = true;
+      if(!pulled) await pushCloudNow(true);
+      if(cloudConfigured()) setCloudStatus('已连接云同步');
+    }else{
+      setCloudStatus('未配置 Supabase');
+      _cloudBooted = true;
+    }
+  })();
 })();
 </script></div></body></html>
