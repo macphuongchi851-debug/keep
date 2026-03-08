@@ -219,6 +219,29 @@ body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255
 .switch.on::after{left:22px}
 
 .sheetHint{margin-top:10px;color:var(--muted);font-size:12px;font-weight:700}
+.timerOverlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(6,10,20,.34);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:120}
+.timerOverlay.show{display:flex}
+.timerPanel{width:min(100%,620px);border-radius:32px;border:1px solid rgba(0,0,0,.10);background:rgba(255,255,255,.88);box-shadow:0 24px 60px rgba(2,6,23,.24);padding:18px 18px calc(20px + env(safe-area-inset-bottom));text-align:center}
+body.dark .timerPanel{background:rgba(28,28,30,.90);border-color:rgba(255,255,255,.12);box-shadow:0 24px 60px rgba(0,0,0,.46)}
+.timerPanelHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;text-align:left}
+.timerPanelEyebrow{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.timerPanelTitle{margin-top:6px;font-size:20px;font-weight:900;letter-spacing:-.02em;line-height:1.2}
+.timerPanelSet{margin-top:4px;font-size:13px;color:var(--muted)}
+.timerPanelClose{min-width:88px;white-space:nowrap}
+.timerBig{margin-top:20px;font-size:clamp(68px,18vw,126px);line-height:.95;font-weight:900;letter-spacing:-.06em;font-variant-numeric:tabular-nums;color:var(--text)}
+.timerOverlay.done .timerBig{color:var(--green)}
+.timerBar{height:14px;margin-top:18px;border-radius:999px;background:rgba(120,120,128,.16);overflow:hidden}
+.timerFill{height:100%;width:0;background:linear-gradient(90deg,#0a84ff,#5ac8fa,#34c759);transition:width .25s ease}
+.timerPanelMeta{margin-top:12px;font-size:13px;color:var(--muted);font-weight:800}
+.timerPanelActions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.timerPanelActions button{min-height:46px}
+@media (max-width:640px){
+  .timerOverlay{padding:12px}
+  .timerPanel{min-height:min(78vh,680px);display:flex;flex-direction:column;justify-content:center;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+  .timerPanelHead{align-items:center}
+  .timerPanelTitle{font-size:18px}
+  .timerPanelActions{grid-template-columns:1fr}
+}
 
 @media (max-width:760px){
   .wrap{padding:14px 12px calc(50px + env(safe-area-inset-bottom))}
@@ -233,7 +256,7 @@ body{
     radial-gradient(circle at top, rgba(10,132,255,.12), transparent 34%),
     var(--bg) !important;
 }
-body.sheetOpen{overflow:hidden}
+body.sheetOpen,body.timerPageOpen{overflow:hidden}
 .wrap{max-width:1180px;padding-top:14px}
 .topbar{align-items:center;padding:18px;border-radius:28px;background:linear-gradient(135deg,#081120 0%,#0f1d35 46%,#0a84ff 100%);box-shadow:0 18px 40px rgba(10,132,255,.16)}
 body.dark .topbar{background:linear-gradient(135deg,#020617 0%,#0b1629 44%,#0a84ff 100%)}
@@ -276,12 +299,12 @@ body.dark .video a{background:rgba(10,132,255,.16);border-color:rgba(10,132,255,
 .note{background:rgba(255,149,0,.10) !important;border:1px solid rgba(255,149,0,.18) !important;color:#9a5710 !important}
 body.dark .note{color:#ffd8aa !important}
 .exbulk .title{color:var(--muted) !important}
-.setrow{grid-template-columns:auto 92px 104px 98px 1fr 82px;gap:10px;padding:12px 11px !important}
+.setrow{grid-template-columns:auto 92px 104px 132px 1fr 82px;gap:10px;padding:12px 11px !important}
 .setlabel{min-width:0;align-items:flex-start}
 .setlabel span{display:inline-flex;align-items:center;min-height:24px}
 .setrow.next-up{border-color:rgba(10,132,255,.45) !important;box-shadow:0 0 0 4px rgba(10,132,255,.12)}
 body.dark .setrow.next-up{box-shadow:0 0 0 4px rgba(10,132,255,.20)}
-.timerbtn{border-radius:12px !important;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);background:linear-gradient(135deg,#0a84ff,#5ac8fa) !important}
+.timerbtn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;writing-mode:horizontal-tb;min-height:44px;min-width:126px;border-radius:12px !important;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.25);background:linear-gradient(135deg,#0a84ff,#5ac8fa) !important}
 .timer{font-variant-numeric:tabular-nums}
 .ghost{background:rgba(120,120,128,.14);border:1px solid rgba(0,0,0,.10);color:var(--text)}
 body.dark .ghost{background:rgba(120,120,128,.24);border-color:rgba(255,255,255,.12)}
@@ -349,6 +372,26 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
       <div class="statLabel">当前周</div>
       <div class="statValue" id="heroWeekName">第1周</div>
       <div class="statMeta" id="heroWeekState">原方案</div>
+    </div>
+  </div>
+</div>
+
+<div class="timerOverlay" id="timerOverlay">
+  <div class="timerPanel" role="dialog" aria-label="倒计时页面" aria-modal="true">
+    <div class="timerPanelHead">
+      <div>
+        <div class="timerPanelEyebrow">Rest Timer</div>
+        <div class="timerPanelTitle" id="timerOverlayExercise">当前动作</div>
+        <div class="timerPanelSet" id="timerOverlaySet">当前组</div>
+      </div>
+      <button class="ghost timerPanelClose" type="button" onclick="closeTimerOverlay()">收起</button>
+    </div>
+    <div class="timerBig" id="timerOverlayValue">00:00</div>
+    <div class="timerBar"><div class="timerFill" id="timerOverlayFill"></div></div>
+    <div class="timerPanelMeta" id="timerOverlayMeta">最后 10 秒会响</div>
+    <div class="timerPanelActions">
+      <button class="ghost" type="button" onclick="closeTimerOverlay()">返回训练</button>
+      <button class="primary" type="button" onclick="stopActiveTimer()">结束计时</button>
     </div>
   </div>
 </div>
@@ -1486,7 +1529,7 @@ body.dark .stickypanel .ghost{background:rgba(10,132,255,.16);border-color:rgba(
 </div></div>
 
 <script>
-const PREFIX='fitness-home-v3:'; const timers={};
+const PREFIX='fitness-home-v3:'; const timers={}; const timerState={}; let activeTimerKey=null;
 let _audioCtx=null;
 let _audioPrimed=false;
 let soundMuted = (localStorage.getItem(PREFIX+'soundMuted')==='1');
@@ -1726,6 +1769,7 @@ const _baseUpdateStickyV5 = updateSticky;
 updateSticky = function(){
   _baseUpdateStickyV5();
   updateOverview();
+  labelTimerButtons();
   markNextUp();
 };
 
@@ -1751,7 +1795,14 @@ function jumpNext(){
 function persist(el){ const key=PREFIX+el.dataset.key; const val=(el.type==='checkbox')?(el.checked?'1':'0'):el.value; localStorage.setItem(key,val); if(el.type==='checkbox'){ updateSticky(); const id='label-'+el.dataset.key.replace(':done',''); const label=document.getElementById(id); if(label) label.classList.toggle('done', el.checked);} }
 function restore(){ document.querySelectorAll('[data-key]').forEach(el=>{ const v=localStorage.getItem(PREFIX+el.dataset.key); if(v!==null){ if(el.type==='checkbox'){ el.checked=(v==='1'); const id='label-'+el.dataset.key.replace(':done',''); const label=document.getElementById(id); if(label) label.classList.toggle('done', el.checked);} else { el.value=v; } } }); document.querySelectorAll('button[data-timer-key]').forEach(btn=>{ const v=localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'); if(v!==null){ btn.dataset.rest=v; const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+v+'秒'; } }); document.querySelectorAll('section[id]').forEach(sec=>refreshDay(sec.id)); }
 function fmt(s){ const m=Math.floor(s/60).toString().padStart(2,'0'); const ss=(s%60).toString().padStart(2,'0'); return m+':'+ss; }
-function startTimer(btn){ const key=btn.dataset.timerKey; const seconds=parseInt(btn.dataset.rest||'0',10); if(!seconds||seconds<=0){ alert('这个动作当前休息时间是 0 秒'); return; } _ensureAudio(); if(timers[key]) clearInterval(timers[key]); const el=document.getElementById('timer-'+key); const endAt=Date.now()+seconds*1000; let lastShown=seconds; let lastBeepLeft=null; if(el) el.textContent=fmt(seconds); timers[key]=setInterval(()=>{ const left=Math.max(0, Math.ceil((endAt-Date.now())/1000)); if(el && left!==lastShown){ el.textContent = left>0 ? fmt(left) : '完成'; lastShown=left; } if(left>0 && left<=10 && left!==lastBeepLeft){ _beep(880 + (10-left)*30, 0.08, 0.16); lastBeepLeft=left; } if(left<=0){ if(lastBeepLeft!==0){ _beep(440, 0.25, 0.22); lastBeepLeft=0; } clearInterval(timers[key]); delete timers[key]; if(el) el.textContent='完成'; } }, 250); }
+function labelTimerButtons(){ document.querySelectorAll('.timerbtn').forEach(btn=>{ btn.textContent='开始倒计时'; btn.setAttribute('aria-label','开始倒计时'); }); }
+function _timerStateFor(btn, key, seconds){ const row=btn.closest('.setrow'); const card=btn.closest('.card'); const exercise=((card&&card.querySelector('h3'))?card.querySelector('h3').textContent:'当前动作').trim(); const set=((row&&row.querySelector('.setlabel span'))?row.querySelector('.setlabel span').textContent:'当前组').trim(); return {key,total:seconds,endAt:Date.now()+seconds*1000,exercise,set}; }
+function updateTimerOverlay(key, left){ const overlay=document.getElementById('timerOverlay'); if(!overlay) return; const state=timerState[key]; if(!state) return; const remain=(typeof left==='number')?Math.max(0,left):Math.max(0, Math.ceil((state.endAt-Date.now())/1000)); const pct=state.total?Math.max(0,Math.min(100,Math.round((1-remain/state.total)*100))):0; const title=document.getElementById('timerOverlayExercise'); const set=document.getElementById('timerOverlaySet'); const value=document.getElementById('timerOverlayValue'); const meta=document.getElementById('timerOverlayMeta'); const fill=document.getElementById('timerOverlayFill'); if(title) title.textContent=state.exercise||'当前动作'; if(set) set.textContent=state.set||'当前组'; if(value) value.textContent=remain>0?fmt(remain):'完成'; if(meta) meta.textContent = remain>10 ? '倒计时进行中' : remain>0 ? '最后 10 秒会响' : '休息结束，开始下一组吧'; if(fill) fill.style.width=pct+'%'; overlay.classList.toggle('done', remain===0); }
+function openTimerOverlay(key){ activeTimerKey=key; const overlay=document.getElementById('timerOverlay'); if(!overlay) return; overlay.classList.remove('done'); overlay.classList.add('show'); document.body.classList.add('timerPageOpen'); updateTimerOverlay(key); }
+function closeTimerOverlay(){ const overlay=document.getElementById('timerOverlay'); if(overlay){ overlay.classList.remove('show'); overlay.classList.remove('done'); } document.body.classList.remove('timerPageOpen'); activeTimerKey=null; }
+function stopTimer(key, hideOverlay=true){ if(!key) return; if(timers[key]){ clearInterval(timers[key]); delete timers[key]; } delete timerState[key]; const el=document.getElementById('timer-'+key); if(el) el.textContent='--:--'; if(activeTimerKey===key && hideOverlay) closeTimerOverlay(); }
+function stopActiveTimer(){ if(activeTimerKey) stopTimer(activeTimerKey, true); else closeTimerOverlay(); }
+function startTimer(btn){ const key=btn.dataset.timerKey; const seconds=parseInt(btn.dataset.rest||'0',10); if(!seconds||seconds<=0){ alert('这个动作当前休息时间是 0 秒'); return; } _ensureAudio(); if(timers[key]) clearInterval(timers[key]); const el=document.getElementById('timer-'+key); timerState[key]=_timerStateFor(btn, key, seconds); if(el) el.textContent=fmt(seconds); openTimerOverlay(key); updateTimerOverlay(key, seconds); const endAt=timerState[key].endAt; let lastShown=seconds; let lastBeepLeft=null; timers[key]=setInterval(()=>{ const left=Math.max(0, Math.ceil((endAt-Date.now())/1000)); if(el && left!==lastShown){ el.textContent = left>0 ? fmt(left) : '完成'; lastShown=left; } if(activeTimerKey===key) updateTimerOverlay(key, left); if(left>0 && left<=10 && left!==lastBeepLeft){ _beep(920 + (10-left)*24, 0.10, 0.18); lastBeepLeft=left; } if(left<=0){ if(lastBeepLeft!==0){ _beep(440, 0.30, 0.22); lastBeepLeft=0; } clearInterval(timers[key]); delete timers[key]; if(el) el.textContent='完成'; if(activeTimerKey===key) updateTimerOverlay(key, 0); } }, 250); }
 function refreshDay(day){ const sec=document.getElementById(day); if(!sec) return; const boxes=sec.querySelectorAll('input[type=checkbox][data-key$=":done"]'); const total=boxes.length; const done=[...boxes].filter(b=>b.checked).length; const pct=total?Math.round(done*100/total):0; const t=document.getElementById('prog-text-'+day); const f=document.getElementById('prog-fill-'+day); if(t) t.textContent='今日完成度：'+done+' / '+total+'（'+pct+'%）'; if(f) f.style.width=pct+'%'; }
 function applyGlobal(overwrite){ const weight=(document.getElementById('globalWeight').value||'').trim(); const rest=(document.getElementById('globalRest').value||'').trim(); if(!weight && !rest){ alert('先填默认重量或默认休息秒数'); return; } document.querySelectorAll('input.weight[data-group]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-timer-key]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
 function applyExercise(group, overwrite){ const weight=(document.getElementById('w-'+group).value||'').trim(); const rest=(document.getElementById('r-'+group).value||'').trim(); if(!weight && !rest){ alert('先填这个动作的重量或休息秒数'); return; } document.querySelectorAll('input.weight[data-group="'+group+'"]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-group="'+group+'"]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
@@ -1809,6 +1860,8 @@ function jumpToToday(){
   if(el) el.scrollIntoView({block:'start'});
 }
 
+document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeSheet(); closeTimerOverlay(); } });
+labelTimerButtons();
 restore();
 applyDarkPref();
 applyTodayOnly();
