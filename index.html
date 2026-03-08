@@ -238,7 +238,7 @@
         <div class="recentList">
           <a class="recentRow" data-sync-link href="./workout.html">
             <div class="recentMain">
-              <div class="recentName">健身房版</div>
+              <div class="recentName">纯徒手版</div>
               <div class="recentMeta" id="gymMeta">第1周 · 暂无记录</div>
             </div>
             <div class="recentPct" id="gymPct">待开始</div>
@@ -256,9 +256,9 @@
       <section class="quickCard today">
         <div class="cardEyebrow">今日建议</div>
         <div class="suggestDay" id="todayTitle">今天练什么，下面直接进。</div>
-        <div class="suggestDesc" id="todayDesc">有条件就去健身房。想省事，就在家继续。</div>
+        <div class="suggestDesc" id="todayDesc">想直接开练就上纯徒手版；需要器械辅助，再进家庭版。</div>
         <div class="actionRow">
-          <a class="miniBtn primary" id="gymTodayLink" data-sync-link href="./workout.html">去健身房版</a>
+          <a class="miniBtn primary" id="gymTodayLink" data-sync-link href="./workout.html">去纯徒手版</a>
           <a class="miniBtn secondary" id="homeTodayLink" data-sync-link href="./workout_home.html">在家练今天</a>
         </div>
       </section>
@@ -268,14 +268,14 @@
     <div class="entryGrid">
       <a class="entry gym" id="gymLink" data-sync-link href="./workout.html">
         <div class="entryTop">
-          <span class="entryBadge">Gym Mode</span>
+          <span class="entryBadge">Bodyweight Mode</span>
           <span class="entryArrow">→</span>
         </div>
-        <div class="entryTitle">健身房版</div>
-        <div class="entryDesc">去健身房，就开这个。重量、打卡、计时，一套走完。</div>
+        <div class="entryTitle">纯徒手版</div>
+        <div class="entryDesc">纯徒手也能狠狠干。打开就练，不靠器械也能把强度做起来。</div>
         <div class="chips">
-          <span class="chip">建议重量</span>
-          <span class="chip">逐组计时</span>
+          <span class="chip">纯徒手</span>
+          <span class="chip">逐组打卡</span>
           <span class="chip">4 周推进</span>
         </div>
       </a>
@@ -360,7 +360,7 @@
     const headline = document.getElementById('recentHeadline');
     const text = document.getElementById('recentText');
     const best = [
-      {label:'健身房版', stats:gym},
+      {label:'纯徒手版', stats:gym},
       {label:'家用版', stats:home}
     ].sort((a,b)=> (b.stats.done - a.stats.done) || (b.stats.week - a.stats.week))[0];
 
@@ -390,7 +390,7 @@
     };
     const data = map[day] || map[1];
     if(titleEl) titleEl.textContent = data[0];
-    if(descEl) descEl.textContent = data[1] + ' 有条件就进健身房版；想省事一点，家用版也能直接接住今天。';
+    if(descEl) descEl.textContent = data[1] + ' 有条件就进纯徒手版；想省事一点，家用版也能直接接住今天。';
   }
 
   applySyncToLinks();
