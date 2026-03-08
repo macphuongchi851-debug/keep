@@ -115,6 +115,15 @@ body.dark .topbar{background:linear-gradient(135deg,#020617 0%,#0f172a 46%,#0a84
 body.dark .iconbtn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.16)}
 .iconbtn svg{width:18px;height:18px;display:block;fill:currentColor;opacity:.96}
 
+.topActions{display:flex;align-items:center;gap:10px}
+.weekbtn{display:inline-flex;align-items:center;justify-content:center;height:42px;min-width:74px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;font-weight:800;letter-spacing:.01em;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+body.dark .weekbtn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.18)}
+.settingStack{padding:2px 2px 6px}
+.segRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.segbtn{appearance:none;border:none;background:var(--fill);color:var(--text);border-radius:12px;padding:12px 14px;font-weight:800;box-shadow:none}
+.segbtn.active{background:var(--blue);color:#fff}
+#weekHint{margin-top:4px}
+
 /* tap feel */
 button,.timerbtn{transition:transform .08s ease, filter .12s ease}
 button:active,.timerbtn:active{transform:scale(.98)}
@@ -218,7 +227,7 @@ body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255
 }
 
 </style></head><body><div class="wrap">
-<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div>
+<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
 
 <div class="sheetMask" id="sheetMask" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet"><div class="sheetInner" role="dialog" aria-label="设置">
@@ -243,8 +252,19 @@ body.dark .switch{background:rgba(255,255,255,.18);border-color:rgba(255,255,255
     </div>
   </div>
   <div class="settingsList">
+    <div class="settingStack">
+      <div class="settingLabel">训练周</div>
+      <div class="settingSub" id="weekHint">第1周保持原方案；第2周按第1周打卡自动生成。</div>
+      <div class="segRow">
+        <button class="segbtn" id="week1Btn" onclick="setWeek(1)">第1周</button>
+        <button class="segbtn" id="week2Btn" onclick="prepareWeek2(false)">第2周</button>
+      </div>
+    </div>
+    <button class="settingRow action" onclick="prepareWeek2(true)"><span style="font-weight:900">生成 / 刷新第2周建议</span><span class="chev">›</span></button>
+  </div>
+  <div class="settingsList">
     <button class="settingRow action" onclick="scrollToTop(); closeSheet()"><span style="font-weight:900">回顶部</span><span class="chev">›</span></button>
-    <button class="settingRow action danger" onclick="resetAll()"><span style="font-weight:900">清空本页训练数据</span></button>
+    <button class="settingRow action danger" onclick="resetAll()"><span style="font-weight:900">清空当前周训练数据</span></button>
   </div>
   <div class="sheetHint">提示：打卡与休息时间会自动保存在本机浏览器。</div>
 </div></div>
@@ -1569,4 +1589,446 @@ updateSoundBtn();
 updateSticky();
 markTodayInToc();
 jumpToToday();
+</script><script>
+(function(){
+  if(window.__workoutWeekDbLoaded) return;
+  window.__workoutWeekDbLoaded = true;
+
+  const DB_KEY = PREFIX + 'db:v2';
+  const DUMBBELL_STEPS = [2,2.5,3.5,4.5,5.5,6.5,8,9,10,11.5,13.5,16,18,20.5];
+
+  function loadDb(){
+    try{
+      const raw = localStorage.getItem(DB_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && parsed.weeks) return parsed;
+      }
+    }catch(e){}
+    return {version:1,currentWeek:1,weeks:{}};
+  }
+  const db = loadDb();
+
+  function saveDb(){
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+  }
+
+  function ensureWeek(week){
+    const key = String(week);
+    if(!db.weeks[key]) db.weeks[key] = {fields:{}, rests:{}, meta:{}};
+    return db.weeks[key];
+  }
+
+  function captureTemplateDefaults(){
+    const fields = {};
+    const rests = {};
+    document.querySelectorAll('[data-key]').forEach(el=>{
+      if(el.type === 'checkbox') fields[el.dataset.key] = el.defaultChecked ? '1' : '0';
+      else fields[el.dataset.key] = (el.defaultValue ?? el.getAttribute('value') ?? '').trim();
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      const badge = document.getElementById('rest-'+btn.dataset.timerKey);
+      const m = badge ? badge.textContent.match(/(\d+)/) : null;
+      rests[btn.dataset.timerKey] = String(m ? m[1] : (btn.dataset.rest || '0'));
+    });
+    return {fields, rests};
+  }
+
+  function captureCurrentDomState(){
+    const fields = {};
+    const rests = {};
+    document.querySelectorAll('[data-key]').forEach(el=>{
+      fields[el.dataset.key] = el.type === 'checkbox' ? (el.checked ? '1' : '0') : String(el.value ?? '');
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      rests[btn.dataset.timerKey] = String(btn.dataset.rest || '0');
+    });
+    return {fields, rests, meta:{bootstrappedAt:new Date().toISOString()}};
+  }
+
+  const TEMPLATE = captureTemplateDefaults();
+  if(!db.weeks['1'] || !db.weeks['1'].fields || !Object.keys(db.weeks['1'].fields).length){
+    db.weeks['1'] = captureCurrentDomState();
+  }
+
+  let CURRENT_WEEK = Number(db.currentWeek || 1);
+
+  function getWeekField(week, key){
+    const wk = ensureWeek(week);
+    if(Object.prototype.hasOwnProperty.call(wk.fields, key)) return wk.fields[key];
+    return Object.prototype.hasOwnProperty.call(TEMPLATE.fields, key) ? TEMPLATE.fields[key] : (key.endsWith(':done') ? '0' : '');
+  }
+  function setWeekField(week, key, value){
+    const wk = ensureWeek(week);
+    wk.fields[key] = String(value);
+    if(Number(week) === 1) localStorage.setItem(PREFIX + key, String(value));
+    saveDb();
+  }
+  function getWeekRest(week, key){
+    const wk = ensureWeek(week);
+    if(Object.prototype.hasOwnProperty.call(wk.rests, key)) return wk.rests[key];
+    return TEMPLATE.rests[key] || '0';
+  }
+  function setWeekRest(week, key, value){
+    const wk = ensureWeek(week);
+    wk.rests[key] = String(value);
+    if(Number(week) === 1) localStorage.setItem(PREFIX + key + ':rest', String(value));
+    saveDb();
+  }
+
+  function summarizeValues(values){
+    const cleaned = values.map(v => String(v ?? '').trim());
+    const unique = [...new Set(cleaned)];
+    return unique.length === 1 ? unique[0] : cleaned.join(' / ');
+  }
+
+  function refreshCardSummary(card){
+    const goalTag = card.querySelector('.tag.goal');
+    const weightTag = card.querySelector('.tag.weight');
+    const repInputs = [...card.querySelectorAll('.reps[data-key]')];
+    const weightInputs = [...card.querySelectorAll('.weight[data-key]')];
+    if(goalTag && !goalTag.dataset.basePrefix){
+      goalTag.dataset.basePrefix = goalTag.textContent.trim().startsWith('每组次数') ? '每组次数' : '目标';
+    }
+    if(weightTag && !weightTag.dataset.basePrefix){
+      weightTag.dataset.basePrefix = '建议';
+    }
+    if(goalTag && repInputs.length){
+      goalTag.textContent = goalTag.dataset.basePrefix + ' ' + summarizeValues(repInputs.map(el=>el.value));
+    }
+    if(weightTag && weightInputs.length){
+      weightTag.textContent = weightTag.dataset.basePrefix + ' ' + summarizeValues(weightInputs.map(el=>el.value));
+    }
+  }
+
+  function refreshAllCardSummaries(){
+    document.querySelectorAll('.card').forEach(refreshCardSummary);
+  }
+
+  const baseUpdateSticky = updateSticky;
+  updateSticky = function(){
+    baseUpdateSticky();
+    const elS = document.getElementById('stickySub');
+    if(elS){
+      const text = elS.textContent.replace(/^第\d+周 · /,'');
+      elS.textContent = '第' + CURRENT_WEEK + '周 · ' + text;
+    }
+  };
+
+  function updateWeekUI(){
+    const weekBtn = document.getElementById('weekBtn');
+    if(weekBtn) weekBtn.textContent = '第' + CURRENT_WEEK + '周';
+    const week1Btn = document.getElementById('week1Btn');
+    const week2Btn = document.getElementById('week2Btn');
+    if(week1Btn) week1Btn.classList.toggle('active', CURRENT_WEEK === 1);
+    if(week2Btn) week2Btn.classList.toggle('active', CURRENT_WEEK === 2);
+    const hint = document.getElementById('weekHint');
+    if(hint){
+      if(CURRENT_WEEK === 1) hint.textContent = '第1周保持原方案和原重量；这里只记录你本周自己的打卡。';
+      else hint.textContent = '第2周会独立保存；你可以基于第1周打卡结果自动生成，再手动微调。';
+    }
+  }
+
+  function restoreCurrentWeek(){
+    document.querySelectorAll('[data-key]').forEach(el=>{
+      const val = getWeekField(CURRENT_WEEK, el.dataset.key);
+      if(el.type === 'checkbox'){
+        el.checked = (val === '1');
+        const label = document.getElementById('label-' + el.dataset.key.replace(':done',''));
+        if(label) label.classList.toggle('done', el.checked);
+      }else{
+        el.value = val;
+      }
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      const rest = getWeekRest(CURRENT_WEEK, btn.dataset.timerKey);
+      btn.dataset.rest = rest;
+      const badge = document.getElementById('rest-' + btn.dataset.timerKey);
+      if(badge) badge.textContent = '休息 ' + rest + '秒';
+    });
+    document.querySelectorAll('section[id]').forEach(sec=>refreshDay(sec.id));
+    refreshAllCardSummaries();
+    updateWeekUI();
+    updateSoundBtn();
+    updateSticky();
+    markTodayInToc();
+  }
+
+  function weekDoneStats(week){
+    let total = 0, done = 0;
+    Object.keys(TEMPLATE.fields).forEach(key=>{
+      if(key.endsWith(':done')){
+        total++;
+        if(getWeekField(week, key) === '1') done++;
+      }
+    });
+    return {total, done, pct: total ? Math.round(done * 100 / total) : 0};
+  }
+
+  function parseNumbers(text){
+    return (String(text || '').match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
+  }
+  function parseBounds(text){
+    const nums = parseNumbers(text);
+    if(!nums.length) return {min: NaN, max: NaN};
+    if(nums.length === 1) return {min: nums[0], max: nums[0]};
+    return {min: nums[0], max: nums[1]};
+  }
+  function firstNumber(text){
+    const nums = parseNumbers(text);
+    return nums.length ? nums[0] : NaN;
+  }
+  function formatNumber(n){
+    return Number.isInteger(n) ? String(n) : String(Math.round(n * 10) / 10).replace(/\.0$/,'');
+  }
+  function formatKg(n){
+    return formatNumber(Math.round(n * 2) / 2) + 'kg';
+  }
+  function formatDumbbell(n){
+    return formatNumber(n) + 'kg/手';
+  }
+  function nextDumbbell(n){
+    for(const step of DUMBBELL_STEPS){ if(step > n + 1e-9) return step; }
+    return n;
+  }
+  function bumpNumericText(text, delta){
+    return String(text).replace(/\d+(?:\.\d+)?/g, m => formatNumber(Number(m) + delta));
+  }
+  function isTimeText(text){ return /秒|分钟/.test(String(text || '')); }
+  function isBodyweight(text){ return /自重|轻中强度/.test(String(text || '')); }
+  function isDumbbell(text){ return /kg\/手/.test(String(text || '')); }
+  function isLoadedKg(text){ return /kg/.test(String(text || '')) && !/kg\/手/.test(String(text || '')); }
+  function isLowerExercise(name, day){ return /下肢|臀|腿|提踵|深蹲|硬拉|分腿蹲|箭步蹲|高脚杯/.test((day || '') + ' ' + (name || '')); }
+  function isBigLower(name){ return /深蹲|硬拉|臀推|臀桥/.test(name || ''); }
+
+  function cardProgressFromWeek(card, week){
+    const setRows = [...card.querySelectorAll('.setrow')];
+    let allDone = setRows.length > 0;
+    let success = setRows.length > 0;
+    let excellent = setRows.length > 0;
+    for(const row of setRows){
+      const doneEl = row.querySelector('input[type="checkbox"][data-key$=":done"]');
+      const repsEl = row.querySelector('.reps[data-key]');
+      if(!doneEl || !repsEl) continue;
+      const done = getWeekField(week, doneEl.dataset.key) === '1';
+      const actualText = getWeekField(week, repsEl.dataset.key);
+      const targetText = TEMPLATE.fields[repsEl.dataset.key] ?? repsEl.defaultValue ?? actualText;
+      const {min, max} = parseBounds(targetText);
+      const actualNum = firstNumber(actualText);
+      const pass = done && (Number.isNaN(min) || (!Number.isNaN(actualNum) && actualNum >= min));
+      const top = done && (Number.isNaN(max) || (!Number.isNaN(actualNum) && actualNum >= max));
+      if(!done) allDone = false;
+      if(!pass) success = false;
+      if(!top) excellent = false;
+    }
+    return {allDone, success, excellent};
+  }
+
+  function buildWeekTwo(){
+    const next = {fields:{}, rests:{}, meta:{generatedFrom:1, generatedAt:new Date().toISOString()}};
+    Object.keys(TEMPLATE.fields).forEach(key=>{
+      next.fields[key] = key.endsWith(':done') ? '0' : TEMPLATE.fields[key];
+    });
+    Object.keys(TEMPLATE.rests).forEach(key=>{
+      next.rests[key] = getWeekRest(1, key);
+    });
+
+    document.querySelectorAll('.card').forEach(card=>{
+      const title = (card.querySelector('h3')?.textContent || '').trim();
+      const day = card.closest('section')?.id || '';
+      const progress = cardProgressFromWeek(card, 1);
+      const rows = [...card.querySelectorAll('.setrow')];
+      for(const row of rows){
+        const repsEl = row.querySelector('.reps[data-key]');
+        const weightEl = row.querySelector('.weight[data-key]');
+        const doneEl = row.querySelector('input[type="checkbox"][data-key$=":done"]');
+        const timerBtn = row.querySelector('button[data-timer-key]');
+        if(!repsEl || !weightEl || !doneEl || !timerBtn) continue;
+
+        const repsKey = repsEl.dataset.key;
+        const weightKey = weightEl.dataset.key;
+        const timerKey = timerBtn.dataset.timerKey;
+        const baseGoal = TEMPLATE.fields[repsKey] ?? repsEl.defaultValue ?? repsEl.value;
+        const week1Goal = getWeekField(1, repsKey) || baseGoal;
+        const week1Weight = getWeekField(1, weightKey) || TEMPLATE.fields[weightKey] || weightEl.value;
+        const actualText = getWeekField(1, repsKey) || week1Goal;
+
+        let nextGoal = baseGoal;
+        let nextWeight = week1Weight;
+
+        if(progress.success){
+          if(isDumbbell(week1Weight)){
+            if(progress.excellent){
+              const current = firstNumber(week1Weight);
+              nextWeight = Number.isNaN(current) ? week1Weight : formatDumbbell(nextDumbbell(current));
+            }else if(/尽可能多/.test(baseGoal)){
+              const actual = firstNumber(actualText);
+              nextGoal = Number.isNaN(actual) ? '尽可能多（比第1周多1）' : String(actual + 1);
+            }else if(isTimeText(baseGoal)){
+              nextGoal = bumpNumericText(baseGoal, /分钟/.test(baseGoal) ? 5 : 5);
+            }else if(parseNumbers(baseGoal).length){
+              nextGoal = bumpNumericText(baseGoal, 1);
+            }
+          }else if(isLoadedKg(week1Weight)){
+            const current = firstNumber(week1Weight);
+            if(!Number.isNaN(current)){
+              let delta = 2.5;
+              if(isLowerExercise(title, day) && isBigLower(title) && progress.excellent) delta = 5;
+              nextWeight = formatKg(current + delta);
+            }
+          }else if(isBodyweight(week1Weight)){
+            if(/尽可能多/.test(baseGoal)){
+              const actual = firstNumber(actualText);
+              nextGoal = Number.isNaN(actual) ? '尽可能多（比第1周多1）' : String(actual + 1);
+            }else if(isTimeText(baseGoal)){
+              nextGoal = bumpNumericText(baseGoal, /分钟/.test(baseGoal) ? 5 : 5);
+            }else if(parseNumbers(baseGoal).length){
+              nextGoal = bumpNumericText(baseGoal, 1);
+            }
+          }
+        }
+
+        next.fields[doneEl.dataset.key] = '0';
+        next.fields[repsKey] = nextGoal;
+        next.fields[weightKey] = nextWeight;
+        next.rests[timerKey] = getWeekRest(1, timerKey);
+      }
+    });
+
+    db.weeks['2'] = next;
+    saveDb();
+  }
+
+  function hasWeekTwo(){
+    const wk = db.weeks['2'];
+    return !!(wk && wk.fields && Object.keys(wk.fields).length);
+  }
+
+  window.setWeek = function(week){
+    CURRENT_WEEK = Number(week) || 1;
+    db.currentWeek = CURRENT_WEEK;
+    saveDb();
+    restoreCurrentWeek();
+    closeSheet();
+  };
+
+  window.prepareWeek2 = function(force){
+    const stats = weekDoneStats(1);
+    if(force && hasWeekTwo()){
+      if(!confirm('会按第1周当前打卡结果重新生成第2周，已有第2周手动调整会被覆盖。继续吗？')) return;
+    }
+    if(!hasWeekTwo() || force){
+      if(!force && stats.done === 0){
+        if(!confirm('你第1周还没打卡，我先按当前模板生成第2周；后面你做完第1周后还能再刷新。继续吗？')) return;
+      }
+      buildWeekTwo();
+    }
+    window.setWeek(2);
+  };
+
+  window.toggleWeek = function(){
+    if(CURRENT_WEEK === 1) window.prepareWeek2(false);
+    else window.setWeek(1);
+  };
+
+  window.persist = function(el){
+    const value = (el.type === 'checkbox') ? (el.checked ? '1' : '0') : String(el.value ?? '');
+    setWeekField(CURRENT_WEEK, el.dataset.key, value);
+    if(el.type === 'checkbox'){
+      const label = document.getElementById('label-' + el.dataset.key.replace(':done',''));
+      if(label) label.classList.toggle('done', el.checked);
+    }else{
+      const card = el.closest('.card');
+      if(card) refreshCardSummary(card);
+    }
+    updateSticky();
+    const section = el.closest('section');
+    if(section) refreshDay(section.id);
+  };
+
+  window.applyGlobal = function(overwrite){
+    const weight = (document.getElementById('globalWeight').value || '').trim();
+    const rest = (document.getElementById('globalRest').value || '').trim();
+    if(!weight && !rest){ alert('先填默认重量或默认休息秒数'); return; }
+    document.querySelectorAll('input.weight[data-group]').forEach(inp=>{
+      if(weight && (overwrite || !String(inp.value || '').trim())){
+        inp.value = weight;
+        setWeekField(CURRENT_WEEK, inp.dataset.key, weight);
+        const card = inp.closest('.card');
+        if(card) refreshCardSummary(card);
+      }
+    });
+    document.querySelectorAll('button[data-timer-key]').forEach(btn=>{
+      if(rest && (overwrite || !String(btn.dataset.rest || '').trim())){
+        btn.dataset.rest = rest;
+        setWeekRest(CURRENT_WEEK, btn.dataset.timerKey, rest);
+        const badge = document.getElementById('rest-' + btn.dataset.timerKey);
+        if(badge) badge.textContent = '休息 ' + rest + '秒';
+      }
+    });
+  };
+
+  window.applyExercise = function(group, overwrite){
+    const weight = (document.getElementById('w-' + group).value || '').trim();
+    const rest = (document.getElementById('r-' + group).value || '').trim();
+    if(!weight && !rest){ alert('先填这个动作的重量或休息秒数'); return; }
+    document.querySelectorAll('input.weight[data-group="' + group + '"]').forEach(inp=>{
+      if(weight && (overwrite || !String(inp.value || '').trim())){
+        inp.value = weight;
+        setWeekField(CURRENT_WEEK, inp.dataset.key, weight);
+        const card = inp.closest('.card');
+        if(card) refreshCardSummary(card);
+      }
+    });
+    document.querySelectorAll('button[data-group="' + group + '"]').forEach(btn=>{
+      if(rest && (overwrite || !String(btn.dataset.rest || '').trim())){
+        btn.dataset.rest = rest;
+        setWeekRest(CURRENT_WEEK, btn.dataset.timerKey, rest);
+        const badge = document.getElementById('rest-' + btn.dataset.timerKey);
+        if(badge) badge.textContent = '休息 ' + rest + '秒';
+      }
+    });
+  };
+
+  window.resetAll = function(){
+    if(!confirm('确定清空当前周的打卡勾选？重量、次数和休息设置会保留。')) return;
+    document.querySelectorAll('input[type="checkbox"][data-key$=":done"]').forEach(box=>{
+      box.checked = false;
+      setWeekField(CURRENT_WEEK, box.dataset.key, '0');
+      const label = document.getElementById('label-' + box.dataset.key.replace(':done',''));
+      if(label) label.classList.remove('done');
+    });
+    document.querySelectorAll('section[id]').forEach(sec=>refreshDay(sec.id));
+    updateSticky();
+  };
+
+  window._todaySectionId = function(){
+    const ids = [...document.querySelectorAll('.toc a')].map(a => (a.getAttribute('href') || '').replace(/^#/, '')).filter(Boolean);
+    const idxMap = {1:0,2:1,3:2,4:3,5:4};
+    const idx = idxMap[new Date().getDay()];
+    return idx === undefined ? null : (ids[idx] || null);
+  };
+
+  window.markTodayInToc = function(){
+    const id = window._todaySectionId();
+    document.querySelectorAll('.toc a').forEach(a=>{
+      a.classList.toggle('today', !!id && a.getAttribute('href') === '#' + id);
+    });
+  };
+
+  window.jumpToToday = function(){
+    if(location.hash && location.hash.length > 1) return;
+    const ids = [...document.querySelectorAll('.toc a')].map(a => (a.getAttribute('href') || '').replace(/^#/, '')).filter(Boolean);
+    const id = window._todaySectionId() || ids[0] || null;
+    const el = id ? document.getElementById(id) : null;
+    if(el) el.scrollIntoView({block:'start'});
+  };
+
+  saveDb();
+  if(CURRENT_WEEK !== 1 && !hasWeekTwo()) CURRENT_WEEK = 1;
+  db.currentWeek = CURRENT_WEEK;
+  saveDb();
+  restoreCurrentWeek();
+  jumpToToday();
+})();
 </script></div></body></html>
