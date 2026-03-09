@@ -1382,6 +1382,8 @@ function refreshSyncStatus(){
   const cfg=getCloudConfig();
   const meta=getStoredSyncMeta();
   const statusEl=document.getElementById('cloudStatusText');
+  const topEl=document.getElementById('syncTopBanner');
+  const topText=document.getElementById('syncTopBannerText');
   const lastText = meta.at ? ('上次备份：' + formatSyncTime(meta.at)) : '上次备份：未备份';
   const detailText = meta.detail ? (' · ' + meta.detail) : '';
   if(cfg.url && cfg.anonKey && cfg.syncCode){
@@ -1389,19 +1391,53 @@ function refreshSyncStatus(){
     if(meta.result === 'ok'){
       setSyncBadge('ok','已备份');
       setCloudHint(lastText + detailText);
+      if(topEl) topEl.className='syncTopBanner ok';
+      if(topText) topText.textContent='当前已同步';
     }else if(meta.result === 'error'){
       setSyncBadge('error','异常');
       setCloudHint(lastText + detailText);
+      if(topEl) topEl.className='syncTopBanner off';
+      if(topText) topText.textContent='当前同步异常';
     }else{
       setSyncBadge('pending','准备中');
       setCloudHint(meta.at ? (lastText + detailText) : '保持自动备份；需要时也可以手动恢复。');
+      if(topEl) topEl.className='syncTopBanner pending';
+      if(topText) topText.textContent='当前同步准备中';
     }
   }else{
     if(statusEl) statusEl.textContent = '当前只保存在本机';
     setSyncBadge('off','本机');
     setCloudHint('当前只保存在这台设备。');
+    if(topEl) topEl.className='syncTopBanner off';
+    if(topText) topText.textContent='当前仅本机';
   }
 }
+function hasAnyLocalWorkoutData(){
+  try{
+    const raw = localStorage.getItem(PREFIX + 'db:v2');
+    if(!raw) return false;
+    const db = JSON.parse(raw);
+    const weeks = (db && db.weeks) || {};
+    return Object.values(weeks).some(week=>{
+      const fields = (week && week.fields) || {};
+      return Object.keys(fields).some(k=>k.endsWith(':done') && String(fields[k])==='1');
+    });
+  }catch(e){ return false; }
+}
+async function autoSyncBootstrap(){
+  if(!cloudConfigured()) { refreshSyncStatus(); return; }
+  try{
+    const pulled = await pullCloudNow(true);
+    if(!pulled && hasAnyLocalWorkoutData()){
+      await pushCloudNow(true);
+    }
+  }catch(e){
+    console.error(e);
+  }finally{
+    refreshSyncStatus();
+  }
+}
+
 async function testCloudConnection(){
   if(window.pullCloudNow) return window.pullCloudNow(true);
   return false;
@@ -1837,6 +1873,7 @@ document.querySelectorAll('section.section').forEach(sec=>refreshDay(sec.id));
 updateDayLocks();
 markTodayInToc();
 jumpToToday();
+setTimeout(()=>{ if(window.autoSyncBootstrap) window.autoSyncBootstrap(); }, 300);
 </script><script>
 (function(){
   if(window.__workoutWeekDbLoaded) return;
