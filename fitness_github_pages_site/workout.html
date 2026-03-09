@@ -1523,9 +1523,19 @@ function applyTodayOnly(){
   const b=document.getElementById('todayBtn');
   if(b) b.textContent = todayOnly ? '只看今天：开' : '只看今天：关';
   const todayId=_todaySectionId();
-  document.querySelectorAll('section.section').forEach(sec=>{
+  const sections=[...document.querySelectorAll('section.section')];
+  let nextVisibleId='';
+  if(todayId){
+    const idx=sections.findIndex(sec=>sec.id===todayId);
+    if(idx>=0){
+      const todaySec=sections[idx];
+      if(_isDayComplete(todaySec) && sections[idx+1]) nextVisibleId=sections[idx+1].id;
+    }
+  }
+  sections.forEach(sec=>{
     const isToday = todayId && sec.id===todayId;
-    const collapse = todayOnly && todayId && !isToday;
+    const isNextUnlocked = nextVisibleId && sec.id===nextVisibleId;
+    const collapse = todayOnly && todayId && !isToday && !isNextUnlocked;
     sec.classList.toggle('collapsed', collapse);
   });
   updateDayLocks();
