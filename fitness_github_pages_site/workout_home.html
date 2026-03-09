@@ -1887,34 +1887,55 @@ function hasAnyLocalWorkoutData(){
     });
   }catch(e){ return false; }
 }
+function _syncWithTimeout(promise, ms=10000){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error('同步超时，请稍后重试')), ms))
+  ]);
+}
+
 async function manualSyncNow(){
   const topEl=document.getElementById('syncTopBanner');
   const topText=document.getElementById('syncTopBannerText');
   if(topEl) topEl.className='syncTopBanner pending';
   if(topText) topText.textContent='正在手动同步…';
   try{
-    const pulled = await pullCloudNow(true);
-    if(!pulled){
-      await pushCloudNow(false);
-    }else{
-      refreshSyncStatus();
+    const pulled = await _syncWithTimeout(pullCloudNow(true), 10000);
+    let ok = !!pulled;
+    if(!ok){
+      ok = await _syncWithTimeout(pushCloudNow(true), 10000);
     }
+    refreshSyncStatus();
+    if(!ok){
+      if(topEl) topEl.className='syncTopBanner off';
+      if(topText) topText.textContent='当前同步异常';
+      alert('手动同步失败，请稍后再试');
+      return false;
+    }
+    if(topEl) topEl.className='syncTopBanner ok';
+    if(topText) topText.textContent='当前已同步';
+    return true;
   }catch(e){
     console.error(e);
+    if(topEl) topEl.className='syncTopBanner off';
+    if(topText) topText.textContent='当前同步异常';
+    try{ if(window.__cloudStoreSyncMeta) window.__cloudStoreSyncMeta('同步失败', (e && e.message ? e.message : String(e||'')).slice(0,42), {result:'error'}); }catch(err){}
     refreshSyncStatus();
-    alert('手动同步失败，请稍后再试');
+    alert(e && e.message ? e.message : '手动同步失败，请稍后再试');
+    return false;
   }
 }
 
 async function autoSyncBootstrap(){
   if(!cloudConfigured()) { refreshSyncStatus(); return; }
   try{
-    const pulled = await pullCloudNow(true);
+    const pulled = await _syncWithTimeout(pullCloudNow(true), 8000);
     if(!pulled && hasAnyLocalWorkoutData()){
-      await pushCloudNow(true);
+      await _syncWithTimeout(pushCloudNow(true), 8000);
     }
   }catch(e){
     console.error(e);
+    try{ if(window.__cloudStoreSyncMeta) window.__cloudStoreSyncMeta('同步失败', (e && e.message ? e.message : String(e||'')).slice(0,42), {result:'error'}); }catch(err){}
   }finally{
     refreshSyncStatus();
   }
