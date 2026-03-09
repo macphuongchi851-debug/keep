@@ -1467,6 +1467,7 @@ function applyTodayOnly(){
     const collapse = todayOnly && todayId && !isToday;
     sec.classList.toggle('collapsed', collapse);
   });
+  updateDayLocks();
 }
 
 function toggleImages(){
@@ -1711,7 +1712,49 @@ function closeTimerOverlay(){ const overlay=document.getElementById('timerOverla
 function stopTimer(key, hideOverlay=true){ if(!key) return; if(timers[key]){ clearInterval(timers[key]); delete timers[key]; } delete timerState[key]; const el=document.getElementById('timer-'+key); if(el) el.textContent='--:--'; if(activeTimerKey===key && hideOverlay) closeTimerOverlay(); }
 function stopActiveTimer(){ if(activeTimerKey) stopTimer(activeTimerKey, true); else closeTimerOverlay(); }
 function startTimer(btn){ const key=btn.dataset.timerKey; const seconds=parseInt(btn.dataset.rest||'0',10); if(!seconds||seconds<=0){ alert('这个动作当前休息时间是 0 秒'); return; } _ensureAudio(); if(timers[key]) clearInterval(timers[key]); const el=document.getElementById('timer-'+key); timerState[key]=_timerStateFor(btn, key, seconds); if(el) el.textContent=fmt(seconds); openTimerOverlay(key); updateTimerOverlay(key, seconds); const endAt=timerState[key].endAt; let lastShown=seconds; let lastBeepLeft=null; timers[key]=setInterval(()=>{ const left=Math.max(0, Math.ceil((endAt-Date.now())/1000)); if(el && left!==lastShown){ el.textContent = left>0 ? fmt(left) : '完成'; lastShown=left; } if(activeTimerKey===key) updateTimerOverlay(key, left); if(left>0 && left<=10 && left!==lastBeepLeft){ _beep(920 + (10-left)*24, 0.10, 0.18); lastBeepLeft=left; } if(left<=0){ if(lastBeepLeft!==0){ _beep(440, 0.30, 0.22); lastBeepLeft=0; } clearInterval(timers[key]); delete timers[key]; if(el) el.textContent='完成'; if(activeTimerKey===key) updateTimerOverlay(key, 0); } }, 250); }
-function refreshDay(day){ const sec=document.getElementById(day); if(!sec) return; const boxes=sec.querySelectorAll('input[type=checkbox][data-key$=":done"]'); const total=boxes.length; const done=[...boxes].filter(b=>b.checked).length; const pct=total?Math.round(done*100/total):0; const t=document.getElementById('prog-text-'+day); const f=document.getElementById('prog-fill-'+day); if(t) t.textContent='今日完成度：'+done+' / '+total+'（'+pct+'%）'; if(f) f.style.width=pct+'%'; }
+function refreshDay(day){ const sec=document.getElementById(day); if(!sec) return; const boxes=sec.querySelectorAll('input[type=checkbox][data-key$=":done"]'); const total=boxes.length; const done=[...boxes].filter(b=>b.checked).length; const pct=total?Math.round(done*100/total):0; const t=document.getElementById('prog-text-'+day); const f=document.getElementById('prog-fill-'+day); if(t) t.textContent='今日完成度：'+done+' / '+total+'（'+pct+'%）'; if(f) f.style.width=pct+'%'; notifyDayCompletion(day, done, total); updateDayLocks(); updateSticky(); }
+
+function _allSections(){ return [...document.querySelectorAll('section.section')]; }
+function _dayBoxes(sec){ return [...sec.querySelectorAll('input[type=checkbox][data-key$=":done"]')]; }
+function _isDayComplete(sec){ const boxes=_dayBoxes(sec); return boxes.length>0 && boxes.every(b=>b.checked); }
+function notifyDayCompletion(day, done, total){
+  const k = PREFIX+'dayCompleteAlert:'+day;
+  if(total>0 && done===total){
+    if(localStorage.getItem(k)!=='1'){
+      localStorage.setItem(k,'1');
+      setTimeout(()=>alert('今天这一天你已经全部做完了 ✅'), 80);
+    }
+  }else{
+    localStorage.removeItem(k);
+  }
+}
+function updateDayLocks(){
+  const sections=_allSections();
+  let canShowNext=true;
+  sections.forEach((sec, idx)=>{
+    const unlock = idx===0 || canShowNext;
+    sec.classList.toggle('locked', !unlock);
+    sec.classList.toggle('unlocked', unlock);
+    if(unlock && !_isDayComplete(sec)) canShowNext=false;
+  });
+}
+function initTimedActionTriggers(){
+  document.querySelectorAll('.row').forEach(row=>{
+    const reps=row.querySelector('input.reps');
+    const btn=row.querySelector('.timerbtn');
+    if(!reps || !btn) return;
+    const val=(reps.value||'').trim();
+    const isTimed = /秒|分钟|min/i.test(val);
+    if(!isTimed) return;
+    reps.readOnly = true;
+    reps.style.cursor = 'pointer';
+    if(reps.dataset.timerBound==='1') return;
+    reps.dataset.timerBound='1';
+    reps.title='点这里直接开始计时';
+    reps.addEventListener('click', ()=>startTimer(btn));
+  });
+}
+
 function applyGlobal(overwrite){ const weight=(document.getElementById('globalWeight').value||'').trim(); const rest=(document.getElementById('globalRest').value||'').trim(); if(!weight && !rest){ alert('先填默认重量或默认休息秒数'); return; } document.querySelectorAll('input.weight[data-group]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-timer-key]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
 function applyExercise(group, overwrite){ const weight=(document.getElementById('w-'+group).value||'').trim(); const rest=(document.getElementById('r-'+group).value||'').trim(); if(!weight && !rest){ alert('先填这个动作的重量或休息秒数'); return; } document.querySelectorAll('input.weight[data-group="'+group+'"]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-group="'+group+'"]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
 function resetAll(){ if(!confirm('确定清空全部逐组打卡和输入内容？')) return; Object.keys(localStorage).forEach(k=>{ if(k.startsWith(PREFIX)) localStorage.removeItem(k); }); location.reload(); }
@@ -1782,6 +1825,7 @@ try{
 }catch(e){}
 restore();
 applyDarkPref();
+initTimedActionTriggers();
 applyTodayOnly();
 injectExerciseImages();
 injectExerciseReferenceLinks();
@@ -1789,6 +1833,8 @@ applyImagesPref();
 injectImgToggles();
 updateSoundBtn();
 updateSticky();
+document.querySelectorAll('section.section').forEach(sec=>refreshDay(sec.id));
+updateDayLocks();
 markTodayInToc();
 jumpToToday();
 </script><script>
