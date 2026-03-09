@@ -1519,16 +1519,31 @@ function injectExerciseImages(){
 }
 
 const __EXERCISE_REF_LINKS = {
-    '钻石俯卧撑 / Diamond Push-up': {img:'https://cn.bing.com/images/search?q=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20Diamond%20Push-Up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20Diamond%20Push-Up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    'Pike Push-up / 臀高俯卧撑': {img:'https://cn.bing.com/images/search?q=Pike%20Push-Up%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Pike%20Push-Up%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    '死虫 / Dead Bug': {img:'https://cn.bing.com/images/search?q=%E6%AD%BB%E8%99%AB%20Dead%20Bug%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%AD%BB%E8%99%AB%20Dead%20Bug%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    '开合跳 / Jumping Jack': {img:'https://cn.bing.com/images/search?q=%E5%BC%80%E5%90%88%E8%B7%B3%20Jumping%20Jack%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BC%80%E5%90%88%E8%B7%B3%20Jumping%20Jack%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    '波比跳 / Burpee': {img:'https://cn.bing.com/images/search?q=%E6%B3%A2%E6%AF%94%E8%B7%B3%20Burpee%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%B3%A2%E6%AF%94%E8%B7%B3%20Burpee%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    '椅上臂屈伸 / Bench Dip': {img:'https://cn.bing.com/images/search?q=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20Bench%20Dip%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20Bench%20Dip%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '标准俯卧撑 / Push-up': {img:'https://cn.bing.com/images/search?q=%E6%A0%87%E5%87%86%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%A0%87%E5%87%86%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '钻石俯卧撑 / Diamond Push-up': {img:'https://cn.bing.com/images/search?q=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Diamond%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Diamond%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    'Pike Push-up / 臀高俯卧撑': {img:'https://cn.bing.com/images/search?q=Pike%20Push-up%20/%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Pike%20Push-up%20/%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '平板支撑 / Plank': {img:'https://cn.bing.com/images/search?q=%E5%B9%B3%E6%9D%BF%E6%94%AF%E6%92%91%20/%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%B9%B3%E6%9D%BF%E6%94%AF%E6%92%91%20/%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '死虫 / Dead Bug': {img:'https://cn.bing.com/images/search?q=%E6%AD%BB%E8%99%AB%20/%20Dead%20Bug%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%AD%BB%E8%99%AB%20/%20Dead%20Bug%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '徒手深蹲 / Bodyweight Squat': {img:'https://cn.bing.com/images/search?q=%E5%BE%92%E6%89%8B%E6%B7%B1%E8%B9%B2%20/%20Bodyweight%20Squat%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BE%92%E6%89%8B%E6%B7%B1%E8%B9%B2%20/%20Bodyweight%20Squat%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '反向箭步蹲 / Reverse Lunge': {img:'https://cn.bing.com/images/search?q=%E5%8F%8D%E5%90%91%E7%AE%AD%E6%AD%A5%E8%B9%B2%20/%20Reverse%20Lunge%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%8F%8D%E5%90%91%E7%AE%AD%E6%AD%A5%E8%B9%B2%20/%20Reverse%20Lunge%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '保加利亚分腿蹲（徒手）': {img:'https://cn.bing.com/images/search?q=%E4%BF%9D%E5%8A%A0%E5%88%A9%E4%BA%9A%E5%88%86%E8%85%BF%E8%B9%B2%EF%BC%88%E5%BE%92%E6%89%8B%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%9D%E5%8A%A0%E5%88%A9%E4%BA%9A%E5%88%86%E8%85%BF%E8%B9%B2%EF%BC%88%E5%BE%92%E6%89%8B%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '臀桥 / Glute Bridge': {img:'https://cn.bing.com/images/search?q=%E8%87%80%E6%A1%A5%20/%20Glute%20Bridge%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E8%87%80%E6%A1%A5%20/%20Glute%20Bridge%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '提踵 / Calf Raise': {img:'https://cn.bing.com/images/search?q=%E6%8F%90%E8%B8%B5%20/%20Calf%20Raise%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%8F%90%E8%B8%B5%20/%20Calf%20Raise%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '开合跳 / Jumping Jack': {img:'https://cn.bing.com/images/search?q=%E5%BC%80%E5%90%88%E8%B7%B3%20/%20Jumping%20Jack%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BC%80%E5%90%88%E8%B7%B3%20/%20Jumping%20Jack%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '登山跑 / Mountain Climber': {img:'https://cn.bing.com/images/search?q=%E7%99%BB%E5%B1%B1%E8%B7%91%20/%20Mountain%20Climber%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%99%BB%E5%B1%B1%E8%B7%91%20/%20Mountain%20Climber%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '波比跳 / Burpee': {img:'https://cn.bing.com/images/search?q=%E6%B3%A2%E6%AF%94%E8%B7%B3%20/%20Burpee%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%B3%A2%E6%AF%94%E8%B7%B3%20/%20Burpee%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '侧桥 / Side Plank': {img:'https://cn.bing.com/images/search?q=%E4%BE%A7%E6%A1%A5%20/%20Side%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BE%A7%E6%A1%A5%20/%20Side%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '肩胛俯卧撑 / Scap Push-up': {img:'https://cn.bing.com/images/search?q=%E8%82%A9%E8%83%9B%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Scap%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E8%82%A9%E8%83%9B%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Scap%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '宽距俯卧撑 / Wide Push-up': {img:'https://cn.bing.com/images/search?q=%E5%AE%BD%E8%B7%9D%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Wide%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%AE%BD%E8%B7%9D%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Wide%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '椅上臂屈伸 / Bench Dip': {img:'https://cn.bing.com/images/search?q=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20/%20Bench%20Dip%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20/%20Bench%20Dip%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
     '俯身 Y-T-W': {img:'https://cn.bing.com/images/search?q=%E4%BF%AF%E8%BA%AB%20Y-T-W%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%AF%E8%BA%AB%20Y-T-W%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    '反向支撑静止 / Reverse Plank': {img:'https://cn.bing.com/images/search?q=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20Reverse%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20Reverse%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    '高抬腿 / High Knees': {img:'https://cn.bing.com/images/search?q=%E9%AB%98%E6%8A%AC%E8%85%BF%20High%20Knees%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%AB%98%E6%8A%AC%E8%85%BF%20High%20Knees%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
-    'Hollow Hold / 船式静止': {img:'https://cn.bing.com/images/search?q=Hollow%20Hold%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Hollow%20Hold%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '反向支撑静止 / Reverse Plank': {img:'https://cn.bing.com/images/search?q=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20/%20Reverse%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20/%20Reverse%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '仰卧举腿 / Leg Raise': {img:'https://cn.bing.com/images/search?q=%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20/%20Leg%20Raise%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20/%20Leg%20Raise%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '俯卧撑 + 深蹲循环': {img:'https://cn.bing.com/images/search?q=%E4%BF%AF%E5%8D%A7%E6%92%91%20%2B%20%E6%B7%B1%E8%B9%B2%E5%BE%AA%E7%8E%AF%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%AF%E5%8D%A7%E6%92%91%20%2B%20%E6%B7%B1%E8%B9%B2%E5%BE%AA%E7%8E%AF%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '箭步蹲跳（可改普通箭步）': {img:'https://cn.bing.com/images/search?q=%E7%AE%AD%E6%AD%A5%E8%B9%B2%E8%B7%B3%EF%BC%88%E5%8F%AF%E6%94%B9%E6%99%AE%E9%80%9A%E7%AE%AD%E6%AD%A5%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%AE%AD%E6%AD%A5%E8%B9%B2%E8%B7%B3%EF%BC%88%E5%8F%AF%E6%94%B9%E6%99%AE%E9%80%9A%E7%AE%AD%E6%AD%A5%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '高抬腿 / High Knees': {img:'https://cn.bing.com/images/search?q=%E9%AB%98%E6%8A%AC%E8%85%BF%20/%20High%20Knees%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%AB%98%E6%8A%AC%E8%85%BF%20/%20High%20Knees%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '登山跑': {img:'https://cn.bing.com/images/search?q=%E7%99%BB%E5%B1%B1%E8%B7%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%99%BB%E5%B1%B1%E8%B7%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    'Hollow Hold / 船式静止': {img:'https://cn.bing.com/images/search?q=Hollow%20Hold%20/%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Hollow%20Hold%20/%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
   };
 
 function injectExerciseReferenceLinks(){
@@ -1546,11 +1561,12 @@ function injectExerciseReferenceLinks(){
     box.style.margin='10px 0 12px';
     box.innerHTML = '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.img+'">看动作图</a>'+
                     '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.video+'">看视频</a>';
-    const helper = card.querySelector('.helper');
     const imgbox = card.querySelector('.imgbox');
-    const anchor = imgbox || helper;
-    if(anchor && anchor.parentNode===card){
-      anchor.insertAdjacentElement('afterend', box);
+    const helper = card.querySelector('.helper');
+    if(imgbox && imgbox.parentNode===card){
+      imgbox.insertAdjacentElement('afterend', box);
+    }else if(helper && helper.parentNode===card){
+      helper.insertAdjacentElement('afterend', box);
     }else{
       const firstDetails = card.querySelector('details.exbulk');
       if(firstDetails) firstDetails.insertAdjacentElement('beforebegin', box);

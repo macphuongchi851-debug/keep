@@ -1940,6 +1940,67 @@ function applyImagesPref(){
   });
 }
 
+const __EXERCISE_REF_LINKS = {
+    '杠铃卧推': {img:'https://cn.bing.com/images/search?q=%E6%9D%A0%E9%93%83%E5%8D%A7%E6%8E%A8%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%9D%A0%E9%93%83%E5%8D%A7%E6%8E%A8%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '杠铃俯身划船': {img:'https://cn.bing.com/images/search?q=%E6%9D%A0%E9%93%83%E4%BF%AF%E8%BA%AB%E5%88%92%E8%88%B9%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%9D%A0%E9%93%83%E4%BF%AF%E8%BA%AB%E5%88%92%E8%88%B9%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '站姿杠铃推举': {img:'https://cn.bing.com/images/search?q=%E7%AB%99%E5%A7%BF%E6%9D%A0%E9%93%83%E6%8E%A8%E4%B8%BE%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%AB%99%E5%A7%BF%E6%9D%A0%E9%93%83%E6%8E%A8%E4%B8%BE%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '胸托哑铃划船（卧推凳版）': {img:'https://cn.bing.com/images/search?q=%E8%83%B8%E6%89%98%E5%93%91%E9%93%83%E5%88%92%E8%88%B9%EF%BC%88%E5%8D%A7%E6%8E%A8%E5%87%B3%E7%89%88%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E8%83%B8%E6%89%98%E5%93%91%E9%93%83%E5%88%92%E8%88%B9%EF%BC%88%E5%8D%A7%E6%8E%A8%E5%87%B3%E7%89%88%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '哑铃上拉': {img:'https://cn.bing.com/images/search?q=%E5%93%91%E9%93%83%E4%B8%8A%E6%8B%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%93%91%E9%93%83%E4%B8%8A%E6%8B%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '平板支撑': {img:'https://cn.bing.com/images/search?q=%E5%B9%B3%E6%9D%BF%E6%94%AF%E6%92%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%B9%B3%E6%9D%BF%E6%94%AF%E6%92%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '杠铃深蹲': {img:'https://cn.bing.com/images/search?q=%E6%9D%A0%E9%93%83%E6%B7%B1%E8%B9%B2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%9D%A0%E9%93%83%E6%B7%B1%E8%B9%B2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '罗马尼亚硬拉': {img:'https://cn.bing.com/images/search?q=%E7%BD%97%E9%A9%AC%E5%B0%BC%E4%BA%9A%E7%A1%AC%E6%8B%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%BD%97%E9%A9%AC%E5%B0%BC%E4%BA%9A%E7%A1%AC%E6%8B%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '保加利亚分腿蹲': {img:'https://cn.bing.com/images/search?q=%E4%BF%9D%E5%8A%A0%E5%88%A9%E4%BA%9A%E5%88%86%E8%85%BF%E8%B9%B2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%9D%E5%8A%A0%E5%88%A9%E4%BA%9A%E5%88%86%E8%85%BF%E8%B9%B2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '站姿提踵（哑铃）': {img:'https://cn.bing.com/images/search?q=%E7%AB%99%E5%A7%BF%E6%8F%90%E8%B8%B5%EF%BC%88%E5%93%91%E9%93%83%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%AB%99%E5%A7%BF%E6%8F%90%E8%B8%B5%EF%BC%88%E5%93%91%E9%93%83%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '仰卧举腿': {img:'https://cn.bing.com/images/search?q=%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '侧桥': {img:'https://cn.bing.com/images/search?q=%E4%BE%A7%E6%A1%A5%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BE%A7%E6%A1%A5%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '稳态有氧（快走/爬楼/单车）': {img:'https://cn.bing.com/images/search?q=%E7%A8%B3%E6%80%81%E6%9C%89%E6%B0%A7%EF%BC%88%E5%BF%AB%E8%B5%B0/%E7%88%AC%E6%A5%BC/%E5%8D%95%E8%BD%A6%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%A8%B3%E6%80%81%E6%9C%89%E6%B0%A7%EF%BC%88%E5%BF%AB%E8%B5%B0/%E7%88%AC%E6%A5%BC/%E5%8D%95%E8%BD%A6%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '俯卧撑': {img:'https://cn.bing.com/images/search?q=%E4%BF%AF%E5%8D%A7%E6%92%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%AF%E5%8D%A7%E6%92%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '徒手深蹲': {img:'https://cn.bing.com/images/search?q=%E5%BE%92%E6%89%8B%E6%B7%B1%E8%B9%B2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BE%92%E6%89%8B%E6%B7%B1%E8%B9%B2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '登山跑': {img:'https://cn.bing.com/images/search?q=%E7%99%BB%E5%B1%B1%E8%B7%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%99%BB%E5%B1%B1%E8%B7%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '单侧提重静止（Suitcase Hold）': {img:'https://cn.bing.com/images/search?q=%E5%8D%95%E4%BE%A7%E6%8F%90%E9%87%8D%E9%9D%99%E6%AD%A2%EF%BC%88Suitcase%20Hold%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%8D%95%E4%BE%A7%E6%8F%90%E9%87%8D%E9%9D%99%E6%AD%A2%EF%BC%88Suitcase%20Hold%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '肩胛俯卧撑': {img:'https://cn.bing.com/images/search?q=%E8%82%A9%E8%83%9B%E4%BF%AF%E5%8D%A7%E6%92%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E8%82%A9%E8%83%9B%E4%BF%AF%E5%8D%A7%E6%92%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '上斜哑铃卧推': {img:'https://cn.bing.com/images/search?q=%E4%B8%8A%E6%96%9C%E5%93%91%E9%93%83%E5%8D%A7%E6%8E%A8%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%B8%8A%E6%96%9C%E5%93%91%E9%93%83%E5%8D%A7%E6%8E%A8%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '哑铃肩推': {img:'https://cn.bing.com/images/search?q=%E5%93%91%E9%93%83%E8%82%A9%E6%8E%A8%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%93%91%E9%93%83%E8%82%A9%E6%8E%A8%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '侧平举': {img:'https://cn.bing.com/images/search?q=%E4%BE%A7%E5%B9%B3%E4%B8%BE%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BE%A7%E5%B9%B3%E4%B8%BE%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '俯身后束飞鸟': {img:'https://cn.bing.com/images/search?q=%E4%BF%AF%E8%BA%AB%E5%90%8E%E6%9D%9F%E9%A3%9E%E9%B8%9F%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%AF%E8%BA%AB%E5%90%8E%E6%9D%9F%E9%A3%9E%E9%B8%9F%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '哑铃弯举': {img:'https://cn.bing.com/images/search?q=%E5%93%91%E9%93%83%E5%BC%AF%E4%B8%BE%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%93%91%E9%93%83%E5%BC%AF%E4%B8%BE%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '过顶臂屈伸': {img:'https://cn.bing.com/images/search?q=%E8%BF%87%E9%A1%B6%E8%87%82%E5%B1%88%E4%BC%B8%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E8%BF%87%E9%A1%B6%E8%87%82%E5%B1%88%E4%BC%B8%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '高脚杯深蹲': {img:'https://cn.bing.com/images/search?q=%E9%AB%98%E8%84%9A%E6%9D%AF%E6%B7%B1%E8%B9%B2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%AB%98%E8%84%9A%E6%9D%AF%E6%B7%B1%E8%B9%B2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '杠铃臀推 / 臀桥': {img:'https://cn.bing.com/images/search?q=%E6%9D%A0%E9%93%83%E8%87%80%E6%8E%A8%20/%20%E8%87%80%E6%A1%A5%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%9D%A0%E9%93%83%E8%87%80%E6%8E%A8%20/%20%E8%87%80%E6%A1%A5%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '弓步蹲 / 箭步蹲': {img:'https://cn.bing.com/images/search?q=%E5%BC%93%E6%AD%A5%E8%B9%B2%20/%20%E7%AE%AD%E6%AD%A5%E8%B9%B2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BC%93%E6%AD%A5%E8%B9%B2%20/%20%E7%AE%AD%E6%AD%A5%E8%B9%B2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '农夫行走': {img:'https://cn.bing.com/images/search?q=%E5%86%9C%E5%A4%AB%E8%A1%8C%E8%B5%B0%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%86%9C%E5%A4%AB%E8%A1%8C%E8%B5%B0%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '侧桥 / 仰卧举腿': {img:'https://cn.bing.com/images/search?q=%E4%BE%A7%E6%A1%A5%20/%20%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BE%A7%E6%A1%A5%20/%20%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+  };
+
+function injectExerciseReferenceLinks(){
+  const refs = __EXERCISE_REF_LINKS;
+  document.querySelectorAll('.card').forEach(card=>{
+    if(card.querySelector('.refLinks')) return;
+    const title = (card.querySelector('h3')?.textContent || '').trim();
+    const hit = refs[title];
+    if(!hit) return;
+    const box = document.createElement('div');
+    box.className = 'refLinks';
+    box.style.display='flex';
+    box.style.flexWrap='wrap';
+    box.style.gap='8px';
+    box.style.margin='10px 0 12px';
+    box.innerHTML = '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.img+'">看动作图</a>'+
+                    '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.video+'">看视频</a>';
+    const imgbox = card.querySelector('.imgbox');
+    const helper = card.querySelector('.helper');
+    if(imgbox && imgbox.parentNode===card){
+      imgbox.insertAdjacentElement('afterend', box);
+    }else if(helper && helper.parentNode===card){
+      helper.insertAdjacentElement('afterend', box);
+    }else{
+      const firstDetails = card.querySelector('details.exbulk');
+      if(firstDetails) firstDetails.insertAdjacentElement('beforebegin', box);
+      else card.appendChild(box);
+    }
+  });
+}
+
 function injectImgToggles(){
   // Put a small toggle just above each image
   document.querySelectorAll('.imgbox').forEach(box=>{
@@ -2148,6 +2209,7 @@ try{
 restore();
 applyDarkPref();
 applyTodayOnly();
+injectExerciseReferenceLinks();
 applyImagesPref();
 injectImgToggles();
 updateSoundBtn();
