@@ -1518,6 +1518,47 @@ function injectExerciseImages(){
   });
 }
 
+const __EXERCISE_REF_LINKS = {
+    '钻石俯卧撑 / Diamond Push-up': {img:'https://cn.bing.com/images/search?q=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20Diamond%20Push-Up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20Diamond%20Push-Up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    'Pike Push-up / 臀高俯卧撑': {img:'https://cn.bing.com/images/search?q=Pike%20Push-Up%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Pike%20Push-Up%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '死虫 / Dead Bug': {img:'https://cn.bing.com/images/search?q=%E6%AD%BB%E8%99%AB%20Dead%20Bug%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%AD%BB%E8%99%AB%20Dead%20Bug%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '开合跳 / Jumping Jack': {img:'https://cn.bing.com/images/search?q=%E5%BC%80%E5%90%88%E8%B7%B3%20Jumping%20Jack%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BC%80%E5%90%88%E8%B7%B3%20Jumping%20Jack%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '波比跳 / Burpee': {img:'https://cn.bing.com/images/search?q=%E6%B3%A2%E6%AF%94%E8%B7%B3%20Burpee%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%B3%A2%E6%AF%94%E8%B7%B3%20Burpee%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '椅上臂屈伸 / Bench Dip': {img:'https://cn.bing.com/images/search?q=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20Bench%20Dip%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20Bench%20Dip%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '俯身 Y-T-W': {img:'https://cn.bing.com/images/search?q=%E4%BF%AF%E8%BA%AB%20Y-T-W%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%AF%E8%BA%AB%20Y-T-W%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '反向支撑静止 / Reverse Plank': {img:'https://cn.bing.com/images/search?q=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20Reverse%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20Reverse%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '高抬腿 / High Knees': {img:'https://cn.bing.com/images/search?q=%E9%AB%98%E6%8A%AC%E8%85%BF%20High%20Knees%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%AB%98%E6%8A%AC%E8%85%BF%20High%20Knees%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    'Hollow Hold / 船式静止': {img:'https://cn.bing.com/images/search?q=Hollow%20Hold%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Hollow%20Hold%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+  };
+
+function injectExerciseReferenceLinks(){
+  const refs = __EXERCISE_REF_LINKS;
+  document.querySelectorAll('.card').forEach(card=>{
+    if(card.querySelector('.refLinks')) return;
+    const title = (card.querySelector('h3')?.textContent || '').trim();
+    const hit = refs[title];
+    if(!hit) return;
+    const box = document.createElement('div');
+    box.className = 'refLinks';
+    box.style.display='flex';
+    box.style.flexWrap='wrap';
+    box.style.gap='8px';
+    box.style.margin='10px 0 12px';
+    box.innerHTML = '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.img+'">看动作图</a>'+
+                    '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.video+'">看视频</a>';
+    const helper = card.querySelector('.helper');
+    const imgbox = card.querySelector('.imgbox');
+    const anchor = imgbox || helper;
+    if(anchor && anchor.parentNode===card){
+      anchor.insertAdjacentElement('afterend', box);
+    }else{
+      const firstDetails = card.querySelector('details.exbulk');
+      if(firstDetails) firstDetails.insertAdjacentElement('beforebegin', box);
+      else card.appendChild(box);
+    }
+  });
+}
+
 function injectImgToggles(){
   // Put a small toggle just above each image
   document.querySelectorAll('.imgbox').forEach(box=>{
@@ -1727,6 +1768,7 @@ restore();
 applyDarkPref();
 applyTodayOnly();
 injectExerciseImages();
+injectExerciseReferenceLinks();
 applyImagesPref();
 injectImgToggles();
 updateSoundBtn();
