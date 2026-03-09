@@ -1788,12 +1788,29 @@ function refreshDay(day){ const sec=document.getElementById(day); if(!sec) retur
 function _allSections(){ return [...document.querySelectorAll('section.section')]; }
 function _dayBoxes(sec){ return [...sec.querySelectorAll('input[type=checkbox][data-key$=":done"]')]; }
 function _isDayComplete(sec){ const boxes=_dayBoxes(sec); return boxes.length>0 && boxes.every(b=>b.checked); }
+function goToNextUnlockedDay(){
+  const todayId=_todaySectionId();
+  if(!todayId) return;
+  const sections=[...document.querySelectorAll('section.section')];
+  const idx=sections.findIndex(sec=>sec.id===todayId);
+  if(idx>=0 && sections[idx+1]){
+    sections[idx+1].classList.remove('collapsed');
+    sections[idx+1].classList.remove('locked');
+    sections[idx+1].scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
+
 function notifyDayCompletion(day, done, total){
   const k = PREFIX+'dayCompleteAlert:'+day;
   if(total>0 && done===total){
     if(localStorage.getItem(k)!=='1'){
       localStorage.setItem(k,'1');
-      setTimeout(()=>alert('今天这一天你已经全部做完了 ✅'), 80);
+      setTimeout(()=>{
+        const ok = confirm('今天这一天你已经全部做完了 ✅
+
+要不要直接去看明天？');
+        if(ok) goToNextUnlockedDay();
+      }, 80);
     }
   }else{
     localStorage.removeItem(k);
