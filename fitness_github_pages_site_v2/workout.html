@@ -370,7 +370,7 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
 }
 
 </style></head><body><div class="wrap">
-<div class="syncTopBanner pending" id="syncTopBanner"><div class="syncTopBannerInner" id="syncTopBannerText">同步状态检查中…</div></div>
+<div class="syncTopBanner pending" id="syncTopBanner"><div class="syncTopBannerInner"><div class="syncTopBannerLabel" id="syncTopBannerText">同步状态检查中…</div><button class="syncSyncBtn" type="button" onclick="manualSyncNow()">立即同步</button></div></div>
 <div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><div class="syncBadge off" id="syncBadge"><span class="syncDot"></span><span id="syncBadgeText">本机</span></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
 
 
@@ -1425,6 +1425,25 @@ function hasAnyLocalWorkoutData(){
     });
   }catch(e){ return false; }
 }
+async function manualSyncNow(){
+  const topEl=document.getElementById('syncTopBanner');
+  const topText=document.getElementById('syncTopBannerText');
+  if(topEl) topEl.className='syncTopBanner pending';
+  if(topText) topText.textContent='正在手动同步…';
+  try{
+    const pulled = await pullCloudNow(true);
+    if(!pulled){
+      await pushCloudNow(false);
+    }else{
+      refreshSyncStatus();
+    }
+  }catch(e){
+    console.error(e);
+    refreshSyncStatus();
+    alert('手动同步失败，请稍后再试');
+  }
+}
+
 async function autoSyncBootstrap(){
   if(!cloudConfigured()) { refreshSyncStatus(); return; }
   try{
