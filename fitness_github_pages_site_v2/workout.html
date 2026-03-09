@@ -1227,11 +1227,10 @@ const SYNC_STATE = {ready:false,pending:false,pullPending:false,lastHash:'',save
 function _syncGet(key, def=''){ const v=localStorage.getItem(SYNC_PREF_PREFIX + key); return v===null?def:v; }
 function _syncSet(key, val){ localStorage.setItem(SYNC_PREF_PREFIX + key, String(val ?? '')); }
 function getCloudConfig(){
-  return {
-    url:_syncGet('url', CLOUD_DEFAULT_URL).trim(),
-    anonKey:_syncGet('anonKey', CLOUD_DEFAULT_ANON_KEY).trim(),
-    syncCode:_syncGet('syncCode','').trim()
-  };
+  const url = _syncGet('url', CLOUD_DEFAULT_URL).trim();
+  const anonKey = (_syncGet('anonKey','') || localStorage.getItem(PREFIX + 'cloud:anon') || CLOUD_DEFAULT_ANON_KEY).trim();
+  const syncCode = (_syncGet('syncCode','') || localStorage.getItem(PREFIX + 'cloud:code') || '').trim();
+  return { url, anonKey, syncCode };
 }
 function applyCloudConfigFromUrl(){
   try{
@@ -1243,12 +1242,18 @@ function applyCloudConfigFromUrl(){
       _syncSet('url', '');
       _syncSet('anonKey', '');
       _syncSet('syncCode', '');
+      localStorage.setItem(PREFIX + 'cloud:url','');
+      localStorage.setItem(PREFIX + 'cloud:anon','');
+      localStorage.setItem(PREFIX + 'cloud:code','');
       changed = true;
     }
     if(sync){
       _syncSet('url', CLOUD_DEFAULT_URL);
       _syncSet('anonKey', CLOUD_DEFAULT_ANON_KEY);
       _syncSet('syncCode', sync);
+      localStorage.setItem(PREFIX + 'cloud:url', CLOUD_DEFAULT_URL);
+      localStorage.setItem(PREFIX + 'cloud:anon', CLOUD_DEFAULT_ANON_KEY);
+      localStorage.setItem(PREFIX + 'cloud:code', sync);
       changed = true;
     }
     if(changed){
