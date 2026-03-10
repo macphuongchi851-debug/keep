@@ -1929,7 +1929,8 @@ async function manualSyncNow(){
 }
 
 async function autoSyncBootstrap(){
-  if(!cloudConfigured()) { refreshSyncStatus(); return; }
+  const cfg = getCloudConfig();
+  if(!(cfg.url && cfg.anonKey && cfg.syncCode)) { refreshSyncStatus(); return; }
   try{
     const pulled = await _syncWithTimeout(pullCloudNow(true), 8000);
     if(!pulled && hasAnyLocalWorkoutData()){
