@@ -1113,6 +1113,8 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
 
 <script>
 const PREFIX='fitness-set-check-v4:';
+window.__fitnessPrefix = PREFIX;
+window.__fitnessPrefPrefix = PREFIX + 'pref:';
 const OTHER_MODE_PATH='./workout_home.html';
 function _getAnySyncCode(){
   try{
@@ -2469,6 +2471,8 @@ setTimeout(()=>{ if(window.autoSyncBootstrap) window.autoSyncBootstrap(); }, 300
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 (function(){
+  const PREFIX = window.__fitnessPrefix || 'fitness-set-check-v4:';
+  const PREF_PREFIX = window.__fitnessPrefPrefix || (PREFIX + 'pref:');
   const CLOUD_URL_KEY = PREFIX + 'cloud:url';
   const CLOUD_ANON_KEY = PREFIX + 'cloud:anon';
   const CLOUD_CODE_KEY = PREFIX + 'cloud:code';
