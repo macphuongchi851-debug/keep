@@ -465,8 +465,8 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
       <div class="settingSub" id="cloudStatusText">首次打开专属入口后自动开启</div>
       <div class="settingSub" id="cloudHint">保持自动备份；需要时也可以手动恢复。</div>
     </div>
-    <button class="settingRow action" onclick="pushCloudNow(false)"><span style="font-weight:900">立即备份</span><span class="chev">›</span></button>
-    <button class="settingRow action" onclick="pullCloudNow(false)"><span style="font-weight:900">恢复备份</span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="window.pushCloudNow && window.pushCloudNow(false)"><span style="font-weight:900">立即备份</span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="window.pullCloudNow && window.pullCloudNow(false)"><span style="font-weight:900">恢复备份</span><span class="chev">›</span></button>
   </div>
   <div class="settingsList">
     <button class="settingRow action" onclick="scrollToTop(); closeSheet()"><span style="font-weight:900">回顶部</span><span class="chev">›</span></button>
@@ -1902,10 +1902,10 @@ async function manualSyncNow(){
   if(topEl) topEl.className='syncTopBanner pending';
   if(topText) topText.textContent='正在手动同步…';
   try{
-    const pulled = await _syncWithTimeout(pullCloudNow(true), 10000);
+    const pulled = await _syncWithTimeout(window.pullCloudNow ? window.pullCloudNow(true) : Promise.resolve(false), 10000);
     let ok = !!pulled;
     if(!ok){
-      ok = await _syncWithTimeout(pushCloudNow(true), 10000);
+      ok = await _syncWithTimeout(window.pushCloudNow ? window.pushCloudNow(true) : Promise.resolve(false), 10000);
     }
     refreshSyncStatus();
     if(!ok){
@@ -1932,9 +1932,9 @@ async function autoSyncBootstrap(){
   const cfg = getCloudConfig();
   if(!(cfg.url && cfg.anonKey && cfg.syncCode)) { refreshSyncStatus(); return; }
   try{
-    const pulled = await _syncWithTimeout(pullCloudNow(true), 8000);
+    const pulled = await _syncWithTimeout(window.pullCloudNow ? window.pullCloudNow(true) : Promise.resolve(false), 8000);
     if(!pulled && hasAnyLocalWorkoutData()){
-      await _syncWithTimeout(pushCloudNow(true), 8000);
+      await _syncWithTimeout(window.pushCloudNow ? window.pushCloudNow(true) : Promise.resolve(false), 8000);
     }
   }catch(e){
     console.error(e);
