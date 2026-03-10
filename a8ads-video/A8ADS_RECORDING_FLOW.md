@@ -1,4 +1,10 @@
-# A8Ads 录制脚本与执行流程（优化版）
+# A8Ads 录制脚本与执行流程（录屏主片版）
+
+> 当前默认口径（2026-03-10 更新）：
+> **第一版主宣传片** 默认剪成 **42 秒横版录屏成片**，结构固定为：
+> **首页 → Ads → Advertisers → Products → 首页收尾**。
+> `packages` 套餐页保留为**可选补充镜头**，不进入第一版主片。
+
 
 ## 目标
 把 A8Ads 产品演示录成一条**稳定、可重复、适合后续剪辑**的横版素材。
@@ -72,8 +78,20 @@ FPS=20 SCALE_WIDTH=1920 CRF=24 PRESET=medium scripts/a8ads_recorder.sh a8ads_vid
 ---
 
 ## 推荐执行流程（固定镜头脚本）
-总时长建议：**约 90–95 秒原始录屏**。
-后期剪成 30–45 秒。
+总时长建议：**约 70–80 秒原始录屏**。
+后期默认剪成 **42 秒横版主片**。
+
+## 42 秒主片时间轴（默认交付口径）
+- **0–4s**：首页开场
+- **4–18s**：Ads 主镜头（搜索 + 结果出现 + 缓慢滚动）
+- **18–27s**：Advertisers
+- **27–36s**：Products
+- **36–42s**：首页收尾
+
+剪辑原则：
+- 保留“搜索输入 / 结果出现 / 页面缓慢滚动”这些**真实操作感**。
+- 删掉等待加载、鼠标乱晃、卡顿、重复滚动。
+- 转场统一用淡入淡出，别搞花活。
 
 ### Scene 1：首页开场（0–12s）
 目标：建立产品感。
@@ -146,24 +164,7 @@ FPS=20 SCALE_WIDTH=1920 CRF=24 PRESET=medium scripts/a8ads_recorder.sh a8ads_vid
 
 ---
 
-### Scene 5：套餐页（66–80s）
-目标：做商业化收口。
-
-动作：
-1. 打开 `https://www.a8ads.com/packages`
-2. 停 2 秒
-3. 滚到 180
-4. 滚到 420
-5. 回到 120
-6. 回顶部
-
-建议：
-- 套餐页不要占太长
-- 这段更多是“补信息”，不是绝对主卖点
-
----
-
-### Scene 6：回首页收尾（80–92s）
+### Scene 5：回首页收尾（66–76s）
 目标：给剪辑留结尾空间。
 
 动作：
@@ -174,6 +175,21 @@ FPS=20 SCALE_WIDTH=1920 CRF=24 PRESET=medium scripts/a8ads_recorder.sh a8ads_vid
 建议：
 - 结尾尽量稳
 - 给字幕/LOGO/CTA 留位置
+
+---
+
+## 可选补充镜头：套餐页（不进第一版主片）
+仅当你要做更长版本（如 50–60 秒）或单独补商业化信息时，再录：
+1. 打开 `https://www.a8ads.com/packages`
+2. 停 2 秒
+3. 滚到 180
+4. 滚到 420
+5. 回到 120
+6. 回顶部
+
+建议：
+- 只做补充，不抢主线
+- 时长控制在 4–6 秒素材 usable 区间即可
 
 ---
 
@@ -202,8 +218,8 @@ FPS=20 SCALE_WIDTH=1920 CRF=24 PRESET=medium scripts/a8ads_recorder.sh a8ads_vid
 - 02_ads_search.mp4
 - 03_advertisers.mp4
 - 04_products.mp4
-- 05_packages.mp4
-- 06_home_end.mp4
+- 05_home_end.mp4
+- 06_packages_optional.mp4
 
 这样后期会比一整条 master 更好剪。
 
