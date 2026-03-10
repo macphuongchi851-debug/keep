@@ -370,7 +370,8 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
 }
 
 </style></head><body><div class="wrap">
-<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="toggleWeek()" aria-label="切换训练周">第1周</button><div class="syncBadge off" id="syncBadge"><span class="syncDot"></span><span id="syncBadgeText">本机</span></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
+<div class="syncTopBanner pending" id="syncTopBanner"><div class="syncTopBannerInner"><div class="syncTopBannerLabel" id="syncTopBannerText">同步状态检查中…</div><button class="syncSyncBtn" type="button" onclick="manualSyncNow()">立即同步</button></div></div>
+<div class="hero"><div class="topbar"><div class="titleblock"><h1>健身打卡</h1><div class="subtitle">逐组打卡 · 计时 · 自动保存</div></div><div class="topActions"><button class="weekbtn" id="weekBtn" onclick="window.toggleWeek && window.toggleWeek()" aria-label="切换训练周">第1周</button><div class="syncBadge off" id="syncBadge"><span class="syncDot"></span><span id="syncBadgeText">本机</span></div><button class="iconbtn" id="settingsBtn" onclick="openSheet()" title="设置" aria-label="设置"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 13.9 1h-3.8a.5.5 0 0 0-.49.42l-.36 2.54c-.58.24-1.12.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.7 7.48a.5.5 0 0 0 .12.64l2.03 1.58c-.05.31-.07.63-.07.94s.02.63.07.94L2.82 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.31.6.22l2.39-.96c.51.39 1.06.7 1.63.94l.36 2.54c.04.24.25.42.49.42h3.8c.24 0 .45-.18.49-.42l.36-2.54c.58-.24 1.12-.55 1.63-.94l2.39.96c.22.09.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8a3.5 3.5 0 0 1 0 7.5z"/></svg></button></div></div></div>
 
 
 <div class="overview" id="overviewPanel">
@@ -381,6 +382,7 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
     <div class="quickActions">
       <button class="glassbtn" type="button" onclick="jumpToToday()">去今天</button>
       <button class="glassbtn" type="button" onclick="jumpNext()">继续下一组</button>
+          <button class="glassbtn" type="button" onclick="goOtherMode()">今天有器械？去家用版</button>
     </div>
   </div>
   <div class="overviewStats">
@@ -449,13 +451,13 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
       <div class="settingLabel">训练周</div>
       <div class="settingSub" id="weekHint">第1周保持原方案；第2-4周会按上一周打卡自动生成。</div>
       <div class="segRow">
-        <button class="segbtn" id="week1Btn" onclick="setWeek(1)">第1周</button>
-        <button class="segbtn" id="week2Btn" onclick="prepareWeek(2,false)">第2周</button>
-        <button class="segbtn" id="week3Btn" onclick="prepareWeek(3,false)">第3周</button>
-        <button class="segbtn" id="week4Btn" onclick="prepareWeek(4,false)">第4周</button>
+        <button class="segbtn" id="week1Btn" onclick="window.setWeek && window.setWeek(1)">第1周</button>
+        <button class="segbtn" id="week2Btn" onclick="window.prepareWeek && window.prepareWeek(2,false)">第2周</button>
+        <button class="segbtn" id="week3Btn" onclick="window.prepareWeek && window.prepareWeek(3,false)">第3周</button>
+        <button class="segbtn" id="week4Btn" onclick="window.prepareWeek && window.prepareWeek(4,false)">第4周</button>
       </div>
     </div>
-    <button class="settingRow action" onclick="prepareWeeksThrough(4,true)"><span style="font-weight:900">生成 / 刷新第2-4周建议</span><span class="chev">›</span></button>
+    <button class="settingRow action" onclick="window.prepareWeeksThrough && window.prepareWeeksThrough(4,true)"><span style="font-weight:900">生成 / 刷新第2-4周建议</span><span class="chev">›</span></button>
   </div>
   <div class="settingsList">
     <div class="settingStack">
@@ -481,615 +483,615 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
 <a href="#周四｜上肢增肌 + 体态">周四</a>
 <a href="#周五｜下肢增肌 + 后链 + 核心">周五</a>
 </div>
-<section class="section" id="周一｜推 + 核心"><div class="dayhead"><div><h2>周一｜推 + 核心</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周一｜推 + 核心">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周一｜推 + 核心"></div></div></div></div><div class="grid"><div class="card"><h3>标准俯卧撑 / Push-up </h3><div class="tags"><span class="tag goal">目标 8–15</span><span class="tag rest">休息 75秒</span><span class="tag focus">胸/前三角/肱三</span><span class="tag weight">建议 自重 / 自重 / 自重 / 自重</span></div><div class="helper">提示：全程收紧核心，身体一条线</div>
+<section class="section" id="周一｜推 + 核心"><div class="dayhead"><div><h2>周一｜推 + 核心</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周一｜推 + 核心">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周一｜推 + 核心"></div></div></div></div><div class="grid"><div class="card"><h3>标准俯卧撑 / Push-up </h3><div class="tags"><span class="tag goal">目标 12–20</span><span class="tag rest">休息 75秒</span><span class="tag focus">胸/前三角/肱三</span><span class="tag weight">建议 自重 / 自重 / 自重 / 自重</span></div><div class="helper">提示：全程收紧核心，身体一条线</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex1" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex1', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set1:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set1:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set1:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex1-set1">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex1-set1">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set2:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set2:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set2:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex1-set2">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex1-set2">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set3:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set3:reps" placeholder="次数/时长" value="10–12" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set3:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex1-set3">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex1-set3">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex1-set4:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex1-set4">第4组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set4:reps" placeholder="次数/时长" value="8–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex1-set4:reps" placeholder="次数/时长" value="8–10" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex1-set4:weight" data-group="周一｜推 + 核心-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex1" data-timer-key="周一｜推 + 核心-ex1-set4" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex1-set4">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex1-set4">休息 75秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>钻石俯卧撑 / Diamond Push-up </h3><div class="tags"><span class="tag goal">目标 6–12</span><span class="tag rest">休息 75秒</span><span class="tag focus">肱三/胸内侧</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作幅度别偷，宁可次数少一点</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>钻石俯卧撑 / Diamond Push-up </h3><div class="tags"><span class="tag goal">目标 8–12</span><span class="tag rest">休息 75秒</span><span class="tag focus">肱三/胸内侧</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作幅度别偷，宁可次数少一点</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex2" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex2', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex2-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex2-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set1:reps" placeholder="次数/时长" value="6–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set1:reps" placeholder="次数/时长" value="8–10" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex2-set1:weight" data-group="周一｜推 + 核心-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex2" data-timer-key="周一｜推 + 核心-ex2-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex2-set1">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex2-set1">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex2-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex2-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set2:reps" placeholder="次数/时长" value="6–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set2:reps" placeholder="次数/时长" value="8–10" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex2-set2:weight" data-group="周一｜推 + 核心-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex2" data-timer-key="周一｜推 + 核心-ex2-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex2-set2">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex2-set2">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex2-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex2-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set3:reps" placeholder="次数/时长" value="6–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex2-set3:reps" placeholder="次数/时长" value="6–8" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex2-set3:weight" data-group="周一｜推 + 核心-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex2" data-timer-key="周一｜推 + 核心-ex2-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex2-set3">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex2-set3">休息 75秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>Pike Push-up / 臀高俯卧撑 </h3><div class="tags"><span class="tag goal">目标 6–10</span><span class="tag rest">休息 75秒</span><span class="tag focus">肩部/上胸</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：屁股抬高，发力集中到肩</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>Pike Push-up / 臀高俯卧撑 </h3><div class="tags"><span class="tag goal">目标 8–12</span><span class="tag rest">休息 75秒</span><span class="tag focus">肩部/上胸</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：屁股抬高，发力集中到肩</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex3" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex3', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex3-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex3-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set1:reps" placeholder="次数/时长" value="6–10" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set1:reps" placeholder="次数/时长" value="8–10" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex3-set1:weight" data-group="周一｜推 + 核心-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex3" data-timer-key="周一｜推 + 核心-ex3-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex3-set1">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex3-set1">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex3-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex3-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set2:reps" placeholder="次数/时长" value="6–10" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set2:reps" placeholder="次数/时长" value="8–10" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex3-set2:weight" data-group="周一｜推 + 核心-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex3" data-timer-key="周一｜推 + 核心-ex3-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex3-set2">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex3-set2">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex3-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex3-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set3:reps" placeholder="次数/时长" value="6–10" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex3-set3:reps" placeholder="次数/时长" value="6–8" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex3-set3:weight" data-group="周一｜推 + 核心-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex3" data-timer-key="周一｜推 + 核心-ex3-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex3-set3">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex3-set3">休息 75秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>平板支撑 / Plank </h3><div class="tags"><span class="tag goal">目标 40–60秒</span><span class="tag rest">休息 45秒</span><span class="tag focus">核心抗伸展</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：腰别塌，肋骨收住</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>平板支撑 / Plank </h3><div class="tags"><span class="tag goal">目标 45–75秒</span><span class="tag rest">休息 45秒</span><span class="tag focus">核心抗伸展</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：腰别塌，肋骨收住</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex4" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex4', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex4-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex4-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set1:reps" placeholder="次数/时长" value="40–60秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set1:reps" placeholder="次数/时长" value="45秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex4-set1:weight" data-group="周一｜推 + 核心-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex4" data-timer-key="周一｜推 + 核心-ex4-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex4-set1">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex4-set1">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex4-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex4-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set2:reps" placeholder="次数/时长" value="40–60秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set2:reps" placeholder="次数/时长" value="60秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex4-set2:weight" data-group="周一｜推 + 核心-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex4" data-timer-key="周一｜推 + 核心-ex4-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex4-set2">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex4-set2">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex4-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex4-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set3:reps" placeholder="次数/时长" value="40–60秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex4-set3:reps" placeholder="次数/时长" value="60–75秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex4-set3:weight" data-group="周一｜推 + 核心-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex4" data-timer-key="周一｜推 + 核心-ex4-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex4-set3">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex4-set3">休息 45秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>死虫 / Dead Bug </h3><div class="tags"><span class="tag goal">目标 10–12/侧</span><span class="tag rest">休息 45秒</span><span class="tag focus">核心稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：下背贴稳地面</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>死虫 / Dead Bug </h3><div class="tags"><span class="tag goal">目标 10–14/侧</span><span class="tag rest">休息 45秒</span><span class="tag focus">核心稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：下背贴稳地面</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周一｜推 + 核心-ex5" placeholder="本动作默认重量"><input id="r-周一｜推 + 核心-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周一｜推 + 核心-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周一｜推 + 核心-ex5', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex5-set1:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex5-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set1:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set1:reps" placeholder="次数/时长" value="10/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex5-set1:weight" data-group="周一｜推 + 核心-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex5" data-timer-key="周一｜推 + 核心-ex5-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex5-set1">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex5-set1">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex5-set2:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex5-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set2:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set2:reps" placeholder="次数/时长" value="12/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex5-set2:weight" data-group="周一｜推 + 核心-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex5" data-timer-key="周一｜推 + 核心-ex5-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex5-set2">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex5-set2">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周一｜推 + 核心-ex5-set3:done" onchange="persist(this); refreshDay('周一｜推 + 核心')"><span id="label-周一｜推 + 核心-ex5-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set3:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周一｜推 + 核心-ex5-set3:reps" placeholder="次数/时长" value="12–14/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周一｜推 + 核心-ex5-set3:weight" data-group="周一｜推 + 核心-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周一｜推 + 核心-ex5" data-timer-key="周一｜推 + 核心-ex5-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周一｜推 + 核心-ex5-set3">--:--</span>
 <span class="restbadge" id="rest-周一｜推 + 核心-ex5-set3">休息 45秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周二｜腿 + 臀"><div class="dayhead"><div><h2>周二｜腿 + 臀</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周二｜腿 + 臀">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周二｜腿 + 臀"></div></div></div></div><div class="grid"><div class="card"><h3>徒手深蹲 / Bodyweight Squat </h3><div class="tags"><span class="tag goal">目标 15–25</span><span class="tag rest">休息 60秒</span><span class="tag focus">股四/臀</span><span class="tag weight">建议 自重 / 自重 / 自重 / 自重</span></div><div class="helper">提示：先把动作节奏和蹲深做好</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周二｜腿 + 臀"><div class="dayhead"><div><h2>周二｜腿 + 臀</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周二｜腿 + 臀">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周二｜腿 + 臀"></div></div></div></div><div class="grid"><div class="card"><h3>徒手深蹲 / Bodyweight Squat </h3><div class="tags"><span class="tag goal">目标 20–30</span><span class="tag rest">休息 60秒</span><span class="tag focus">股四/臀</span><span class="tag weight">建议 自重 / 自重 / 自重 / 自重</span></div><div class="helper">提示：先把动作节奏和蹲深做好</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex1" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex1', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set1:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set1:reps" placeholder="次数/时长" value="20" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set1:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex1-set1">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set1">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set2:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set2:reps" placeholder="次数/时长" value="22" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set2:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex1-set2">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set2">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set3:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set3:reps" placeholder="次数/时长" value="25" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set3:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex1-set3">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set3">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex1-set4:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex1-set4">第4组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set4:reps" placeholder="次数/时长" value="15–25" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex1-set4:reps" placeholder="次数/时长" value="25–30" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex1-set4:weight" data-group="周二｜腿 + 臀-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex1" data-timer-key="周二｜腿 + 臀-ex1-set4" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex1-set4">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex1-set4">休息 60秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>反向箭步蹲 / Reverse Lunge </h3><div class="tags"><span class="tag goal">目标 10–12/侧</span><span class="tag rest">休息 60秒</span><span class="tag focus">臀/腿稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：重心稳，膝盖跟脚尖同向</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>反向箭步蹲 / Reverse Lunge </h3><div class="tags"><span class="tag goal">目标 12–14/侧</span><span class="tag rest">休息 60秒</span><span class="tag focus">臀/腿稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：重心稳，膝盖跟脚尖同向</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex2" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex2', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex2-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex2-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set1:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set1:reps" placeholder="次数/时长" value="12/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex2-set1:weight" data-group="周二｜腿 + 臀-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex2" data-timer-key="周二｜腿 + 臀-ex2-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex2-set1">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex2-set1">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex2-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex2-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set2:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set2:reps" placeholder="次数/时长" value="12/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex2-set2:weight" data-group="周二｜腿 + 臀-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex2" data-timer-key="周二｜腿 + 臀-ex2-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex2-set2">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex2-set2">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex2-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex2-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set3:reps" placeholder="次数/时长" value="10–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex2-set3:reps" placeholder="次数/时长" value="14/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex2-set3:weight" data-group="周二｜腿 + 臀-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex2" data-timer-key="周二｜腿 + 臀-ex2-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex2-set3">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex2-set3">休息 60秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>保加利亚分腿蹲（徒手） </h3><div class="tags"><span class="tag goal">目标 8–12/侧</span><span class="tag rest">休息 75秒</span><span class="tag focus">单腿力量</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作别急，吃到臀腿发力</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>保加利亚分腿蹲（徒手） </h3><div class="tags"><span class="tag goal">目标 10–14/侧</span><span class="tag rest">休息 75秒</span><span class="tag focus">单腿力量</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作别急，吃到臀腿发力</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex3" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex3', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex3-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex3-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set1:reps" placeholder="次数/时长" value="8–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set1:reps" placeholder="次数/时长" value="10/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex3-set1:weight" data-group="周二｜腿 + 臀-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex3" data-timer-key="周二｜腿 + 臀-ex3-set1" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex3-set1">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex3-set1">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex3-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex3-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set2:reps" placeholder="次数/时长" value="8–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set2:reps" placeholder="次数/时长" value="12/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex3-set2:weight" data-group="周二｜腿 + 臀-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex3" data-timer-key="周二｜腿 + 臀-ex3-set2" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex3-set2">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex3-set2">休息 75秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex3-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex3-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set3:reps" placeholder="次数/时长" value="8–12/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex3-set3:reps" placeholder="次数/时长" value="12–14/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex3-set3:weight" data-group="周二｜腿 + 臀-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex3" data-timer-key="周二｜腿 + 臀-ex3-set3" data-rest="75" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex3-set3">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex3-set3">休息 75秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>臀桥 / Glute Bridge </h3><div class="tags"><span class="tag goal">目标 15–20</span><span class="tag rest">休息 45秒</span><span class="tag focus">臀部</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：顶端停 1 秒，骨盆别乱晃</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>臀桥 / Glute Bridge </h3><div class="tags"><span class="tag goal">目标 18–25</span><span class="tag rest">休息 45秒</span><span class="tag focus">臀部</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：顶端停 1 秒，骨盆别乱晃</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex4" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex4', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex4-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex4-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set1:reps" placeholder="次数/时长" value="15–20" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set1:reps" placeholder="次数/时长" value="18" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex4-set1:weight" data-group="周二｜腿 + 臀-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex4" data-timer-key="周二｜腿 + 臀-ex4-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex4-set1">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex4-set1">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex4-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex4-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set2:reps" placeholder="次数/时长" value="15–20" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set2:reps" placeholder="次数/时长" value="20" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex4-set2:weight" data-group="周二｜腿 + 臀-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex4" data-timer-key="周二｜腿 + 臀-ex4-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex4-set2">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex4-set2">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex4-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex4-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set3:reps" placeholder="次数/时长" value="15–20" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex4-set3:reps" placeholder="次数/时长" value="20–25" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex4-set3:weight" data-group="周二｜腿 + 臀-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex4" data-timer-key="周二｜腿 + 臀-ex4-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex4-set3">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex4-set3">休息 45秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>提踵 / Calf Raise </h3><div class="tags"><span class="tag goal">目标 18–25</span><span class="tag rest">休息 30秒</span><span class="tag focus">小腿</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：顶端停顿，别弹</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>提踵 / Calf Raise </h3><div class="tags"><span class="tag goal">目标 20–30</span><span class="tag rest">休息 30秒</span><span class="tag focus">小腿</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：顶端停顿，别弹</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周二｜腿 + 臀-ex5" placeholder="本动作默认重量"><input id="r-周二｜腿 + 臀-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周二｜腿 + 臀-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周二｜腿 + 臀-ex5', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex5-set1:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex5-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set1:reps" placeholder="次数/时长" value="18–25" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set1:reps" placeholder="次数/时长" value="20" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex5-set1:weight" data-group="周二｜腿 + 臀-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex5" data-timer-key="周二｜腿 + 臀-ex5-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex5-set1">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex5-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex5-set2:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex5-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set2:reps" placeholder="次数/时长" value="18–25" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set2:reps" placeholder="次数/时长" value="25" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex5-set2:weight" data-group="周二｜腿 + 臀-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex5" data-timer-key="周二｜腿 + 臀-ex5-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex5-set2">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex5-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周二｜腿 + 臀-ex5-set3:done" onchange="persist(this); refreshDay('周二｜腿 + 臀')"><span id="label-周二｜腿 + 臀-ex5-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set3:reps" placeholder="次数/时长" value="18–25" oninput="persist(this)">
+<input class="reps" type="text" data-key="周二｜腿 + 臀-ex5-set3:reps" placeholder="次数/时长" value="25–30" oninput="persist(this)">
 <input class="weight" type="text" data-key="周二｜腿 + 臀-ex5-set3:weight" data-group="周二｜腿 + 臀-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周二｜腿 + 臀-ex5" data-timer-key="周二｜腿 + 臀-ex5-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周二｜腿 + 臀-ex5-set3">--:--</span>
 <span class="restbadge" id="rest-周二｜腿 + 臀-ex5-set3">休息 30秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周三｜恢复 + 体能"><div class="dayhead"><div><h2>周三｜恢复 + 体能</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周三｜恢复 + 体能">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周三｜恢复 + 体能"></div></div></div></div><div class="grid"><div class="card"><h3>开合跳 / Jumping Jack </h3><div class="tags"><span class="tag goal">目标 45–60秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">心肺激活</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：先把呼吸节奏带起来</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周三｜恢复 + 体能"><div class="dayhead"><div><h2>周三｜恢复 + 体能</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周三｜恢复 + 体能">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周三｜恢复 + 体能"></div></div></div></div><div class="grid"><div class="card"><h3>开合跳 / Jumping Jack </h3><div class="tags"><span class="tag goal">目标 50–70秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">心肺激活</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：先把呼吸节奏带起来</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex1" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex1', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex1-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex1-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set1:reps" placeholder="次数/时长" value="45–60秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set1:reps" placeholder="次数/时长" value="50秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex1-set1:weight" data-group="周三｜恢复 + 体能-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex1" data-timer-key="周三｜恢复 + 体能-ex1-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex1-set1">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex1-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex1-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex1-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set2:reps" placeholder="次数/时长" value="45–60秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set2:reps" placeholder="次数/时长" value="60秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex1-set2:weight" data-group="周三｜恢复 + 体能-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex1" data-timer-key="周三｜恢复 + 体能-ex1-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex1-set2">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex1-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex1-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex1-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set3:reps" placeholder="次数/时长" value="45–60秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex1-set3:reps" placeholder="次数/时长" value="60–70秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex1-set3:weight" data-group="周三｜恢复 + 体能-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex1" data-timer-key="周三｜恢复 + 体能-ex1-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex1-set3">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex1-set3">休息 30秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>登山跑 / Mountain Climber </h3><div class="tags"><span class="tag goal">目标 30–45秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">体能/核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：脚步快，但躯干别散</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>登山跑 / Mountain Climber </h3><div class="tags"><span class="tag goal">目标 35–50秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">体能/核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：脚步快，但躯干别散</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex2" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex2', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex2-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex2-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set1:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set1:reps" placeholder="次数/时长" value="35秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex2-set1:weight" data-group="周三｜恢复 + 体能-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex2" data-timer-key="周三｜恢复 + 体能-ex2-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex2-set1">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex2-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex2-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex2-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set2:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set2:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex2-set2:weight" data-group="周三｜恢复 + 体能-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex2" data-timer-key="周三｜恢复 + 体能-ex2-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex2-set2">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex2-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex2-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex2-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set3:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex2-set3:reps" placeholder="次数/时长" value="45–50秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex2-set3:weight" data-group="周三｜恢复 + 体能-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex2" data-timer-key="周三｜恢复 + 体能-ex2-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex2-set3">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex2-set3">休息 30秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>波比跳 / Burpee </h3><div class="tags"><span class="tag goal">目标 8–12</span><span class="tag rest">休息 45秒</span><span class="tag focus">全身代谢</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：先稳，再提速</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>波比跳 / Burpee </h3><div class="tags"><span class="tag goal">目标 10–14</span><span class="tag rest">休息 45秒</span><span class="tag focus">全身代谢</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：先稳，再提速</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex3" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex3', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex3-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex3-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set1:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set1:reps" placeholder="次数/时长" value="10" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex3-set1:weight" data-group="周三｜恢复 + 体能-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex3" data-timer-key="周三｜恢复 + 体能-ex3-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex3-set1">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex3-set1">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex3-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex3-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set2:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set2:reps" placeholder="次数/时长" value="10–12" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex3-set2:weight" data-group="周三｜恢复 + 体能-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex3" data-timer-key="周三｜恢复 + 体能-ex3-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex3-set2">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex3-set2">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex3-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex3-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set3:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex3-set3:reps" placeholder="次数/时长" value="12–14" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex3-set3:weight" data-group="周三｜恢复 + 体能-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex3" data-timer-key="周三｜恢复 + 体能-ex3-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex3-set3">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex3-set3">休息 45秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>侧桥 / Side Plank </h3><div class="tags"><span class="tag goal">目标 30–45秒/侧</span><span class="tag rest">休息 30秒</span><span class="tag focus">侧核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：身体保持一条线</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>侧桥 / Side Plank </h3><div class="tags"><span class="tag goal">目标 35–50秒/侧</span><span class="tag rest">休息 30秒</span><span class="tag focus">侧核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：身体保持一条线</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex4" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex4', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex4-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex4-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set1:reps" placeholder="次数/时长" value="30–45秒/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set1:reps" placeholder="次数/时长" value="35秒/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex4-set1:weight" data-group="周三｜恢复 + 体能-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex4" data-timer-key="周三｜恢复 + 体能-ex4-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex4-set1">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex4-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex4-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex4-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set2:reps" placeholder="次数/时长" value="30–45秒/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set2:reps" placeholder="次数/时长" value="40秒/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex4-set2:weight" data-group="周三｜恢复 + 体能-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex4" data-timer-key="周三｜恢复 + 体能-ex4-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex4-set2">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex4-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex4-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex4-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set3:reps" placeholder="次数/时长" value="30–45秒/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex4-set3:reps" placeholder="次数/时长" value="45–50秒/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex4-set3:weight" data-group="周三｜恢复 + 体能-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex4" data-timer-key="周三｜恢复 + 体能-ex4-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex4-set3">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex4-set3">休息 30秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>肩胛俯卧撑 / Scap Push-up </h3><div class="tags"><span class="tag goal">目标 12–15</span><span class="tag rest">休息 30秒</span><span class="tag focus">肩胛控制</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：只动肩胛，别塌腰</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>肩胛俯卧撑 / Scap Push-up </h3><div class="tags"><span class="tag goal">目标 12–18</span><span class="tag rest">休息 30秒</span><span class="tag focus">肩胛控制</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：只动肩胛，别塌腰</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周三｜恢复 + 体能-ex5" placeholder="本动作默认重量"><input id="r-周三｜恢复 + 体能-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周三｜恢复 + 体能-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周三｜恢复 + 体能-ex5', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex5-set1:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex5-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set1:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set1:reps" placeholder="次数/时长" value="12" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex5-set1:weight" data-group="周三｜恢复 + 体能-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex5" data-timer-key="周三｜恢复 + 体能-ex5-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex5-set1">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex5-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex5-set2:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex5-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set2:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set2:reps" placeholder="次数/时长" value="15" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex5-set2:weight" data-group="周三｜恢复 + 体能-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex5" data-timer-key="周三｜恢复 + 体能-ex5-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex5-set2">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex5-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周三｜恢复 + 体能-ex5-set3:done" onchange="persist(this); refreshDay('周三｜恢复 + 体能')"><span id="label-周三｜恢复 + 体能-ex5-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set3:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周三｜恢复 + 体能-ex5-set3:reps" placeholder="次数/时长" value="15–18" oninput="persist(this)">
 <input class="weight" type="text" data-key="周三｜恢复 + 体能-ex5-set3:weight" data-group="周三｜恢复 + 体能-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周三｜恢复 + 体能-ex5" data-timer-key="周三｜恢复 + 体能-ex5-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周三｜恢复 + 体能-ex5-set3">--:--</span>
 <span class="restbadge" id="rest-周三｜恢复 + 体能-ex5-set3">休息 30秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周四｜上肢耐力 + 体态"><div class="dayhead"><div><h2>周四｜上肢耐力 + 体态</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周四｜上肢耐力 + 体态">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周四｜上肢耐力 + 体态"></div></div></div></div><div class="grid"><div class="card"><h3>宽距俯卧撑 / Wide Push-up </h3><div class="tags"><span class="tag goal">目标 10–15</span><span class="tag rest">休息 60秒</span><span class="tag focus">胸/肩</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：别耸肩，胸先发力</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周四｜上肢耐力 + 体态"><div class="dayhead"><div><h2>周四｜上肢耐力 + 体态</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周四｜上肢耐力 + 体态">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周四｜上肢耐力 + 体态"></div></div></div></div><div class="grid"><div class="card"><h3>宽距俯卧撑 / Wide Push-up </h3><div class="tags"><span class="tag goal">目标 10–16</span><span class="tag rest">休息 60秒</span><span class="tag focus">胸/肩</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：别耸肩，胸先发力</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex1" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex1', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex1-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex1-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set1:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set1:reps" placeholder="次数/时长" value="10–12" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set1:weight" data-group="周四｜上肢耐力 + 体态-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex1" data-timer-key="周四｜上肢耐力 + 体态-ex1-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex1-set1">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex1-set1">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex1-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex1-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set2:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set2:reps" placeholder="次数/时长" value="10–12" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set2:weight" data-group="周四｜上肢耐力 + 体态-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex1" data-timer-key="周四｜上肢耐力 + 体态-ex1-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex1-set2">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex1-set2">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex1-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex1-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set3:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set3:reps" placeholder="次数/时长" value="12–16" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex1-set3:weight" data-group="周四｜上肢耐力 + 体态-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex1" data-timer-key="周四｜上肢耐力 + 体态-ex1-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex1-set3">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex1-set3">休息 60秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>椅上臂屈伸 / Bench Dip </h3><div class="tags"><span class="tag goal">目标 8–12</span><span class="tag rest">休息 60秒</span><span class="tag focus">肱三</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：肩不舒服就减量</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>椅上臂屈伸 / Bench Dip </h3><div class="tags"><span class="tag goal">目标 10–15</span><span class="tag rest">休息 60秒</span><span class="tag focus">肱三</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：肩不舒服就减量</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex2" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex2', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex2-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex2-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set1:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set1:reps" placeholder="次数/时长" value="10" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set1:weight" data-group="周四｜上肢耐力 + 体态-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex2" data-timer-key="周四｜上肢耐力 + 体态-ex2-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex2-set1">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex2-set1">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex2-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex2-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set2:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set2:reps" placeholder="次数/时长" value="12" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set2:weight" data-group="周四｜上肢耐力 + 体态-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex2" data-timer-key="周四｜上肢耐力 + 体态-ex2-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex2-set2">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex2-set2">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex2-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex2-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set3:reps" placeholder="次数/时长" value="8–12" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set3:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex2-set3:weight" data-group="周四｜上肢耐力 + 体态-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex2" data-timer-key="周四｜上肢耐力 + 体态-ex2-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex2-set3">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex2-set3">休息 60秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>俯身 Y-T-W </h3><div class="tags"><span class="tag goal">目标 8–10/型</span><span class="tag rest">休息 45秒</span><span class="tag focus">肩胛/后束</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作慢一点，找背上发力</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>俯身 Y-T-W </h3><div class="tags"><span class="tag goal">目标 10–12/型</span><span class="tag rest">休息 45秒</span><span class="tag focus">肩胛/后束</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：动作慢一点，找背上发力</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex3" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex3', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex3-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex3-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set1:reps" placeholder="次数/时长" value="8–10/型" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set1:reps" placeholder="次数/时长" value="8/型" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set1:weight" data-group="周四｜上肢耐力 + 体态-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex3" data-timer-key="周四｜上肢耐力 + 体态-ex3-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex3-set1">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex3-set1">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex3-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex3-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set2:reps" placeholder="次数/时长" value="8–10/型" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set2:reps" placeholder="次数/时长" value="10/型" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set2:weight" data-group="周四｜上肢耐力 + 体态-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex3" data-timer-key="周四｜上肢耐力 + 体态-ex3-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex3-set2">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex3-set2">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex3-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex3-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set3:reps" placeholder="次数/时长" value="8–10/型" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set3:reps" placeholder="次数/时长" value="10–12/型" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex3-set3:weight" data-group="周四｜上肢耐力 + 体态-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex3" data-timer-key="周四｜上肢耐力 + 体态-ex3-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex3-set3">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex3-set3">休息 45秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>反向支撑静止 / Reverse Plank </h3><div class="tags"><span class="tag goal">目标 30–45秒</span><span class="tag rest">休息 45秒</span><span class="tag focus">后链/肩稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：抬髋，胸口打开</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>反向支撑静止 / Reverse Plank </h3><div class="tags"><span class="tag goal">目标 35–50秒</span><span class="tag rest">休息 45秒</span><span class="tag focus">后链/肩稳定</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：抬髋，胸口打开</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex4" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex4', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex4-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex4-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set1:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set1:reps" placeholder="次数/时长" value="35秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set1:weight" data-group="周四｜上肢耐力 + 体态-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex4" data-timer-key="周四｜上肢耐力 + 体态-ex4-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex4-set1">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex4-set1">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex4-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex4-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set2:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set2:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set2:weight" data-group="周四｜上肢耐力 + 体态-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex4" data-timer-key="周四｜上肢耐力 + 体态-ex4-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex4-set2">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex4-set2">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex4-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex4-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set3:reps" placeholder="次数/时长" value="30–45秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set3:reps" placeholder="次数/时长" value="45–50秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex4-set3:weight" data-group="周四｜上肢耐力 + 体态-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex4" data-timer-key="周四｜上肢耐力 + 体态-ex4-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex4-set3">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex4-set3">休息 45秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>仰卧举腿 / Leg Raise </h3><div class="tags"><span class="tag goal">目标 10–15</span><span class="tag rest">休息 45秒</span><span class="tag focus">下腹</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：下放慢，不要甩腿</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>仰卧举腿 / Leg Raise </h3><div class="tags"><span class="tag goal">目标 12–18</span><span class="tag rest">休息 45秒</span><span class="tag focus">下腹</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：下放慢，不要甩腿</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周四｜上肢耐力 + 体态-ex5" placeholder="本动作默认重量"><input id="r-周四｜上肢耐力 + 体态-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周四｜上肢耐力 + 体态-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周四｜上肢耐力 + 体态-ex5', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex5-set1:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex5-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set1:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set1:reps" placeholder="次数/时长" value="12" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set1:weight" data-group="周四｜上肢耐力 + 体态-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex5" data-timer-key="周四｜上肢耐力 + 体态-ex5-set1" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex5-set1">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex5-set1">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex5-set2:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex5-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set2:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set2:reps" placeholder="次数/时长" value="12–15" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set2:weight" data-group="周四｜上肢耐力 + 体态-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex5" data-timer-key="周四｜上肢耐力 + 体态-ex5-set2" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex5-set2">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex5-set2">休息 45秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周四｜上肢耐力 + 体态-ex5-set3:done" onchange="persist(this); refreshDay('周四｜上肢耐力 + 体态')"><span id="label-周四｜上肢耐力 + 体态-ex5-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set3:reps" placeholder="次数/时长" value="10–15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set3:reps" placeholder="次数/时长" value="15–18" oninput="persist(this)">
 <input class="weight" type="text" data-key="周四｜上肢耐力 + 体态-ex5-set3:weight" data-group="周四｜上肢耐力 + 体态-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周四｜上肢耐力 + 体态-ex5" data-timer-key="周四｜上肢耐力 + 体态-ex5-set3" data-rest="45" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周四｜上肢耐力 + 体态-ex5-set3">--:--</span>
 <span class="restbadge" id="rest-周四｜上肢耐力 + 体态-ex5-set3">休息 45秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周五｜全身串联"><div class="dayhead"><div><h2>周五｜全身串联</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周五｜全身串联">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周五｜全身串联"></div></div></div></div><div class="grid"><div class="card"><h3>俯卧撑 + 深蹲循环 </h3><div class="tags"><span class="tag goal">目标 10 + 15</span><span class="tag rest">休息 60秒</span><span class="tag focus">全身</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：每轮动作都做完整</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div></div></section><section class="section" id="周五｜全身串联"><div class="dayhead"><div><h2>周五｜全身串联</h2><div class="helper">做完一组勾一组，训练时只管往下推。</div></div><div class="daymeta"><div class="helper" id="prog-text-周五｜全身串联">今日完成度：0 / 0</div><div class="progressbar"><div class="progressfill" id="prog-fill-周五｜全身串联"></div></div></div></div><div class="grid"><div class="card"><h3>俯卧撑 + 深蹲循环 </h3><div class="tags"><span class="tag goal">目标 12 + 18</span><span class="tag rest">休息 60秒</span><span class="tag focus">全身</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：每轮动作都做完整</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex1" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex1" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex1', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex1', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex1-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex1-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex1-set1:reps" placeholder="次数/时长" value="10 + 15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex1-set1:reps" placeholder="次数/时长" value="12 + 18" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex1-set1:weight" data-group="周五｜全身串联-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex1" data-timer-key="周五｜全身串联-ex1-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex1-set1">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex1-set1">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex1-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex1-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex1-set2:reps" placeholder="次数/时长" value="10 + 15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex1-set2:reps" placeholder="次数/时长" value="12 + 18" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex1-set2:weight" data-group="周五｜全身串联-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex1" data-timer-key="周五｜全身串联-ex1-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex1-set2">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex1-set2">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex1-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex1-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex1-set3:reps" placeholder="次数/时长" value="10 + 15" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex1-set3:reps" placeholder="次数/时长" value="15 + 20" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex1-set3:weight" data-group="周五｜全身串联-ex1" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex1" data-timer-key="周五｜全身串联-ex1-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex1-set3">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex1-set3">休息 60秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>箭步蹲跳（可改普通箭步） </h3><div class="tags"><span class="tag goal">目标 8–10/侧</span><span class="tag rest">休息 60秒</span><span class="tag focus">爆发/腿</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：膝不舒服就改普通箭步</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>箭步蹲跳（可改普通箭步） </h3><div class="tags"><span class="tag goal">目标 10–12/侧</span><span class="tag rest">休息 60秒</span><span class="tag focus">爆发/腿</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：膝不舒服就改普通箭步</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex2" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex2" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex2', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex2', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex2-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex2-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex2-set1:reps" placeholder="次数/时长" value="8–10/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex2-set1:reps" placeholder="次数/时长" value="10/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex2-set1:weight" data-group="周五｜全身串联-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex2" data-timer-key="周五｜全身串联-ex2-set1" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex2-set1">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex2-set1">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex2-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex2-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex2-set2:reps" placeholder="次数/时长" value="8–10/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex2-set2:reps" placeholder="次数/时长" value="10/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex2-set2:weight" data-group="周五｜全身串联-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex2" data-timer-key="周五｜全身串联-ex2-set2" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex2-set2">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex2-set2">休息 60秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex2-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex2-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex2-set3:reps" placeholder="次数/时长" value="8–10/侧" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex2-set3:reps" placeholder="次数/时长" value="12/侧" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex2-set3:weight" data-group="周五｜全身串联-ex2" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex2" data-timer-key="周五｜全身串联-ex2-set3" data-rest="60" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex2-set3">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex2-set3">休息 60秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>高抬腿 / High Knees </h3><div class="tags"><span class="tag goal">目标 30–40秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">心肺</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：保持节奏</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>高抬腿 / High Knees </h3><div class="tags"><span class="tag goal">目标 35–50秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">心肺</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：保持节奏</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex3" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex3" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex3', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex3', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex3-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex3-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex3-set1:reps" placeholder="次数/时长" value="30–40秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex3-set1:reps" placeholder="次数/时长" value="35秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex3-set1:weight" data-group="周五｜全身串联-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex3" data-timer-key="周五｜全身串联-ex3-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex3-set1">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex3-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex3-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex3-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex3-set2:reps" placeholder="次数/时长" value="30–40秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex3-set2:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex3-set2:weight" data-group="周五｜全身串联-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex3" data-timer-key="周五｜全身串联-ex3-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex3-set2">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex3-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex3-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex3-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex3-set3:reps" placeholder="次数/时长" value="30–40秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex3-set3:reps" placeholder="次数/时长" value="45–50秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex3-set3:weight" data-group="周五｜全身串联-ex3" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex3" data-timer-key="周五｜全身串联-ex3-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex3-set3">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex3-set3">休息 30秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>登山跑 </h3><div class="tags"><span class="tag goal">目标 40秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">体能</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：最后再冲一把</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>登山跑 </h3><div class="tags"><span class="tag goal">目标 45秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">体能</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：最后再冲一把</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex4" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex4" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex4', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex4', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex4-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex4-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex4-set1:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex4-set1:reps" placeholder="次数/时长" value="45秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex4-set1:weight" data-group="周五｜全身串联-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex4" data-timer-key="周五｜全身串联-ex4-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex4-set1">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex4-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex4-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex4-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex4-set2:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex4-set2:reps" placeholder="次数/时长" value="45秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex4-set2:weight" data-group="周五｜全身串联-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex4" data-timer-key="周五｜全身串联-ex4-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex4-set2">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex4-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex4-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex4-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex4-set3:reps" placeholder="次数/时长" value="40秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex4-set3:reps" placeholder="次数/时长" value="45–50秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex4-set3:weight" data-group="周五｜全身串联-ex4" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex4" data-timer-key="周五｜全身串联-ex4-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex4-set3">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex4-set3">休息 30秒</span>
 </div>
-</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>Hollow Hold / 船式静止 </h3><div class="tags"><span class="tag goal">目标 20–30秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：腰别顶地过猛，稳住呼吸</div>
+</div><div class="note">纯徒手版默认以动作质量优先：先做稳、做满、做标准，再考虑进阶。</div></div><div class="card"><h3>Hollow Hold / 船式静止 </h3><div class="tags"><span class="tag goal">目标 25–40秒</span><span class="tag rest">休息 30秒</span><span class="tag focus">核心</span><span class="tag weight">建议 自重 / 自重 / 自重</span></div><div class="helper">提示：腰别顶地过猛，稳住呼吸</div>
 <details class="exbulk"><summary class="title">本动作批量设置</summary><input id="w-周五｜全身串联-ex5" placeholder="本动作默认重量"><input id="r-周五｜全身串联-ex5" type="number" min="0" placeholder="本动作休息秒数"><button class="primary" onclick="applyExercise('周五｜全身串联-ex5', false)">仅填空白</button><button class="ghost" onclick="applyExercise('周五｜全身串联-ex5', true)">覆盖全部</button></details>
 <div class="sets"><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex5-set1:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex5-set1">第1组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex5-set1:reps" placeholder="次数/时长" value="20–30秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex5-set1:reps" placeholder="次数/时长" value="25秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex5-set1:weight" data-group="周五｜全身串联-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex5" data-timer-key="周五｜全身串联-ex5-set1" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex5-set1">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex5-set1">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex5-set2:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex5-set2">第2组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex5-set2:reps" placeholder="次数/时长" value="20–30秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex5-set2:reps" placeholder="次数/时长" value="30秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex5-set2:weight" data-group="周五｜全身串联-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex5" data-timer-key="周五｜全身串联-ex5-set2" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex5-set2">--:--</span>
 <span class="restbadge" id="rest-周五｜全身串联-ex5-set2">休息 30秒</span>
 </div><div class="setrow">
 <label class="setlabel"><input type="checkbox" data-key="周五｜全身串联-ex5-set3:done" onchange="persist(this); refreshDay('周五｜全身串联')"><span id="label-周五｜全身串联-ex5-set3">第3组</span></label>
-<input class="reps" type="text" data-key="周五｜全身串联-ex5-set3:reps" placeholder="次数/时长" value="20–30秒" oninput="persist(this)">
+<input class="reps" type="text" data-key="周五｜全身串联-ex5-set3:reps" placeholder="次数/时长" value="35–40秒" oninput="persist(this)">
 <input class="weight" type="text" data-key="周五｜全身串联-ex5-set3:weight" data-group="周五｜全身串联-ex5" placeholder="重量" value="自重" oninput="persist(this)">
 <button class="timerbtn" data-group="周五｜全身串联-ex5" data-timer-key="周五｜全身串联-ex5-set3" data-rest="30" onclick="startTimer(this)">开始计时</button>
 <span class="timer" id="timer-周五｜全身串联-ex5-set3">--:--</span>
@@ -1110,7 +1112,31 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
 </div></div>
 
 <script>
-const PREFIX='fitness-set-check-v4:'; window.__fitnessPrefix = PREFIX; window.__fitnessPrefPrefix = PREFIX + 'pref:'; const timers={}; const timerState={}; let activeTimerKey=null;
+const PREFIX='fitness-set-check-v4:';
+window.__fitnessPrefix = PREFIX;
+window.__fitnessPrefPrefix = PREFIX + 'pref:';
+const OTHER_MODE_PATH='./workout_home.html';
+function _getAnySyncCode(){
+  try{
+    const params=new URLSearchParams(location.search);
+    const fromUrl=String(params.get('sync')||params.get('syncCode')||'').trim();
+    if(fromUrl) return fromUrl;
+  }catch(e){}
+  try{
+    const fromLs=String(localStorage.getItem(PREFIX+'cloud:syncCode')||'').trim();
+    if(fromLs) return fromLs;
+  }catch(e){}
+  return '';
+}
+function goOtherMode(){
+  const sync=_getAnySyncCode();
+  if(sync){
+    location.href = OTHER_MODE_PATH + '?sync=' + encodeURIComponent(sync);
+  }else{
+    location.href = OTHER_MODE_PATH;
+  }
+}
+ const timers={}; const timerState={}; let activeTimerKey=null;
 let _audioCtx=null;
 let _audioPrimed=false;
 let soundMuted = (localStorage.getItem(PREFIX+'soundMuted')==='1');
@@ -1203,11 +1229,10 @@ const SYNC_STATE = {ready:false,pending:false,pullPending:false,lastHash:'',save
 function _syncGet(key, def=''){ const v=localStorage.getItem(SYNC_PREF_PREFIX + key); return v===null?def:v; }
 function _syncSet(key, val){ localStorage.setItem(SYNC_PREF_PREFIX + key, String(val ?? '')); }
 function getCloudConfig(){
-  return {
-    url:_syncGet('url', CLOUD_DEFAULT_URL).trim(),
-    anonKey:_syncGet('anonKey', CLOUD_DEFAULT_ANON_KEY).trim(),
-    syncCode:_syncGet('syncCode','').trim()
-  };
+  const url = _syncGet('url', CLOUD_DEFAULT_URL).trim();
+  const anonKey = (_syncGet('anonKey','') || localStorage.getItem(PREFIX + 'cloud:anon') || CLOUD_DEFAULT_ANON_KEY).trim();
+  const syncCode = (_syncGet('syncCode','') || localStorage.getItem(PREFIX + 'cloud:code') || '').trim();
+  return { url, anonKey, syncCode };
 }
 function applyCloudConfigFromUrl(){
   try{
@@ -1219,12 +1244,18 @@ function applyCloudConfigFromUrl(){
       _syncSet('url', '');
       _syncSet('anonKey', '');
       _syncSet('syncCode', '');
+      localStorage.setItem(PREFIX + 'cloud:url','');
+      localStorage.setItem(PREFIX + 'cloud:anon','');
+      localStorage.setItem(PREFIX + 'cloud:code','');
       changed = true;
     }
     if(sync){
       _syncSet('url', CLOUD_DEFAULT_URL);
       _syncSet('anonKey', CLOUD_DEFAULT_ANON_KEY);
       _syncSet('syncCode', sync);
+      localStorage.setItem(PREFIX + 'cloud:url', CLOUD_DEFAULT_URL);
+      localStorage.setItem(PREFIX + 'cloud:anon', CLOUD_DEFAULT_ANON_KEY);
+      localStorage.setItem(PREFIX + 'cloud:code', sync);
       changed = true;
     }
     if(changed){
@@ -1317,7 +1348,7 @@ function buildServerPayload(){
       schema:'fitness-sync-v1',
       savedAt:new Date().toISOString(),
       db:null,
-      prefs:{dark:'0',todayOnly:'1',hideImg:'1',soundMuted:soundMuted?'1':'0'}
+      prefs:{dark:'0',todayOnly:'1',hideImg:'0',soundMuted:soundMuted?'1':'0'}
     };
   }
 }
@@ -1346,7 +1377,7 @@ function applyServerPayload(payload){
     if(payload.prefs){
       _setPref('dark', payload.prefs.dark ?? '0');
       _setPref('todayOnly', payload.prefs.todayOnly ?? '1');
-      _setPref('hideImg', payload.prefs.hideImg ?? '1');
+      _setPref('hideImg', payload.prefs.hideImg ?? '0');
       soundMuted = (String(payload.prefs.soundMuted ?? '0') === '1');
       localStorage.setItem(PREFIX+'soundMuted', soundMuted?'1':'0');
     }
@@ -1359,6 +1390,8 @@ function refreshSyncStatus(){
   const cfg=getCloudConfig();
   const meta=getStoredSyncMeta();
   const statusEl=document.getElementById('cloudStatusText');
+  const topEl=document.getElementById('syncTopBanner');
+  const topText=document.getElementById('syncTopBannerText');
   const lastText = meta.at ? ('上次备份：' + formatSyncTime(meta.at)) : '上次备份：未备份';
   const detailText = meta.detail ? (' · ' + meta.detail) : '';
   if(cfg.url && cfg.anonKey && cfg.syncCode){
@@ -1366,19 +1399,93 @@ function refreshSyncStatus(){
     if(meta.result === 'ok'){
       setSyncBadge('ok','已备份');
       setCloudHint(lastText + detailText);
+      if(topEl) topEl.className='syncTopBanner ok';
+      if(topText) topText.textContent='当前已同步';
     }else if(meta.result === 'error'){
       setSyncBadge('error','异常');
       setCloudHint(lastText + detailText);
+      if(topEl) topEl.className='syncTopBanner off';
+      if(topText) topText.textContent='当前同步异常';
     }else{
       setSyncBadge('pending','准备中');
       setCloudHint(meta.at ? (lastText + detailText) : '保持自动备份；需要时也可以手动恢复。');
+      if(topEl) topEl.className='syncTopBanner pending';
+      if(topText) topText.textContent='当前同步准备中';
     }
   }else{
     if(statusEl) statusEl.textContent = '当前只保存在本机';
     setSyncBadge('off','本机');
     setCloudHint('当前只保存在这台设备。');
+    if(topEl) topEl.className='syncTopBanner off';
+    if(topText) topText.textContent='当前仅本机';
   }
 }
+function hasAnyLocalWorkoutData(){
+  try{
+    const raw = localStorage.getItem(PREFIX + 'db:v2');
+    if(!raw) return false;
+    const db = JSON.parse(raw);
+    const weeks = (db && db.weeks) || {};
+    return Object.values(weeks).some(week=>{
+      const fields = (week && week.fields) || {};
+      return Object.keys(fields).some(k=>k.endsWith(':done') && String(fields[k])==='1');
+    });
+  }catch(e){ return false; }
+}
+function _syncWithTimeout(promise, ms=10000){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error('同步超时，请稍后重试')), ms))
+  ]);
+}
+
+async function manualSyncNow(){
+  const topEl=document.getElementById('syncTopBanner');
+  const topText=document.getElementById('syncTopBannerText');
+  if(topEl) topEl.className='syncTopBanner pending';
+  if(topText) topText.textContent='正在手动同步…';
+  try{
+    const pulled = await _syncWithTimeout(pullCloudNow(true), 10000);
+    let ok = !!pulled;
+    if(!ok){
+      ok = await _syncWithTimeout(pushCloudNow(true), 10000);
+    }
+    refreshSyncStatus();
+    if(!ok){
+      if(topEl) topEl.className='syncTopBanner off';
+      if(topText) topText.textContent='当前同步异常';
+      alert('手动同步失败，请稍后再试');
+      return false;
+    }
+    if(topEl) topEl.className='syncTopBanner ok';
+    if(topText) topText.textContent='当前已同步';
+    return true;
+  }catch(e){
+    console.error(e);
+    if(topEl) topEl.className='syncTopBanner off';
+    if(topText) topText.textContent='当前同步异常';
+    try{ if(window.__cloudStoreSyncMeta) window.__cloudStoreSyncMeta('同步失败', (e && e.message ? e.message : String(e||'')).slice(0,42), {result:'error'}); }catch(err){}
+    refreshSyncStatus();
+    alert(e && e.message ? e.message : '手动同步失败，请稍后再试');
+    return false;
+  }
+}
+
+async function autoSyncBootstrap(){
+  if(!cloudConfigured()) { refreshSyncStatus(); return; }
+  try{
+    const pulled = await _syncWithTimeout(pullCloudNow(true), 8000);
+    if(!pulled && hasAnyLocalWorkoutData()){
+      await _syncWithTimeout(pushCloudNow(true), 8000);
+    }
+  }catch(e){
+    console.error(e);
+    try{ if(window.__cloudStoreSyncMeta) window.__cloudStoreSyncMeta('同步失败', (e && e.message ? e.message : String(e||'')).slice(0,42), {result:'error'}); }catch(err){}
+  }finally{
+    refreshSyncStatus();
+  }
+}
+
 async function testCloudConnection(){
   if(window.pullCloudNow) return window.pullCloudNow(true);
   return false;
@@ -1439,24 +1546,127 @@ function applyTodayOnly(){
   const b=document.getElementById('todayBtn');
   if(b) b.textContent = todayOnly ? '只看今天：开' : '只看今天：关';
   const todayId=_todaySectionId();
-  document.querySelectorAll('section.section').forEach(sec=>{
+  const sections=[...document.querySelectorAll('section.section')];
+  let nextVisibleId='';
+  if(todayId){
+    const idx=sections.findIndex(sec=>sec.id===todayId);
+    if(idx>=0){
+      const todaySec=sections[idx];
+      if(_isDayComplete(todaySec) && sections[idx+1]) nextVisibleId=sections[idx+1].id;
+    }
+  }
+  sections.forEach(sec=>{
     const isToday = todayId && sec.id===todayId;
-    const collapse = todayOnly && todayId && !isToday;
+    const isNextUnlocked = nextVisibleId && sec.id===nextVisibleId;
+    const collapse = todayOnly && todayId && !isToday && !isNextUnlocked;
     sec.classList.toggle('collapsed', collapse);
   });
+  updateDayLocks();
 }
 
 function toggleImages(){
-  const cur = (_getPref('hideImg','1')==='1');
+  const cur = (_getPref('hideImg','0')==='1');
   _setPref('hideImg', cur?'0':'1');
   applyImagesPref();
 }
 function applyImagesPref(){
-  const hide = (_getPref('hideImg','1')==='1');
+  const hide = (_getPref('hideImg','0')==='1');
   const b=document.getElementById('imgBtn');
   if(b) b.textContent = hide ? '图片：收起' : '图片：展开';
   document.querySelectorAll('.imgbox').forEach(box=>{
     box.classList.toggle('hidden', hide);
+  });
+}
+
+
+
+function injectExerciseImages(){
+  const rules = [
+    {match:['标准俯卧撑 / Push-up','宽距俯卧撑 / Wide Push-up'], src:'./assets/img/俯卧撑_01.jpg', alt:'俯卧撑演示'},
+    {match:['平板支撑 / Plank'], src:'./assets/img/平板支撑_01.jpg', alt:'平板支撑演示'},
+    {match:['徒手深蹲 / Bodyweight Squat'], src:'./assets/img/徒手深蹲_01.jpg', alt:'徒手深蹲演示'},
+    {match:['反向箭步蹲 / Reverse Lunge'], src:'./assets/img/弓步蹲_箭步蹲_01.jpg', alt:'反向箭步蹲演示'},
+    {match:['保加利亚分腿蹲（徒手）'], src:'./assets/img/保加利亚分腿蹲_01.jpg', alt:'保加利亚分腿蹲演示'},
+    {match:['臀桥 / Glute Bridge'], src:'./assets/img/杠铃臀推_臀桥_01.jpg', alt:'臀桥演示'},
+    {match:['提踵 / Calf Raise'], src:'./assets/img/站姿提踵_01.jpg', alt:'提踵演示'},
+    {match:['登山跑 / Mountain Climber','登山跑'], src:'./assets/img/登山跑_01.jpg', alt:'登山跑演示'},
+    {match:['侧桥 / Side Plank'], src:'./assets/img/侧桥_01.jpg', alt:'侧桥演示'},
+    {match:['肩胛俯卧撑 / Scap Push-up'], src:'./assets/img/肩胛俯卧撑_01.jpg', alt:'肩胛俯卧撑演示'},
+    {match:['仰卧举腿 / Leg Raise'], src:'./assets/img/仰卧举腿_01.jpg', alt:'仰卧举腿演示'}
+  ];
+  document.querySelectorAll('.card').forEach(card=>{
+    if(card.querySelector('.imgbox')) return;
+    const title = (card.querySelector('h3')?.textContent || '').trim();
+    const hit = rules.find(rule => rule.match.includes(title));
+    if(!hit) return;
+    const helper = card.querySelector('.helper');
+    const box = document.createElement('div');
+    box.className = 'imgbox';
+    box.innerHTML = '<img loading="lazy" decoding="async" src="'+hit.src+'" alt="'+hit.alt+'">';
+    if(helper && helper.parentNode===card){
+      helper.insertAdjacentElement('afterend', box);
+    }else{
+      const firstDetails = card.querySelector('details.exbulk');
+      if(firstDetails) firstDetails.insertAdjacentElement('beforebegin', box);
+      else card.appendChild(box);
+    }
+  });
+}
+
+const __EXERCISE_REF_LINKS = {
+    '标准俯卧撑 / Push-up': {img:'https://cn.bing.com/images/search?q=%E6%A0%87%E5%87%86%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%A0%87%E5%87%86%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '钻石俯卧撑 / Diamond Push-up': {img:'https://cn.bing.com/images/search?q=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Diamond%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%92%BB%E7%9F%B3%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Diamond%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    'Pike Push-up / 臀高俯卧撑': {img:'https://cn.bing.com/images/search?q=Pike%20Push-up%20/%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Pike%20Push-up%20/%20%E8%87%80%E9%AB%98%E4%BF%AF%E5%8D%A7%E6%92%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '平板支撑 / Plank': {img:'https://cn.bing.com/images/search?q=%E5%B9%B3%E6%9D%BF%E6%94%AF%E6%92%91%20/%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%B9%B3%E6%9D%BF%E6%94%AF%E6%92%91%20/%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '死虫 / Dead Bug': {img:'https://cn.bing.com/images/search?q=%E6%AD%BB%E8%99%AB%20/%20Dead%20Bug%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%AD%BB%E8%99%AB%20/%20Dead%20Bug%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '徒手深蹲 / Bodyweight Squat': {img:'https://cn.bing.com/images/search?q=%E5%BE%92%E6%89%8B%E6%B7%B1%E8%B9%B2%20/%20Bodyweight%20Squat%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BE%92%E6%89%8B%E6%B7%B1%E8%B9%B2%20/%20Bodyweight%20Squat%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '反向箭步蹲 / Reverse Lunge': {img:'https://cn.bing.com/images/search?q=%E5%8F%8D%E5%90%91%E7%AE%AD%E6%AD%A5%E8%B9%B2%20/%20Reverse%20Lunge%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%8F%8D%E5%90%91%E7%AE%AD%E6%AD%A5%E8%B9%B2%20/%20Reverse%20Lunge%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '保加利亚分腿蹲（徒手）': {img:'https://cn.bing.com/images/search?q=%E4%BF%9D%E5%8A%A0%E5%88%A9%E4%BA%9A%E5%88%86%E8%85%BF%E8%B9%B2%EF%BC%88%E5%BE%92%E6%89%8B%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%9D%E5%8A%A0%E5%88%A9%E4%BA%9A%E5%88%86%E8%85%BF%E8%B9%B2%EF%BC%88%E5%BE%92%E6%89%8B%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '臀桥 / Glute Bridge': {img:'https://cn.bing.com/images/search?q=%E8%87%80%E6%A1%A5%20/%20Glute%20Bridge%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E8%87%80%E6%A1%A5%20/%20Glute%20Bridge%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '提踵 / Calf Raise': {img:'https://cn.bing.com/images/search?q=%E6%8F%90%E8%B8%B5%20/%20Calf%20Raise%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%8F%90%E8%B8%B5%20/%20Calf%20Raise%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '开合跳 / Jumping Jack': {img:'https://cn.bing.com/images/search?q=%E5%BC%80%E5%90%88%E8%B7%B3%20/%20Jumping%20Jack%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%BC%80%E5%90%88%E8%B7%B3%20/%20Jumping%20Jack%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '登山跑 / Mountain Climber': {img:'https://cn.bing.com/images/search?q=%E7%99%BB%E5%B1%B1%E8%B7%91%20/%20Mountain%20Climber%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%99%BB%E5%B1%B1%E8%B7%91%20/%20Mountain%20Climber%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '波比跳 / Burpee': {img:'https://cn.bing.com/images/search?q=%E6%B3%A2%E6%AF%94%E8%B7%B3%20/%20Burpee%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%B3%A2%E6%AF%94%E8%B7%B3%20/%20Burpee%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '侧桥 / Side Plank': {img:'https://cn.bing.com/images/search?q=%E4%BE%A7%E6%A1%A5%20/%20Side%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BE%A7%E6%A1%A5%20/%20Side%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '肩胛俯卧撑 / Scap Push-up': {img:'https://cn.bing.com/images/search?q=%E8%82%A9%E8%83%9B%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Scap%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E8%82%A9%E8%83%9B%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Scap%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '宽距俯卧撑 / Wide Push-up': {img:'https://cn.bing.com/images/search?q=%E5%AE%BD%E8%B7%9D%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Wide%20Push-up%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%AE%BD%E8%B7%9D%E4%BF%AF%E5%8D%A7%E6%92%91%20/%20Wide%20Push-up%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '椅上臂屈伸 / Bench Dip': {img:'https://cn.bing.com/images/search?q=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20/%20Bench%20Dip%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E6%A4%85%E4%B8%8A%E8%87%82%E5%B1%88%E4%BC%B8%20/%20Bench%20Dip%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '俯身 Y-T-W': {img:'https://cn.bing.com/images/search?q=%E4%BF%AF%E8%BA%AB%20Y-T-W%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%AF%E8%BA%AB%20Y-T-W%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '反向支撑静止 / Reverse Plank': {img:'https://cn.bing.com/images/search?q=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20/%20Reverse%20Plank%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E5%8F%8D%E5%90%91%E6%94%AF%E6%92%91%E9%9D%99%E6%AD%A2%20/%20Reverse%20Plank%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '仰卧举腿 / Leg Raise': {img:'https://cn.bing.com/images/search?q=%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20/%20Leg%20Raise%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BB%B0%E5%8D%A7%E4%B8%BE%E8%85%BF%20/%20Leg%20Raise%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '俯卧撑 + 深蹲循环': {img:'https://cn.bing.com/images/search?q=%E4%BF%AF%E5%8D%A7%E6%92%91%20%2B%20%E6%B7%B1%E8%B9%B2%E5%BE%AA%E7%8E%AF%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E4%BF%AF%E5%8D%A7%E6%92%91%20%2B%20%E6%B7%B1%E8%B9%B2%E5%BE%AA%E7%8E%AF%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '箭步蹲跳（可改普通箭步）': {img:'https://cn.bing.com/images/search?q=%E7%AE%AD%E6%AD%A5%E8%B9%B2%E8%B7%B3%EF%BC%88%E5%8F%AF%E6%94%B9%E6%99%AE%E9%80%9A%E7%AE%AD%E6%AD%A5%EF%BC%89%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%AE%AD%E6%AD%A5%E8%B9%B2%E8%B7%B3%EF%BC%88%E5%8F%AF%E6%94%B9%E6%99%AE%E9%80%9A%E7%AE%AD%E6%AD%A5%EF%BC%89%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '高抬腿 / High Knees': {img:'https://cn.bing.com/images/search?q=%E9%AB%98%E6%8A%AC%E8%85%BF%20/%20High%20Knees%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E9%AB%98%E6%8A%AC%E8%85%BF%20/%20High%20Knees%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    '登山跑': {img:'https://cn.bing.com/images/search?q=%E7%99%BB%E5%B1%B1%E8%B7%91%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=%E7%99%BB%E5%B1%B1%E8%B7%91%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+    'Hollow Hold / 船式静止': {img:'https://cn.bing.com/images/search?q=Hollow%20Hold%20/%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E5%8A%A8%E4%BD%9C', video:'https://search.bilibili.com/all?keyword=Hollow%20Hold%20/%20%E8%88%B9%E5%BC%8F%E9%9D%99%E6%AD%A2%20%E6%A0%87%E5%87%86%E5%8A%A8%E4%BD%9C'},
+  };
+
+function injectExerciseReferenceLinks(){
+  const refs = __EXERCISE_REF_LINKS;
+  document.querySelectorAll('.card').forEach(card=>{
+    if(card.querySelector('.refLinks')) return;
+    const title = (card.querySelector('h3')?.textContent || '').trim();
+    const hit = refs[title];
+    if(!hit) return;
+    const box = document.createElement('div');
+    box.className = 'refLinks';
+    box.style.display='flex';
+    box.style.flexWrap='wrap';
+    box.style.gap='8px';
+    box.style.margin='10px 0 12px';
+    box.innerHTML = '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.img+'">看动作图</a>'+
+                    '<a class="ghost" target="_blank" rel="noopener noreferrer" href="'+hit.video+'">看视频</a>';
+    const imgbox = card.querySelector('.imgbox');
+    const helper = card.querySelector('.helper');
+    if(imgbox && imgbox.parentNode===card){
+      imgbox.insertAdjacentElement('afterend', box);
+    }else if(helper && helper.parentNode===card){
+      helper.insertAdjacentElement('afterend', box);
+    }else{
+      const firstDetails = card.querySelector('details.exbulk');
+      if(firstDetails) firstDetails.insertAdjacentElement('beforebegin', box);
+      else card.appendChild(box);
+    }
   });
 }
 
@@ -1596,7 +1806,66 @@ function closeTimerOverlay(){ const overlay=document.getElementById('timerOverla
 function stopTimer(key, hideOverlay=true){ if(!key) return; if(timers[key]){ clearInterval(timers[key]); delete timers[key]; } delete timerState[key]; const el=document.getElementById('timer-'+key); if(el) el.textContent='--:--'; if(activeTimerKey===key && hideOverlay) closeTimerOverlay(); }
 function stopActiveTimer(){ if(activeTimerKey) stopTimer(activeTimerKey, true); else closeTimerOverlay(); }
 function startTimer(btn){ const key=btn.dataset.timerKey; const seconds=parseInt(btn.dataset.rest||'0',10); if(!seconds||seconds<=0){ alert('这个动作当前休息时间是 0 秒'); return; } _ensureAudio(); if(timers[key]) clearInterval(timers[key]); const el=document.getElementById('timer-'+key); timerState[key]=_timerStateFor(btn, key, seconds); if(el) el.textContent=fmt(seconds); openTimerOverlay(key); updateTimerOverlay(key, seconds); const endAt=timerState[key].endAt; let lastShown=seconds; let lastBeepLeft=null; timers[key]=setInterval(()=>{ const left=Math.max(0, Math.ceil((endAt-Date.now())/1000)); if(el && left!==lastShown){ el.textContent = left>0 ? fmt(left) : '完成'; lastShown=left; } if(activeTimerKey===key) updateTimerOverlay(key, left); if(left>0 && left<=10 && left!==lastBeepLeft){ _beep(920 + (10-left)*24, 0.10, 0.18); lastBeepLeft=left; } if(left<=0){ if(lastBeepLeft!==0){ _beep(440, 0.30, 0.22); lastBeepLeft=0; } clearInterval(timers[key]); delete timers[key]; if(el) el.textContent='完成'; if(activeTimerKey===key) updateTimerOverlay(key, 0); } }, 250); }
-function refreshDay(day){ const sec=document.getElementById(day); if(!sec) return; const boxes=sec.querySelectorAll('input[type=checkbox][data-key$=":done"]'); const total=boxes.length; const done=[...boxes].filter(b=>b.checked).length; const pct=total?Math.round(done*100/total):0; const t=document.getElementById('prog-text-'+day); const f=document.getElementById('prog-fill-'+day); if(t) t.textContent='今日完成度：'+done+' / '+total+'（'+pct+'%）'; if(f) f.style.width=pct+'%'; }
+function refreshDay(day){ const sec=document.getElementById(day); if(!sec) return; const boxes=sec.querySelectorAll('input[type=checkbox][data-key$=":done"]'); const total=boxes.length; const done=[...boxes].filter(b=>b.checked).length; const pct=total?Math.round(done*100/total):0; const t=document.getElementById('prog-text-'+day); const f=document.getElementById('prog-fill-'+day); if(t) t.textContent='今日完成度：'+done+' / '+total+'（'+pct+'%）'; if(f) f.style.width=pct+'%'; notifyDayCompletion(day, done, total); updateDayLocks(); updateSticky(); }
+
+function _allSections(){ return [...document.querySelectorAll('section.section')]; }
+function _dayBoxes(sec){ return [...sec.querySelectorAll('input[type=checkbox][data-key$=":done"]')]; }
+function _isDayComplete(sec){ const boxes=_dayBoxes(sec); return boxes.length>0 && boxes.every(b=>b.checked); }
+function goToNextUnlockedDay(){
+  const todayId=_todaySectionId();
+  if(!todayId) return;
+  const sections=[...document.querySelectorAll('section.section')];
+  const idx=sections.findIndex(sec=>sec.id===todayId);
+  if(idx>=0 && sections[idx+1]){
+    sections[idx+1].classList.remove('collapsed');
+    sections[idx+1].classList.remove('locked');
+    sections[idx+1].scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
+
+function notifyDayCompletion(day, done, total){
+  const k = PREFIX+'dayCompleteAlert:'+day;
+  if(total>0 && done===total){
+    if(localStorage.getItem(k)!=='1'){
+      localStorage.setItem(k,'1');
+      setTimeout(()=>{
+        const ok = confirm('今天这一天你已经全部做完了 ✅
+
+要不要直接去看明天？');
+        if(ok) goToNextUnlockedDay();
+      }, 80);
+    }
+  }else{
+    localStorage.removeItem(k);
+  }
+}
+function updateDayLocks(){
+  const sections=_allSections();
+  let canShowNext=true;
+  sections.forEach((sec, idx)=>{
+    const unlock = idx===0 || canShowNext;
+    sec.classList.toggle('locked', !unlock);
+    sec.classList.toggle('unlocked', unlock);
+    if(unlock && !_isDayComplete(sec)) canShowNext=false;
+  });
+}
+function initTimedActionTriggers(){
+  document.querySelectorAll('.row').forEach(row=>{
+    const reps=row.querySelector('input.reps');
+    const btn=row.querySelector('.timerbtn');
+    if(!reps || !btn) return;
+    const val=(reps.value||'').trim();
+    const isTimed = /秒|分钟|min/i.test(val);
+    if(!isTimed) return;
+    reps.readOnly = true;
+    reps.style.cursor = 'pointer';
+    if(reps.dataset.timerBound==='1') return;
+    reps.dataset.timerBound='1';
+    reps.title='点这里直接开始计时';
+    reps.addEventListener('click', ()=>startTimer(btn));
+  });
+}
+
 function applyGlobal(overwrite){ const weight=(document.getElementById('globalWeight').value||'').trim(); const rest=(document.getElementById('globalRest').value||'').trim(); if(!weight && !rest){ alert('先填默认重量或默认休息秒数'); return; } document.querySelectorAll('input.weight[data-group]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-timer-key]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
 function applyExercise(group, overwrite){ const weight=(document.getElementById('w-'+group).value||'').trim(); const rest=(document.getElementById('r-'+group).value||'').trim(); if(!weight && !rest){ alert('先填这个动作的重量或休息秒数'); return; } document.querySelectorAll('input.weight[data-group="'+group+'"]').forEach(inp=>{ if(weight && (overwrite || !inp.value.trim())){ inp.value=weight; localStorage.setItem(PREFIX+inp.dataset.key, weight); } }); document.querySelectorAll('button[data-group="'+group+'"]').forEach(btn=>{ if(rest && (overwrite || !localStorage.getItem(PREFIX+btn.dataset.timerKey+':rest'))){ btn.dataset.rest=rest; localStorage.setItem(PREFIX+btn.dataset.timerKey+':rest', rest); const r=document.getElementById('rest-'+btn.dataset.timerKey); if(r) r.textContent='休息 '+rest+'秒'; } }); }
 function resetAll(){ if(!confirm('确定清空全部逐组打卡和输入内容？')) return; Object.keys(localStorage).forEach(k=>{ if(k.startsWith(PREFIX)) localStorage.removeItem(k); }); location.reload(); }
@@ -1629,13 +1898,33 @@ function syncSwitches(){
 }
 
 
+
+function ensureLegacyUiCompat(){
+  const map = {
+    darkBtn:'swDark',
+    todayBtn:'swToday',
+    imgBtn:'swImg',
+    soundBtn:'swSound'
+  };
+  Object.entries(map).forEach(([legacyId, currentId])=>{
+    if(document.getElementById(legacyId)) return;
+    const current=document.getElementById(currentId);
+    if(!current) return;
+    const ghost=document.createElement('span');
+    ghost.id=legacyId;
+    ghost.hidden=true;
+    ghost.setAttribute('aria-hidden','true');
+    current.appendChild(ghost);
+  });
+}
+
 function _todaySectionId(){
   const d=new Date().getDay();
-  if(d===1) return '周一｜上肢力量';
-  if(d===2) return '周二｜下肢力量 + 核心';
-  if(d===3) return '周三｜体能恢复 / 有氧 / 旗帜基础';
-  if(d===4) return '周四｜上肢增肌 + 体态';
-  if(d===5) return '周五｜下肢增肌 + 后链 + 核心';
+  if(d===1) return '周一｜推 + 核心';
+  if(d===2) return '周二｜腿 + 臀';
+  if(d===3) return '周三｜恢复 + 体能';
+  if(d===4) return '周四｜上肢耐力 + 体态';
+  if(d===5) return '周五｜全身串联';
   return null;
 }
 function markTodayInToc(){
@@ -1657,15 +1946,29 @@ document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ closeShe
 applyCloudConfigFromUrl();
 fillCloudConfig();
 labelTimerButtons();
+try{
+  const k = PREFIX+'pref:hideImg';
+  const mk = PREFIX+'pref:hideImg:migrated-v2';
+  if(localStorage.getItem(mk)!=='1') {
+    localStorage.setItem(k,'0');
+    localStorage.setItem(mk,'1');
+  }
+}catch(e){}
 restore();
 applyDarkPref();
+initTimedActionTriggers();
 applyTodayOnly();
+injectExerciseImages();
+injectExerciseReferenceLinks();
 applyImagesPref();
 injectImgToggles();
 updateSoundBtn();
 updateSticky();
+document.querySelectorAll('section.section').forEach(sec=>refreshDay(sec.id));
+updateDayLocks();
 markTodayInToc();
 jumpToToday();
+setTimeout(()=>{ if(window.autoSyncBootstrap) window.autoSyncBootstrap(); }, 300);
 </script><script>
 (function(){
   if(window.__workoutWeekDbLoaded) return;
