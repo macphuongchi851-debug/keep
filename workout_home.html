@@ -1567,7 +1567,7 @@ body.dark .stickypanel .ghost{background:rgba(255,255,255,.07);border-color:rgba
 </div></div>
 
 <script>
-const PREFIX='fitness-home-v3:'; const timers={}; const timerState={}; let activeTimerKey=null;
+const PREFIX='fitness-home-v3:'; window.__fitnessPrefix = PREFIX; window.__fitnessPrefPrefix = PREFIX + 'pref:'; const timers={}; const timerState={}; let activeTimerKey=null;
 let _audioCtx=null;
 let _audioPrimed=false;
 let soundMuted = (localStorage.getItem(PREFIX+'soundMuted')==='1');
@@ -2625,6 +2625,8 @@ jumpToToday();
 })();
 </script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 (function(){
+  const PREFIX = window.__fitnessPrefix || 'fitness-home-v3:';
+  const PREF_PREFIX = window.__fitnessPrefPrefix || (PREFIX + 'pref:');
   const CLOUD_URL_KEY = PREFIX + 'cloud:url';
   const CLOUD_ANON_KEY = PREFIX + 'cloud:anon';
   const CLOUD_CODE_KEY = PREFIX + 'cloud:code';
