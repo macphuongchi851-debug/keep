@@ -1,160 +1,108 @@
-# Day 7：Browser 浏览器自动化 —— 让它自己去网页上看、点、截
+# Day 7：Telegram 接入（上）—— 先把门、钥匙、门禁规则搞明白
 
 ## 今天为什么学这个
 
-能聊天不稀奇，能上网页替你看东西，才开始像回事。
+Telegram 是很多人第一次真正把 OpenClaw 用起来的入口。
 
-OpenClaw 的 browser 能做的事情包括：
-- 打开网页
-- 抓页面快照
-- 截图
-- 点击、输入、导航
-- 在隔离浏览器里完成自动化
+但接 Telegram 最容易踩的，不是技术本身，而是这几个问题：
+- bot 怎么创建
+- token 怎么配
+- 谁能给它发消息
+- pairing / allowlist / open 到底怎么选
 
-今天你要从“嘴上会查网页”升级到“真的能控制浏览器”。
+今天先把这些概念和前置准备讲清楚。
 
 ## 今天的目标
 
 你需要做到：
 
-1. 理解 `openclaw` / `user` / `chrome-relay` 三种浏览器模式
-2. 启动或检查受控浏览器
-3. 打开一个页面并抓取结果
-4. 理解为什么默认优先用隔离浏览器
+1. 创建 Telegram Bot
+2. 拿到并保管 bot token
+3. 理解 `dmPolicy` 是什么
+4. 知道 `allowFrom` 大概是干嘛的
 
 ---
 
-## 一、先搞懂三种 profile
+## 一、创建 Telegram Bot
 
-### 1. `openclaw`
-OpenClaw 自己管理的隔离浏览器。
+去 Telegram 里找：
 
-特点：
-- 独立 profile
-- 不污染你日常浏览器
-- 默认最适合自动化
-
-### 2. `user`
-连接你真实正在使用的、已登录的 Chrome 会话。
-
-适合：
-- 必须复用登录状态
-- 必须访问你平时已登录的网站
-
-缺点：
-- 需要用户配合
-- 风险和干扰更高
-
-### 3. `chrome-relay`
-基于扩展/工具栏 attach 的显式接管模式。
-
-适合：
-- 你明确要控制当前 tab
-- 你希望手动附着某个浏览器页面
-
----
-
-## 二、先看有哪些 profile
-
-执行：
-
-```bash
-openclaw browser profiles
+```text
+@BotFather
 ```
 
-如果你要看状态：
+然后：
+1. 发 `/newbot`
+2. 按步骤设置名称和用户名
+3. 拿到 bot token
 
-```bash
-openclaw browser --browser-profile openclaw status
-```
-
----
-
-## 三、启动隔离浏览器
-
-```bash
-openclaw browser --browser-profile openclaw start
-```
-
-然后打开一个网页：
-
-```bash
-openclaw browser --browser-profile openclaw open https://docs.openclaw.ai
-```
-
-再抓快照：
-
-```bash
-openclaw browser --browser-profile openclaw snapshot
-```
-
-你也可以进一步尝试截图：
-
-```bash
-openclaw browser --browser-profile openclaw screenshot
-```
+这个 token 就是钥匙，别乱贴，别截图乱发。
 
 ---
 
-## 四、今天至少完成一个真实浏览动作
+## 二、理解 `dmPolicy`
 
-建议你做其中一个：
+常见选项：
+- `pairing`
+- `allowlist`
+- `open`
+- `disabled`
 
-### 任务 A：打开 OpenClaw 官方文档首页并截图
-### 任务 B：打开任意网页，抓取 snapshot
-### 任务 C：让 OpenClaw 帮你从网页提取一个标题或关键信息
+你先记住人话版：
 
-重点不是命令背得多，而是要实际看到：
-- 浏览器起来了
-- 页面真的开了
-- 快照或截图真的拿到了
+### `pairing`
+更安全，默认思路通常更推荐。
+陌生人先配对，通过后再聊。
 
----
+### `allowlist`
+只有白名单里的用户能私聊。
 
-## 五、为什么默认优先用隔离浏览器
+### `open`
+所有人都能来聊。
 
-因为它：
-- 不碰你日常浏览器数据
-- 更稳定
-- 更容易排障
-- 自动化行为可控
-
-一句话：
-**默认拿隔离浏览器干活，是因为省心又少作死。**
+### `disabled`
+直接不接私聊。
 
 ---
 
-## 六、今天的验收标准
+## 三、`allowFrom` 是干嘛的
 
-你做完后要给我：
+它本质上就是：
+**允许哪些用户来触发这个 bot。**
 
-1. 你用的是哪个 browser profile
-2. 你打开了哪个网页
-3. 你拿到了 snapshot 还是 screenshot
-4. 你如何理解 `openclaw` 和 `user` 的区别
+如果你走 `allowlist`，那你就得把允许的人放进去。
+
+别出现这种傻事：
+> 门装好了，结果把自己关外面。
 
 ---
 
-## 常见坑
+## 四、今天先不急着全配完，先完成准备工作
 
-### 1）一上来就想接管日常浏览器
-没必要。除非必须复用登录态，否则先用 `openclaw`。
+今天建议你完成：
+- Bot 创建
+- Token 安全保存
+- 想好你准备用 `pairing` 还是 `allowlist`
 
-### 2）浏览器没启动就直接 snapshot
-那当然容易扑街。
+---
 
-### 3）把浏览器自动化理解成“纯搜索”
-不是。这里是真的可控页面、可点、可输入。
+## 今天的验收标准
+
+你做完后要能告诉我：
+
+1. Bot 是否创建成功
+2. 你是否已经拿到 token
+3. 你倾向使用 `pairing` 还是 `allowlist`
+4. 你为什么这么选
 
 ---
 
 ## 做完后怎么回我
 
-发我：
+你直接发：
 
-1. 你使用的 profile
-2. 你打开的网址
-3. 你拿到的结果（snapshot / screenshot / 提取信息）
-4. 你自己的理解：为什么默认优先用隔离浏览器
+1. Bot 是否创建好了
+2. 你选哪种私聊策略
+3. 你的理由
 
-过了 Day 7，你已经不是在“聊天”，而是在指挥一个能上网页干活的系统。
+通过后，Day 8 我们再正式接到 OpenClaw 上并验证收发。

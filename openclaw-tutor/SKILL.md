@@ -1,19 +1,20 @@
-# OpenClaw 系统化教学（重制版）
+# OpenClaw 系统化教学（14 天重制版）
 
-面向第一次认真学 OpenClaw 的用户，目标不是“看过”，而是 **10 天内真正上手**。
+面向第一次认真学 OpenClaw 的用户，目标不是“看过”，而是 **14 天内真正上手**。
 
 ## 设计原则
 
-这套课按官方文档与实际使用路径重做，强调四件事：
+这套课按官方文档与实际使用路径重做，强调五件事：
 
-1. **先建立正确心智模型**：先搞懂 Gateway / Session / Workspace / Channel / Tool 是什么，再谈骚操作。
-2. **每天只学一个核心能力**：不乱塞概念，避免第一天就把人干懵。
+1. **先建立正确心智模型**：先搞懂 Gateway / Session / Workspace / Channel / Tool 是什么，再谈自动化和高级玩法。
+2. **拆细关键模块**：模型、配置、Telegram 不再硬塞到一天，避免囫囵吞枣。
 3. **每节课都有动手任务 + 验收标准**：学完必须能证明自己会了。
 4. **优先真实场景**：不是背命令，而是让 OpenClaw 真正替你干活。
+5. **允许边学边排障**：用户卡住时先解决问题，再继续教学，不装死、不硬推流程。
 
 ## 学习节奏
 
-- 总周期：10 天
+- 总周期：14 天
 - 单日耗时：20–40 分钟
 - 建议流程：
   1. 读今天课程
@@ -23,26 +24,34 @@
 
 ## 课程目录
 
-- **Day 1：架构与启动**
-  - 目标：理解 OpenClaw 由什么组成，知道 Gateway、Control UI、Workspace 各自干什么
-- **Day 2：模型系统与切换**
-  - 目标：看懂当前模型配置，列出模型，切换模型并验证生效
-- **Day 3：配置文件与安全边界**
-  - 目标：会找配置、会校验配置、知道哪些配置改错会炸
-- **Day 4：Telegram 接入**
-  - 目标：接入 Telegram 私聊，完成最基础的远程对话
-- **Day 5：文件与 Workspace**
-  - 目标：理解 workspace 是什么，让 OpenClaw 读写文件并留下可追踪结果
-- **Day 6：Skills 体系**
-  - 目标：搞懂 skill 从哪里来、怎么检查是否可用、如何挑技能而不是瞎装
-- **Day 7：Browser 浏览器自动化**
-  - 目标：让 OpenClaw 打开网页、截图、提取信息，理解 openclaw / user / chrome-relay 三种模式
-- **Day 8：Memory 与长期记忆**
-  - 目标：理解 MEMORY.md 和 daily memory 的区别，让 OpenClaw 正确记住信息
-- **Day 9：Cron / Heartbeat / 自动化**
-  - 目标：会设置提醒，理解定时任务和心跳任务的边界
-- **Day 10：综合实战**
-  - 目标：把模型、消息、文件、浏览器、记忆、定时任务串成一个真实工作流
+- **Day 1：OpenClaw 是什么**
+  - 目标：理解 Gateway、Control UI、Workspace、Session 的基本关系
+- **Day 2：启动、状态与基础排障**
+  - 目标：会看系统状态，会启动 Gateway，会确认 Control UI 是否正常
+- **Day 3：模型系统入门**
+  - 目标：理解 primary / fallback / alias，知道模型是怎么组织的
+- **Day 4：模型切换与验证**
+  - 目标：列出可用模型，切换模型，并验证切换确实生效
+- **Day 5：配置文件基础**
+  - 目标：找到配置文件，会用 config get / validate，理解严格校验
+- **Day 6：配置安全与会话边界**
+  - 目标：理解 session.dmScope、多用户风险和高危配置区域
+- **Day 7：Telegram 接入（上）**
+  - 目标：创建 Bot，理解 bot token、dmPolicy、allowFrom
+- **Day 8：Telegram 接入（下）**
+  - 目标：完成 Telegram 私聊接入，能定位常见接入故障
+- **Day 9：Workspace 与文件操作**
+  - 目标：让 OpenClaw 真正读取、创建、修改文件并验证结果
+- **Day 10：Memory 系统**
+  - 目标：理解 MEMORY.md 与 daily memory 的区别，学会记住和回忆
+- **Day 11：Skills 体系**
+  - 目标：搞懂 skill 从哪里来、怎么检查是否可用、怎么判断值不值得用
+- **Day 12：Browser 浏览器自动化**
+  - 目标：理解 openclaw / user / chrome-relay 三种模式并完成网页操作
+- **Day 13：Cron / Heartbeat / 自动化**
+  - 目标：会设置提醒，理解精确定时与周期巡检的边界
+- **Day 14：综合实战**
+  - 目标：把模型、配置、消息、文件、浏览器、记忆、定时任务串成一个真实工作流
 
 ## 推进规则
 
