@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>飞牛 OS 小白图文保姆安装版</title>
+  <style>
+    body { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; line-height: 1.65; color: #222; margin: 36px; }
+    h1, h2, h3 { color: #1f3a5f; }
+    h1 { text-align: center; margin-bottom: 8px; }
+    .sub { text-align: center; color: #666; margin-bottom: 28px; }
+    .box { background: #f6f8fa; border-left: 4px solid #4f8cff; padding: 12px 16px; margin: 16px 0; }
+    .warn { background: #fff7e6; border-left-color: #fa8c16; }
+    .step { page-break-inside: avoid; margin-bottom: 28px; }
+    img { max-width: 100%; border: 1px solid #ddd; margin: 10px 0 4px; }
+    .caption { color: #666; font-size: 13px; margin-bottom: 12px; }
+    code { background: #f2f2f2; padding: 1px 4px; border-radius: 4px; }
+    ul { margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <h1>飞牛 OS 小白图文保姆安装版</h1>
+  <div class="sub">整理版：步骤说明 + 配图 + 官方下载地址</div>
+
+  <div class="box">
+    <strong>官方入口</strong><br>
+    官网：<code>https://www.fnnas.com/</code><br>
+    下载页：<code>https://www.fnnas.com/download?key=fnos</code><br>
+    官方安装教程：<code>https://help.fnnas.com/articles/v1/start/install-os.md</code><br>
+    ISO 直链：<code>https://iso.liveupdate.fnnas.com/x86_64/trim/fnos-1.1.23-1627.iso</code><br>
+    Rufus：<code>https://static2.fnnas.com/installer/rufus-4.5.exe</code>
+  </div>
+
+  <div class="step">
+    <h2>第 0 步：安装前准备</h2>
+    <ul>
+      <li>一台 x86 电脑 / 小主机 / NAS 主机</li>
+      <li>至少 1 块硬盘，推荐用 <strong>SSD 做系统盘</strong></li>
+      <li>U 盘（8GB 以上）</li>
+      <li>显示器、键盘、网线</li>
+    </ul>
+    <div class="warn box">
+      <strong>注意：</strong>飞牛官方明确说明，安装时需要接网线；当前不支持只靠无线网卡安装。
+    </div>
+  </div>
+
+  <div class="step">
+    <h2>第 1 步：下载飞牛 OS 镜像</h2>
+    <p>打开飞牛官方下载页，选择 <strong>fnOS</strong>。页面上会看到“复制 fnOS 下载链接”“如何安装 fnOS？”等按钮。</p>
+    <p>如果你懒得网页里点，直接下载官方 ISO 即可：</p>
+    <p><code>https://iso.liveupdate.fnnas.com/x86_64/trim/fnos-1.1.23-1627.iso</code></p>
+    <img src="download_page.png" alt="飞牛官方下载页截图" />
+    <div class="caption">图 1：飞牛官方下载页。这里能看到 fnOS 下载入口、ARM 设备列表、安装教程入口。</div>
+  </div>
+
+  <div class="step">
+    <h2>第 2 步：下载 Rufus 并制作启动 U 盘</h2>
+    <p>飞牛官方文档推荐使用 Rufus 或 Balena Etcher。Windows 用户优先用 Rufus，最省事。</p>
+    <p>官方给出的 Rufus 下载地址：</p>
+    <p><code>https://static2.fnnas.com/installer/rufus-4.5.exe</code></p>
+    <img src="rufus_page.jpg" alt="Rufus 下载页截图" />
+    <div class="caption">图 2：Rufus 官方页面。下载后打开，选择 U 盘、选择 fnOS 的 ISO，然后点击“开始”。</div>
+    <ul>
+      <li>设备：选择你的 U 盘</li>
+      <li>启动类型：选择刚下载的 <code>.iso</code> 文件</li>
+      <li>分区类型：优先 GPT；老机器不认再试 MBR</li>
+      <li>点击开始，等待状态变成“准备就绪”</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <h2>第 3 步：给待安装机器接线</h2>
+    <ul>
+      <li>接好系统盘（推荐 SSD）</li>
+      <li>接好网线</li>
+      <li>接好电源、显示器、键盘</li>
+      <li>插上刚做好的启动 U 盘</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <h2>第 4 步：开机进入启动菜单</h2>
+    <p>开机时快速按这些键之一：<code>F2</code>、<code>F7</code>、<code>F8</code>、<code>F10</code>、<code>F11</code>、<code>F12</code>、<code>Esc</code>、<code>Delete</code>。</p>
+    <p>进入 Boot Menu 后，选择你的 U 盘启动。</p>
+  </div>
+
+  <div class="step">
+    <h2>第 5 步：进入安装器并选择安装方式</h2>
+    <p>进入安装页面后，优先选择 <strong>Graphical Install</strong>（图形化安装）。</p>
+    <div class="warn box">
+      <strong>如果报错：</strong><br>
+      1）若提示需要关闭 Secure Boot，就去 BIOS 里把 Secure Boot 关掉；<br>
+      2）如果图形化安装失败，重启后改选 <strong>Rescuing Install</strong>（应急模式安装）。
+    </div>
+  </div>
+
+  <div class="step">
+    <h2>第 6 步：选择系统盘</h2>
+    <p>只选择那块准备用来装系统的硬盘。通常是容量较小的 SSD（如 128GB / 256GB）。</p>
+    <div class="warn box">
+      <strong>高危提醒：</strong>被选中的系统盘会被格式化，里面的内容会被清空。别把装数据的硬盘选进去。</div>
+  </div>
+
+  <div class="step">
+    <h2>第 7 步：设置系统分区和 Swap</h2>
+    <p>官方建议系统分区设置为 <strong>64GB</strong>。Swap 按安装器推荐值即可。</p>
+    <p>小白就按默认推荐来，先装成功再说，别上来瞎折腾。</p>
+  </div>
+
+  <div class="step">
+    <h2>第 8 步：确认格式化并开始安装</h2>
+    <p>确认后，系统开始写入 fnOS。中途别断电、别拔盘、别手欠。</p>
+  </div>
+
+  <div class="step">
+    <h2>第 9 步：安装完成后设置网络</h2>
+    <p>安装完成后，系统会自动检测网卡并尝试通过 DHCP 获取 IP。记住这个 IP 地址。</p>
+    <p>比如：<code>192.168.1.20</code></p>
+  </div>
+
+  <div class="step">
+    <h2>第 10 步：拔掉 U 盘并重启</h2>
+    <p>保存网络设置后，先把启动 U 盘拔掉，再重启系统。不然它容易重新进安装器。</p>
+  </div>
+
+  <div class="step">
+    <h2>第 11 步：浏览器访问飞牛 OS</h2>
+    <p>在另一台电脑浏览器中打开上一步的 IP 地址。首次进入时，你会看到初始化页面。</p>
+    <img src="help_page.png" alt="飞牛官方安装帮助页截图" />
+    <div class="caption">图 3：飞牛官方帮助中心安装文档。里面写明了安装步骤、Graphical Install、系统分区建议 64GB、网络设置等。</div>
+    <p>如果裸 IP 打不开，再试：</p>
+    <ul>
+      <li><code>http://你的IP:5666</code></li>
+      <li><code>https://你的IP:5667</code></li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <h2>第 12 步：完成初始化</h2>
+    <ul>
+      <li>设置设备名称：支持数字、英文、短横线 <code>-</code></li>
+      <li>设置管理员账号：第一位管理员是超级管理员，密码一定要强</li>
+      <li>进入系统后尽快创建存储空间</li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <h2>装完后建议立刻做的事</h2>
+    <ul>
+      <li>确认系统盘和数据盘识别正常</li>
+      <li>创建存储空间</li>
+      <li>记录 IP 地址和管理员密码</li>
+      <li>后续再慢慢折腾共享、影视库、Docker、远程访问</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <strong>官方链接汇总</strong><br>
+    官网：<code>https://www.fnnas.com/</code><br>
+    下载页：<code>https://www.fnnas.com/download?key=fnos</code><br>
+    安装帮助：<code>https://help.fnnas.com/articles/v1/start/install-os.md</code><br>
+    ISO：<code>https://iso.liveupdate.fnnas.com/x86_64/trim/fnos-1.1.23-1627.iso</code><br>
+    Rufus：<code>https://static2.fnnas.com/installer/rufus-4.5.exe</code>
+  </div>
+</body>
+</html>
