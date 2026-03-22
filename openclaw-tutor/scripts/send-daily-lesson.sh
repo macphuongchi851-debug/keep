@@ -1,5 +1,5 @@
 #!/bin/bash
-# 每日课程推送脚本：推送前自动把进度补到“今天应该发到哪一天”
+# 每日课程推送脚本：每天最多自动推进 1 天，并记录当天是否已推送
 
 set -euo pipefail
 
@@ -16,38 +16,30 @@ fi
 
 # 2. 读取进度配置
 CURRENT_DAY=$(jq -r '.currentDay // 1' "$PROGRESS_FILE")
-START_DATE=$(jq -r '.startDate // empty' "$PROGRESS_FILE")
 TOTAL_DAYS=$(jq -r '.totalDays // 14' "$PROGRESS_FILE")
+LAST_PUSH_DATE=$(jq -r '.lastPushDate // empty' "$PROGRESS_FILE")
 TODAY=$(date +%F)
 
-# 3. 按 startDate 自动补推进（只前进，不回退）
-if [ -n "$START_DATE" ]; then
-  start_ts=$(date -d "$START_DATE" +%s)
-  today_ts=$(date -d "$TODAY" +%s)
-
-  if [ "$today_ts" -lt "$start_ts" ]; then
-    EXPECTED_DAY=1
-  else
-    EXPECTED_DAY=$(( (today_ts - start_ts) / 86400 + 1 ))
+# 3. 每个自然日最多自动推进 1 天，避免卡在前一天，也避免按 startDate 硬算导致跳天
+if [ "$LAST_PUSH_DATE" != "$TODAY" ]; then
+  NEXT_DAY="$CURRENT_DAY"
+  if [ "$CURRENT_DAY" -lt "$TOTAL_DAYS" ]; then
+    NEXT_DAY=$((CURRENT_DAY + 1))
   fi
 
-  if [ "$EXPECTED_DAY" -gt "$TOTAL_DAYS" ]; then
-    EXPECTED_DAY="$TOTAL_DAYS"
-  fi
-
-  if [ "$CURRENT_DAY" -lt "$EXPECTED_DAY" ]; then
-    tmp_file=$(mktemp)
-    jq \
-      --argjson expectedDay "$EXPECTED_DAY" \
-      --arg now "$(date --iso-8601=seconds)" \
-      --arg note "$(date +%F)：定时推送前自动补推进到 Day ${EXPECTED_DAY}（避免卡在前一天）" \
-      '.currentDay = $expectedDay
-       | .lastInteraction = $now
-       | .notes = ((.notes // []) + [$note])' \
-      "$PROGRESS_FILE" > "$tmp_file"
-    mv "$tmp_file" "$PROGRESS_FILE"
-    CURRENT_DAY="$EXPECTED_DAY"
-  fi
+  tmp_file=$(mktemp)
+  jq \
+    --argjson nextDay "$NEXT_DAY" \
+    --arg today "$TODAY" \
+    --arg now "$(date --iso-8601=seconds)" \
+    --arg note "$(date +%F)：定时推送自动推进到 Day ${NEXT_DAY}（按天递进，每天最多 +1）" \
+    '.currentDay = $nextDay
+     | .lastPushDate = $today
+     | .lastInteraction = $now
+     | .notes = ((.notes // []) + [$note])' \
+    "$PROGRESS_FILE" > "$tmp_file"
+  mv "$tmp_file" "$PROGRESS_FILE"
+  CURRENT_DAY="$NEXT_DAY"
 fi
 
 # 4. 校验课程文件存在
