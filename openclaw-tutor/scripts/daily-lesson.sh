@@ -15,8 +15,10 @@ CURRENT_DAY=$(jq -r '.currentDay // 1' "$PROGRESS_FILE")
 COMPLETED_DAYS=$(jq -r '.completedDays // [] | join(", ")' "$PROGRESS_FILE")
 LAST_INTERACTION=$(jq -r '.lastInteraction // "未记录"' "$PROGRESS_FILE")
 
-if [ "$CURRENT_DAY" -gt 10 ]; then
-  echo "🎉 恭喜，你已经完成全部 10 天课程。"
+TOTAL_DAYS=$(jq -r '.totalDays // 14' "$PROGRESS_FILE")
+
+if [ "$CURRENT_DAY" -gt "$TOTAL_DAYS" ]; then
+  echo "🎉 恭喜，你已经完成全部 ${TOTAL_DAYS} 天课程。"
   echo "现在更适合进入实战和持续优化，而不是继续看入门课了。"
   exit 0
 fi

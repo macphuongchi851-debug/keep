@@ -1,11 +1,23 @@
 {
-  "currentDay": 2,
+  "currentDay": 8,
   "startDate": "2026-03-16",
-  "completedDays": [],
-  "lastInteraction": "2026-03-17T08:20:00+08:00",
+  "completedDays": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "lastInteraction": "2026-03-23T07:38:04+08:00",
+  "courseDir": "/home/keep/.openclaw/workspace/openclaw-tutor/references",
+  "totalDays": 14,
   "notes": [
-    "2026-03-16：按用户要求重置教学进度，重新从 Day 1 开始",
-    "2026-03-16：旧版课程质量不满足要求，已重写为 14 天课程体系",
-    "2026-03-17：用户澄清今天应发送 Day 2 内容；进度修正为当前 Day 2，明日再发 Day 3"
+    "2026-03-16：按用户要求重置教学进度,重新从 Day 1 开始",
+    "2026-03-16：旧版课程质量不满足要求,已重写为 14 天课程体系",
+    "2026-03-17：用户澄清今天应发送 Day 2 内容;进度修正为当前 Day 2,明日再发 Day 3",
+    "2026-03-19：用户纠正实际进度为 Day 4,已修正 currentDay 并增加 courseDir 字段防止路径错误",
+    "2026-03-21：用户纠正今天应为 Day 5, 已将 currentDay 修正为 5",
+    "2026-03-21：Day 5 已验收通过，进度推进到 Day 6",
+    "2026-03-23：定时推送前自动补推进到 Day 8（避免卡在前一天）"
   ]
 }
