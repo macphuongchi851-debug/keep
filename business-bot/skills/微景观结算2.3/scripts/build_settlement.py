@@ -1295,6 +1295,8 @@ def build_report(zip_path, output_path, start_date, end_date, rules):
     ws.freeze_panes = 'A16'
 
     ws = wb.create_sheet('供应商有、平台无')
+    # 2026-03-23 固化：此表中的总成本按供应商原表原样展示；
+    # 若原表代发价格为负数，这里就直接显示负数，不做绝对值转换。
     rows = [[
         r['supplier_store'],
         r['order_no'],
@@ -1501,6 +1503,7 @@ def build_report(zip_path, output_path, start_date, end_date, rules):
             s['supplier_store'] if s else '', float(s['qty']) if s else 0, float(s['total_cost']) if s else 0,
             (float(r['qty'] - s['qty']) if s else float(r['qty']))
         ])
+    # 2026-03-23 固化：订单匹配表中的供应商总成本同样保留原始正负号，负数直接显示。
     write_rows(ws,
         ['平台店铺', '订单号', '平台件数', '订单状态', '匹配结果', '供应商店铺', '供应商件数', '供应商总成本', '件数差'],
         rows, currency_cols={8})
