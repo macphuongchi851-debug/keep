@@ -1370,7 +1370,8 @@ def build_report(zip_path, output_path, start_date, end_date, rules):
             item['reason'],
         ])
         seq += 1
-    write_rows(ws, ['序号', '归属店铺', '供应商店铺', '订单号', '日期', '商品/品名', '件数', '供应商总成本', '原因备注'], rows, currency_cols={8})
+    # 2026-03-23 固化：最终异常订单清单中的“供应商结算成本”保持原始正负号，负数直接显示。
+    write_rows(ws, ['序号', '归属店铺', '供应商店铺', '订单号', '日期', '商品/品名', '件数', '供应商结算成本', '原因备注'], rows, currency_cols={8})
 
     ws = wb.create_sheet('未发货退款有成本')
     rows = [[r['store'], r['order_no'], r['title'], r['status'], float(r['qty']), float(r['raw_matched_cost']), r['supplier_store']] for r in refunds_cost_rows]
