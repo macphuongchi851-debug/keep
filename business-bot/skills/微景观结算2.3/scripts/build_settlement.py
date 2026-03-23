@@ -566,6 +566,7 @@ def load_supplier_raw_totals(base_dir, rules):
                 qty = d(row[col.get('数量')])
                 if qty <= 0:
                     continue
+                goods_cost = d(row[col.get('代发价格')]) if '代发价格' in col else Decimal('0')
                 rows.append({
                     'supplier_store': store,
                     'raw_supplier_store': raw_store,
@@ -577,6 +578,7 @@ def load_supplier_raw_totals(base_dir, rules):
                     'product': row[col.get('品名')] if '品名' in col else '',
                     'express_no': express_no,
                     'qty': qty,
+                    'goods_cost': goods_cost,
                 })
     return rows
 
@@ -1351,7 +1353,7 @@ def build_report(zip_path, output_path, start_date, end_date, rules):
             'date': r.get('date'),
             'product': str(r.get('product') or ''),
             'qty': d(r.get('qty', 0)),
-            'cost': Decimal('0'),
+            'cost': d(r.get('goods_cost', 0)),
             'reason': '；'.join(reasons),
         })
     store_order = {name: i for i, name in enumerate(rules['summary'].get('canonical_store_names', []))}
