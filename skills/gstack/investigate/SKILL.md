@@ -1,5 +1,5 @@
 ---
-name: investigate
+name: gstack-internal-investigate
 version: 1.0.0
 description: |
   Systematic debugging with root cause investigation. Four phases: investigate,
@@ -29,6 +29,8 @@ hooks:
         - type: command
           command: "bash ${CLAUDE_SKILL_DIR}/../freeze/bin/check-freeze.sh"
           statusMessage: "Checking debug scope boundary..."
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

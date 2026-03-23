@@ -1,5 +1,5 @@
 ---
-name: retro
+name: gstack-internal-retro
 version: 2.0.0
 description: |
   Weekly engineering retrospective. Analyzes commit history, work patterns,
@@ -13,6 +13,8 @@ allowed-tools:
   - Write
   - Glob
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

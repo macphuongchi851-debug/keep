@@ -1,5 +1,5 @@
 ---
-name: design-review
+name: gstack-internal-design-review
 version: 2.0.0
 description: |
   Designer's eye QA: finds visual inconsistency, spacing issues, hierarchy problems,
@@ -18,6 +18,8 @@ allowed-tools:
   - Grep
   - AskUserQuestion
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

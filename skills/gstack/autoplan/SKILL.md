@@ -1,5 +1,5 @@
 ---
-name: autoplan
+name: gstack-internal-autoplan
 version: 1.0.0
 description: |
   Auto-review pipeline — reads the full CEO, design, and eng review skills from disk
@@ -20,6 +20,8 @@ allowed-tools:
   - Grep
   - WebSearch
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

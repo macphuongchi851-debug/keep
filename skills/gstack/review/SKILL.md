@@ -1,5 +1,5 @@
 ---
-name: review
+name: gstack-internal-review
 version: 1.0.0
 description: |
   Pre-landing PR review. Analyzes diff against the base branch for SQL safety, LLM trust
@@ -16,6 +16,8 @@ allowed-tools:
   - Agent
   - AskUserQuestion
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

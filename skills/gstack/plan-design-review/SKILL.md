@@ -1,5 +1,5 @@
 ---
-name: plan-design-review
+name: gstack-internal-plan-design-review
 version: 2.0.0
 description: |
   Designer's eye plan review — interactive, like CEO and Eng review.
@@ -16,6 +16,8 @@ allowed-tools:
   - Glob
   - Bash
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

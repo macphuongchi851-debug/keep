@@ -1,5 +1,5 @@
 ---
-name: cso
+name: gstack-internal-cso
 version: 1.0.0
 description: |
   Chief Security Officer mode. Performs OWASP Top 10 audit, STRIDE threat modeling,
@@ -13,6 +13,8 @@ allowed-tools:
   - Glob
   - Write
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

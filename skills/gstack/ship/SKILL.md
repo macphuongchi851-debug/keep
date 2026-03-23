@@ -1,5 +1,5 @@
 ---
-name: ship
+name: gstack-internal-ship
 version: 1.0.0
 description: |
   Ship workflow: detect + merge base branch, run tests, review diff, bump VERSION, update CHANGELOG, commit, push, create PR. Use when asked to "ship", "deploy", "push to main", "create a PR", or "merge and push".
@@ -14,6 +14,8 @@ allowed-tools:
   - Agent
   - AskUserQuestion
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

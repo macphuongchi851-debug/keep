@@ -1,5 +1,5 @@
 ---
-name: setup-deploy
+name: gstack-internal-setup-deploy
 version: 1.0.0
 description: |
   Configure deployment settings for /land-and-deploy. Detects your deploy
@@ -16,6 +16,8 @@ allowed-tools:
   - Glob
   - Grep
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

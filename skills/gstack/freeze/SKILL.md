@@ -1,5 +1,5 @@
 ---
-name: freeze
+name: gstack-internal-freeze
 version: 0.1.0
 description: |
   Restrict file edits to a specific directory for the session. Blocks Edit and
@@ -23,6 +23,8 @@ hooks:
         - type: command
           command: "bash ${CLAUDE_SKILL_DIR}/bin/check-freeze.sh"
           statusMessage: "Checking freeze boundary..."
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

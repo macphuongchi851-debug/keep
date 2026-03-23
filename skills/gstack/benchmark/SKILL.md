@@ -1,5 +1,5 @@
 ---
-name: benchmark
+name: gstack-internal-benchmark
 version: 1.0.0
 description: |
   Performance regression detection using the browse daemon. Establishes
@@ -13,6 +13,8 @@ allowed-tools:
   - Write
   - Glob
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

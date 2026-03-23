@@ -1,5 +1,5 @@
 ---
-name: gstack
+name: gstack-internal-gstack
 description: |
   Fast headless browser for QA testing and site dogfooding. Navigate any URL, interact with
   elements, verify page state, diff before/after actions, take annotated screenshots, check
@@ -39,6 +39,8 @@ description: |
   If the user says "be proactive again" or "turn on suggestions":
   1. Run: gstack-config set proactive true
   2. Say: "Proactive suggestions are back on."
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

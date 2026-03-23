@@ -1,5 +1,5 @@
 ---
-name: plan-eng-review
+name: gstack-internal-plan-eng-review
 version: 1.0.0
 description: |
   Eng manager-mode plan review. Lock in the execution plan — architecture,
@@ -17,6 +17,8 @@ allowed-tools:
   - AskUserQuestion
   - Bash
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

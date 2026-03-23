@@ -1,5 +1,5 @@
 ---
-name: plan-ceo-review
+name: gstack-internal-plan-ceo-review
 version: 1.0.0
 description: |
   CEO/founder-mode plan review. Rethink the problem, find the 10-star product,
@@ -18,6 +18,8 @@ allowed-tools:
   - Bash
   - AskUserQuestion
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

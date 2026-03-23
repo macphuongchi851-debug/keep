@@ -1,5 +1,5 @@
 ---
-name: document-release
+name: gstack-internal-document-release
 version: 1.0.0
 description: |
   Post-ship documentation update. Reads all project docs, cross-references the
@@ -15,6 +15,8 @@ allowed-tools:
   - Grep
   - Glob
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

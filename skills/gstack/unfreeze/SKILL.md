@@ -1,5 +1,5 @@
 ---
-name: unfreeze
+name: gstack-internal-unfreeze
 version: 0.1.0
 description: |
   Clear the freeze boundary set by /freeze, allowing edits to all directories
@@ -9,6 +9,8 @@ description: |
 allowed-tools:
   - Bash
   - Read
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

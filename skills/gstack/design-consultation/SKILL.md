@@ -1,5 +1,5 @@
 ---
-name: design-consultation
+name: gstack-internal-design-consultation
 version: 1.0.0
 description: |
   Design consultation: understands your product, researches the landscape, proposes a
@@ -18,6 +18,8 @@ allowed-tools:
   - Grep
   - AskUserQuestion
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

@@ -1,5 +1,5 @@
 ---
-name: qa-only
+name: gstack-internal-qa-only
 version: 1.0.0
 description: |
   Report-only QA testing. Systematically tests a web application and produces a
@@ -13,6 +13,8 @@ allowed-tools:
   - Write
   - AskUserQuestion
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

@@ -1,5 +1,5 @@
 ---
-name: plan-design-review
+name: gstack-internal-plan-design-review
 description: |
   Designer's eye plan review — interactive, like CEO and Eng review.
   Rates each design dimension 0-10, explains what would make it a 10,
@@ -8,6 +8,8 @@ description: |
   or "design critique".
   Proactively suggest when the user has a plan with UI/UX components that
   should be reviewed before implementation.
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

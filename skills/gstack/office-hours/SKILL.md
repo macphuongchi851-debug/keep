@@ -1,5 +1,5 @@
 ---
-name: office-hours
+name: gstack-internal-office-hours
 version: 2.0.0
 description: |
   YC Office Hours — two modes. Startup mode: six forcing questions that expose
@@ -20,6 +20,8 @@ allowed-tools:
   - Edit
   - AskUserQuestion
   - WebSearch
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

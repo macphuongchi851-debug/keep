@@ -1,5 +1,5 @@
 ---
-name: codex
+name: gstack-internal-codex
 version: 1.0.0
 description: |
   OpenAI Codex CLI wrapper — three modes. Code review: independent diff review via
@@ -14,6 +14,8 @@ allowed-tools:
   - Glob
   - Grep
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

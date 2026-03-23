@@ -1,5 +1,5 @@
 ---
-name: setup-browser-cookies
+name: gstack-internal-setup-browser-cookies
 version: 1.0.0
 description: |
   Import cookies from your real browser (Comet, Chrome, Arc, Brave, Edge) into the
@@ -10,6 +10,8 @@ allowed-tools:
   - Bash
   - Read
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

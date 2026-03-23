@@ -1,5 +1,5 @@
 ---
-name: gstack-upgrade
+name: gstack-internal-gstack-upgrade
 version: 1.1.0
 description: |
   Upgrade gstack to the latest version. Detects global vs vendored install,
@@ -10,6 +10,8 @@ allowed-tools:
   - Read
   - Write
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

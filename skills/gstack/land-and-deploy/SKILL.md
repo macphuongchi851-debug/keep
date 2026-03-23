@@ -1,5 +1,5 @@
 ---
-name: land-and-deploy
+name: gstack-internal-land-and-deploy
 version: 1.0.0
 description: |
   Land and deploy workflow. Merges the PR, waits for CI and deploy,
@@ -12,6 +12,8 @@ allowed-tools:
   - Write
   - Glob
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

@@ -1,5 +1,5 @@
 ---
-name: autoplan
+name: gstack-internal-autoplan
 description: |
   Auto-review pipeline — reads the full CEO, design, and eng review skills from disk
   and runs them sequentially with auto-decisions using 6 decision principles. Surfaces
@@ -9,6 +9,8 @@ description: |
   automatically", or "make the decisions for me".
   Proactively suggest when the user has a plan file and wants to run the full review
   gauntlet without answering 15-30 intermediate questions.
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

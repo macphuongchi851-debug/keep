@@ -1,5 +1,5 @@
 ---
-name: canary
+name: gstack-internal-canary
 version: 1.0.0
 description: |
   Post-deploy canary monitoring. Watches the live app for console errors,
@@ -13,6 +13,8 @@ allowed-tools:
   - Write
   - Glob
   - AskUserQuestion
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

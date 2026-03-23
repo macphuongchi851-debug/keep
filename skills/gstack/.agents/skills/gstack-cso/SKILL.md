@@ -1,10 +1,12 @@
 ---
-name: cso
+name: gstack-internal-cso
 description: |
   Chief Security Officer mode. Performs OWASP Top 10 audit, STRIDE threat modeling,
   attack surface analysis, auth flow verification, secret detection, dependency CVE
   scanning, supply chain risk assessment, and data classification review.
   Use when: "security audit", "threat model", "pentest review", "OWASP", "CSO review".
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->

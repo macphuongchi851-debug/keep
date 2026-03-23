@@ -1,5 +1,5 @@
 ---
-name: careful
+name: gstack-internal-careful
 version: 0.1.0
 description: |
   Safety guardrails for destructive commands. Warns before rm -rf, DROP TABLE,
@@ -17,6 +17,8 @@ hooks:
         - type: command
           command: "bash ${CLAUDE_SKILL_DIR}/bin/check-careful.sh"
           statusMessage: "Checking for destructive commands..."
+user-invocable: false
+disable-model-invocation: true
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->
