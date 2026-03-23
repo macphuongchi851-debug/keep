@@ -6,13 +6,13 @@ user-invocable: true
 
 # qa
 
-This is the OpenClaw wrapper for gstack QA.
+This is the OpenClaw wrapper for gstack qa.
 
 Before doing the workflow, read and follow:
 - `{baseDir}/../gstack/qa/OPENCLAW.md`
 
+Use OpenClaw-native tools first: `exec`, `read`, `write`, `edit`, `browser`, `web_search`, and `web_fetch`.
+
 ## OpenClaw fast path
-- Use `browser` for user-flow QA.
-- Use `exec` for test, lint, build, and local verification commands.
+- Use `browser` for user-flow QA and `exec` for local test commands.
 - Prefer concise bug lists with reproduction, evidence, and fix status.
-- Treat the original gstack QA doc as methodology; prefer OpenClaw-native tools over Claude-specific assumptions.
