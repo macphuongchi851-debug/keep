@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "skills": {
+    "qveris-official": {
+      "version": "1.0.7",
+      "installedAt": 1773276129758
+    },
+    "analysis-data": {
+      "version": "1.0.1",
+      "installedAt": 1773276133044
+    },
+    "ai-humanizer-cn": {
+      "version": "1.0.0",
+      "installedAt": 1773276137157
+    },
+    "playwright-scraper-skill": {
+      "version": "1.2.0",
+      "installedAt": 1773708445766
+    },
+    "openclaw-aisa-finance-equity-crypto-price-market-data-news": {
+      "version": "1.0.0",
+      "installedAt": 1773710932425
+    },
+    "ccxt": {
+      "version": "1.0.0",
+      "installedAt": 1773710937587
+    },
+    "tradingview-quantitative-skills": {
+      "version": "1.0.4",
+      "installedAt": 1773710944114
+    },
+    "market-sentiment-pulse": {
+      "version": "1.1.0",
+      "installedAt": 1773710964219
+    },
+    "fear-and-greed-index": {
+      "version": "1.0.0",
+      "installedAt": 1773710968746
+    },
+    "binance-pro": {
+      "version": "1.0.0",
+      "installedAt": 1773711176474
+    },
+    "news-sentiment": {
+      "version": "1.0.2",
+      "installedAt": 1773711176505
+    },
+    "opennews-mcp": {
+      "version": "1.0.0",
+      "installedAt": 1773711585006
+    },
+    "market-monitor": {
+      "version": "0.1.0",
+      "installedAt": 1773711585264
+    },
+    "market-pulse": {
+      "version": "1.0.2",
+      "installedAt": 1773711585390
+    },
+    "milaex-crypto-api": {
+      "version": "1.0.2",
+      "installedAt": 1773711586495
+    },
+    "a-stock-market": {
+      "version": "1.0.0",
+      "installedAt": 1773712245126
+    },
+    "finance-news-pro": {
+      "version": "1.0.1",
+      "installedAt": 1773712246256
+    },
+    "pinduoduo": {
+      "version": "0.1.0",
+      "installedAt": 1774343385330
+    },
+    "pinduoduo-listing": {
+      "version": "2.0.0",
+      "installedAt": 1774343388331
+    },
+    "wechat-mp-reader": {
+      "version": "1.0.0",
+      "installedAt": 1774361222568
+    },
+    "multi-search-engine": {
+      "version": "2.0.1",
+      "installedAt": 1774701589069
+    },
+    "ecommerce-scraper": {
+      "version": "1.0.0",
+      "installedAt": 1774702149394
+    },
+    "cn-web-search": {
+      "version": "2.0.0",
+      "installedAt": 1774758361636
+    }
+  }
+}
