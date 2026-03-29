@@ -192,6 +192,17 @@ backup_workspace() {
   rsync -a --delete \
     --exclude '.git/' \
     --exclude '.venv/' \
+    --exclude '.venv*/' \
+    --exclude 'venv/' \
+    --exclude 'venv*/' \
+    --exclude '__pycache__/' \
+    --exclude 'node_modules/' \
+    --exclude 'downloads/' \
+    --exclude 'dist/' \
+    --exclude 'build/' \
+    --exclude '.tmp/' \
+    --exclude 'tmp/' \
+    --exclude '.cache/' \
     --exclude 'logs/' \
     --exclude '.openclaw/' \
     --exclude 'memory/' \
@@ -208,6 +219,7 @@ backup_workspace() {
     --exclude '*.tgz' \
     --exclude '*.7z' \
     --exclude '*.rar' \
+    --exclude '*.deb' \
     --exclude '*.mp4' \
     --exclude '*.mov' \
     --exclude '*.webm' \
