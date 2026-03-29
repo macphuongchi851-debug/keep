@@ -12,6 +12,7 @@ SPLIT_SIZE_DEFAULT="95m"
 NOTIFY_TO_DEFAULT="telegram:8327241925"
 NOTIFY_CHANNEL_DEFAULT="telegram"
 NOTIFY_ON_SUCCESS_DEFAULT="1"
+NOTIFY_ON_FAILURE_DEFAULT="1"
 GIT_USER_NAME_DEFAULT="OpenClaw Backup"
 GIT_USER_EMAIL_DEFAULT="openclaw-backup@local"
 
@@ -26,6 +27,7 @@ SPLIT_SIZE="${SPLIT_SIZE:-$SPLIT_SIZE_DEFAULT}"
 NOTIFY_TO="${NOTIFY_TO:-$NOTIFY_TO_DEFAULT}"
 NOTIFY_CHANNEL="${NOTIFY_CHANNEL:-$NOTIFY_CHANNEL_DEFAULT}"
 NOTIFY_ON_SUCCESS="${NOTIFY_ON_SUCCESS:-$NOTIFY_ON_SUCCESS_DEFAULT}"
+NOTIFY_ON_FAILURE="${NOTIFY_ON_FAILURE:-$NOTIFY_ON_FAILURE_DEFAULT}"
 GIT_USER_NAME="${GIT_USER_NAME:-$GIT_USER_NAME_DEFAULT}"
 GIT_USER_EMAIL="${GIT_USER_EMAIL:-$GIT_USER_EMAIL_DEFAULT}"
 
@@ -59,9 +61,10 @@ Environment overrides:
   WORKSPACE_DIR     Source workspace directory.
   LOCK_DIR          Lock directory to prevent concurrent runs.
   SPLIT_SIZE        Split size for encrypted backup parts (default: 95m).
-  NOTIFY_TO         Delivery target for success notifications.
-  NOTIFY_CHANNEL    Delivery channel for success notifications.
+  NOTIFY_TO         Delivery target for backup notifications.
+  NOTIFY_CHANNEL    Delivery channel for backup notifications.
   NOTIFY_ON_SUCCESS Set 1 to notify after success, 0 to disable.
+  NOTIFY_ON_FAILURE Set 1 to notify after failure, 0 to disable.
 EOF
 }
 
@@ -75,8 +78,14 @@ die() {
 }
 
 cleanup() {
+  local exit_code=$?
+
+  if [[ $exit_code -ne 0 ]]; then
+    notify_failure "老爹，GitHub 双备份失败了（$TS）。\n- workspace → mc2\n- 加密 .openclaw → mc1\n- 退出码：$exit_code\n- 临时目录：$TMP_ROOT\n快看日志，别让它闷声装死。" || true
+  fi
+
   rm -rf "$LOCK_DIR" 2>/dev/null || true
-  if [[ "$KEEP_TEMP" == "1" ]]; then
+  if [[ "$KEEP_TEMP" == "1" || $exit_code -ne 0 ]]; then
     log "Keeping temp directory: $TMP_ROOT"
   else
     rm -rf "$TMP_ROOT"
@@ -169,18 +178,27 @@ verify_remote_head() {
   [[ "$local_head" == "$remote_head" ]] || die "Remote head mismatch for $repo_url"
 }
 
-notify_success() {
-  [[ "$NOTIFY_ON_SUCCESS" == "1" ]] || return 0
+send_notification() {
+  local msg="$1"
   [[ "$DRY_RUN" == "0" ]] || return 0
   [[ -n "$NOTIFY_TO" ]] || return 0
   require_cmd openclaw
 
-  local msg="$1"
   openclaw message send \
     --channel "$NOTIFY_CHANNEL" \
     --target "$NOTIFY_TO" \
     --message "$msg" \
     --silent >/dev/null
+}
+
+notify_success() {
+  [[ "$NOTIFY_ON_SUCCESS" == "1" ]] || return 0
+  send_notification "$1"
+}
+
+notify_failure() {
+  [[ "$NOTIFY_ON_FAILURE" == "1" ]] || return 0
+  send_notification "$1"
 }
 
 backup_workspace() {
